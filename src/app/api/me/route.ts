@@ -1,21 +1,23 @@
 import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
+    const userid = req.headers.get("user-id");
+    if (!userid)
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     const existingUser = await prisma.user.findFirst({
-      where: { email },
+      where: { userid },
     });
     if (!existingUser)
       return NextResponse.json("user not found", { status: 404 });
-
-    const matchPass = await bcrypt.compare(password, existingUser.password);
-
-    if (!matchPass) return NextResponse.json("Email or Password doesn't match");
-    const User = { ...existingUser };
+    const User = {
+      userid: existingUser.userid,
+      email: existingUser.email,
+      name: existingUser.name,
+      role: existingUser.role,
+    };
 
     return NextResponse.json(User);
   } catch (error) {
