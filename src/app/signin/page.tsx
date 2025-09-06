@@ -1,32 +1,51 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
-export default function Login() {
+export default function signin() {
   const [input, setInput] = useState({ email: "", password: "" });
   const router = useRouter();
 
   const handleForm = async (e: any) => {
     try {
       e.preventDefault();
-      const hook = await signIn("auth-session", {
+      const res = await signIn("auth-session", {
         ...input,
         redirect: false,
       });
-      if (!hook?.ok || hook?.error) {
-        return null;
+
+      console.log("ini res nya => ", res);
+      if (!res?.ok || res.error) {
+        return Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Invalid email or password.",
+        });
       }
+
       await setInput({ email: "", password: "" });
       router.push("/");
-    } catch (err) {
-      return err;
+      return Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: "Welcome back!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.log(error);
+      return Swal.fire({
+        icon: "error",
+        title: "Network Error",
+        text: "Something went wrong during login.",
+      });
     }
   };
-
   return (
-    <main className="h-screen w-screen flex justify-center bg-blue-600 items-center">
+    <main className="h-screen w-screen flex justify-center bg-blue-600 items-center absolute left-0 top-0">
       <div className="bg-white flex justify-between h-3/4 w-3/4 rounded-md">
         <div className="flex justify-center items-center text-5xl w-1/2 h-full content-center px-2.5 bg-black">
           <p className="text-white border py-4 px-6 rounded-xl">Sudrajat.dev</p>

@@ -1,23 +1,29 @@
-import SideBar from "./SideBar";
-import SearchBar from "./Navbar";
+"use client";
+
+import { SessionProvider } from "next-auth/react";
+import Navbar from "./Navbar";
 import { usePathname } from "next/navigation";
+import SideBar from "./SideBar";
 
 export default function ClientWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathName = usePathname();
+  const pathname = usePathname();
 
-  const hideNavbar = pathName === "/signin";
-
+  const hideNavbar = pathname === "/login" || pathname === "/register";
   return (
-    <div className="flex">
-      <div className="fixed w-1/5">{!hideNavbar && <SideBar />}</div>
-      <div className="ml-[20%] w-4/5">
-        {!hideNavbar && <SearchBar />}
-        <div className="h-auto bg-white pt-[9%] pl-[2%]">{children}</div>
+    <SessionProvider>
+      <div className="relative flex">
+        <div className="fixed w-1/5">{!hideNavbar && <SideBar />}</div>
+        <div className="ml-[20%] w-4/5">
+          {!hideNavbar && <Navbar />}
+          <div className="h-screen bg-slate-100 pt-[8%] pl-[2%]">
+            {children}
+          </div>
+        </div>
       </div>
-    </div>
+    </SessionProvider>
   );
 }

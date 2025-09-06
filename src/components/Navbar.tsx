@@ -11,10 +11,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
-export default function SearchBar() {
+export default function Navbar() {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
+  const path = usePathname();
+
+  console.log("ini path navbar => ", path);
 
   useEffect(() => {
     const profiles = document.querySelector("#profiles");
@@ -63,7 +67,11 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="py-3 px-5 flex justify-between h-[9%] fixed w-4/5 bg-white mb-1">
+    <div
+      className={`py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white mb-1 ${
+        path === "/signin" ? "hidden" : "flex"
+      }`}
+    >
       <section className="w-[35%] bg-white flex justify-between items-center h-[110%]">
         <input
           placeholder="search for..."
@@ -159,7 +167,7 @@ export default function SearchBar() {
 
       <div
         id="logoutModal"
-        className={`justify-center absolute inset-0 z-1000 w-screen h-screen overflow-auto bg-black bg-opacity-40 ${
+        className={`justify-center fixed inset-0 z-100 w-screen h-screen overflow-auto bg-gray-900/50 ${
           isShowModal ? "flex visible" : "hidden invisible"
         }`}
       >

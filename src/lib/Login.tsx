@@ -19,7 +19,7 @@ export async function Login(email: string, password: string) {
       return null;
     }
 
-    const isMatch = bcrypt.compareSync(password, user?.password || "");
+    const isMatch = bcrypt.compareSync(password, user.password);
 
     if (!isMatch) {
       console.log("User not found");

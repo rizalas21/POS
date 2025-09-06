@@ -3,12 +3,10 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
-  session: {
-    strategy: "jwt",
-  },
   providers: [
     CredentialsProvider({
       id: "auth-session",
+      name: "Credentials",
       credentials: {
         email: {
           label: "Email",
@@ -23,15 +21,26 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
-        const user = await Login(credentials.email, credentials.password);
-        if (!user) return null;
-        // const user = { id: "1", name: "Admin", email: "admin@admin.com" };
-        return user;
+        try {
+          const user = await Login(credentials.email, credentials.password);
+          console.log("USER BRO +> ", user);
+          if (!user?.email) return null;
+          return user;
+        } catch (error) {
+          console.log("error when author => ", error);
+          return null;
+        }
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
+  pages: { signIn: "/signin" },
   callbacks: {
     async jwt({ token, user }: { token: any; user: any }) {
+      console.log("ini token dan user di token => ", token);
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -44,6 +53,7 @@ export const authOptions: AuthOptions = {
         id: token.id,
         email: token.email,
       };
+      console.log("ini token dan user di session => ", session, token);
       return session;
     },
   },

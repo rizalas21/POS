@@ -1,3 +1,7 @@
 export default function sales() {
-  return <p>sales ini</p>;
+  return (
+    <main>
+      <h1 className="text-2xl text-gray-700">Sales</h1>
+    </main>
+  );
 }

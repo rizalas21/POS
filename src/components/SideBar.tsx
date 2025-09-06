@@ -17,7 +17,11 @@ export default function SideBar() {
   const pathname = usePathname();
 
   return (
-    <div className="bg-blue-600 w-full flex flex-col items-center h-screen">
+    <div
+      className={`bg-blue-600 w-full flex-col items-center h-screen z-10 ${
+        pathname === "/signin" ? "hidden" : "flex"
+      }`}
+    >
       <section className="text-white flex justify-around items-center w-4/5 h-[10%] border-b border-slate-100 py-8">
         <div className="flex justify-between items-center w-2/5 gap-2">
           <FontAwesomeIcon
