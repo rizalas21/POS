@@ -1,17 +1,16 @@
 "use client";
 
+import { useUsersStore } from "@/stores/usersStore";
 import { faDatabase, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { signOut } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function EditUsers() {
+export default function AddUsers() {
   const router = useRouter();
-  const params = useParams();
-  const id = params.id;
-
+  const { addUsers } = useUsersStore();
   const [data, setData] = useState({
     email: "",
     name: "",
@@ -19,34 +18,12 @@ export default function EditUsers() {
     role: "",
   });
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const { data } = await axios.get(`/api/users/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setData(data);
-      return;
-    };
-
-    fetchUsers();
-  }, []);
-
   const handleSubmit = async () => {
     try {
-      const token = await localStorage.getItem("token");
-
-      const res = await axios.put(`/api/users/${id}`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const res = await addUsers(data);
       router.push("/users");
       return res;
     } catch (error) {
-      signOut({ redirect: true, callbackUrl: "/" });
       return null;
     }
   };
@@ -64,7 +41,7 @@ export default function EditUsers() {
   return (
     <div className=" flex flex-col shadow-2xl h-full bg-white">
       <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center pl-2">
-        <p className="text-blue-600 font-bold">Form Edit</p>
+        <p className="text-blue-600 font-bold">Form Add</p>
       </div>
       <form className="flex flex-col p-10 gap-5" onSubmit={handleSubmit}>
         <div className="flex justify-between w-full h-[6vh] rounded">
@@ -75,7 +52,6 @@ export default function EditUsers() {
             className="w-4/5 border p-1.5 drop-shadow"
             name="email"
             onChange={handleChange}
-            value={data.email}
           />
         </div>
         <div className="flex justify-between w-full h-[6vh] rounded">
@@ -86,7 +62,16 @@ export default function EditUsers() {
             className="w-4/5 border p-1.5 drop-shadow"
             name="name"
             onChange={handleChange}
-            value={data.name}
+          />
+        </div>
+        <div className="flex justify-between w-full h-[6vh] rounded">
+          <label>Password</label>
+          <input
+            placeholder="Password"
+            type="password"
+            className="w-4/5 border p-1.5 drop-shadow"
+            name="password"
+            onChange={handleChange}
           />
         </div>
         <div className="flex justify-between w-full">
@@ -96,9 +81,8 @@ export default function EditUsers() {
               <input
                 type="radio"
                 name="role"
-                onChange={handleChange}
                 value="operator"
-                checked={data.role === "operator" || data.role === "Operator"}
+                onChange={handleChange}
               />
               <span>Operator</span>
             </div>
@@ -108,7 +92,6 @@ export default function EditUsers() {
                 name="role"
                 value="admin"
                 onChange={handleChange}
-                checked={data.role === "Admin" || data.role === "admin"}
               />
               <span>Admin</span>
             </div>
@@ -122,20 +105,20 @@ export default function EditUsers() {
           onClick={handleSubmit}
         >
           <FontAwesomeIcon
-            className="rounded-l text-center bg-green-700 px-2.5 py-2 text-slate-300 w-1/5 hover:bg-green-800 text-white"
+            className="rounded-l text-center bg-green-700 px-2.5 py-2 text-slate-300 w-1/5 text-white"
             icon={faDatabase}
           />
-          <p className="rounded-l text-center bg-green-500 px-2.5 py-2 text-slate-300 w-4/5 hover:bg-green-800 h-full text-white font-medium">
+          <p className="rounded-l text-center bg-green-500 px-2.5 py-1 text-slate-300 w-4/5 hover:bg-green-700 h-full text-white font-medium">
             Save
           </p>
         </button>
         <button className="flex w-[8vw] h-full justify-between items-center h-4/5 bg-yellow-600">
           <FontAwesomeIcon
-            className="rounded-l text-center bg-yellow-700 px-2.5 py-2 text-slate-300 w-1/5 hover:bg-yellow-800 text-white"
+            className="rounded-l text-center bg-yellow-700 px-2.5 py-2 text-slate-300 w-1/5 text-white cursor-pointer"
             icon={faUndo}
           />
           <p
-            className="rounded-l text-center bg-yellow-500 px-2.5 py-2 text-slate-300 w-4/5 hover:bg-yellow-800 h-full text-white font-medium"
+            className="rounded-l text-center bg-yellow-500 px-2.5 py-1 text-slate-300 w-4/5 hover:bg-yellow-700 h-full text-white font-medium cursor-pointer"
             onClick={() => router.back()}
           >
             Cancel

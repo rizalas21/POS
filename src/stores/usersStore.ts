@@ -19,8 +19,9 @@ interface usersState {
 export const useUsersStore = create<usersState>((set) => ({
   users: [],
   getUsers: async () => {
+    console.log("masuk sini ");
     try {
-      const { data } = await axios.get("/api/users");
+      const data = await axios.get("/api/users");
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
       set({ users: data.data });
     } catch (error) {

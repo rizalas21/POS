@@ -18,8 +18,6 @@ export default function Navbar() {
   const [isShowModal, setIsShowModal] = useState(false);
   const path = usePathname();
 
-  console.log("ini path navbar => ", path);
-
   useEffect(() => {
     const profiles = document.querySelector("#profiles");
     const hideMenu = document.querySelector("#hide-menu");

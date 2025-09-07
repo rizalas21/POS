@@ -23,7 +23,6 @@ export const authOptions: AuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
         try {
           const user = await Login(credentials.email, credentials.password);
-          console.log("USER BRO +> ", user);
           if (!user?.email) return null;
           return user;
         } catch (error) {
@@ -40,7 +39,6 @@ export const authOptions: AuthOptions = {
   pages: { signIn: "/signin" },
   callbacks: {
     async jwt({ token, user }: { token: any; user: any }) {
-      console.log("ini token dan user di token => ", token);
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -53,7 +51,6 @@ export const authOptions: AuthOptions = {
         id: token.id,
         email: token.email,
       };
-      console.log("ini token dan user di session => ", session, token);
       return session;
     },
   },

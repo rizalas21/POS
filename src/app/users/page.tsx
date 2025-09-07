@@ -28,6 +28,7 @@ export default function users() {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const { users, getUsers } = useUsersStore();
+  const [isLoading, setIsloading] = useState(true);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -42,34 +43,35 @@ export default function users() {
   };
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchUsers = async () => {
       try {
-        await getUsers();
+        getUsers();
       } catch (error) {
         console.log("error when getUsers");
       } finally {
+        setIsloading(false);
       }
-
-      fetch();
     };
+    fetchUsers();
   }, [getUsers]);
+
+  console.log(users);
 
   return (
     <main>
       <h1 className="text-2xl text-gray-700">Users</h1>
       <p>This is data of Users</p>
-      return (
       <div className="shadow-2xl h-auto bg-white">
         <div className="w-full h-[8vh] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] mb-2 pl-2 flex justify-start items-center bg-slate-100">
           <Link
             href={"/users/add"}
-            className="flex justify-start text-white font-thin rounded-[5px] text-center items-center"
+            className="flex justify-start text-white font-thin rounded-[5px] text-center items-center hover:bg-blue-800"
           >
             <FontAwesomeIcon
               icon={faPlus}
-              className="rounded-l text-center bg-blue-700 px-2.5 py-2 text-slate-300 w-[1vw] hover:bg-blue-800"
+              className="rounded-l text-center bg-blue-700 px-2.5 py-2 text-slate-300 w-[1vw]"
             />
-            <p className="rounded-r text-center bg-blue-600 px-2.5 py-1 text-base w-[4vw] hover:bg-blue-800">
+            <p className="rounded-r text-center bg-blue-600 px-2.5 py-1 text-base w-[4vw]">
               Add
             </p>
           </Link>
@@ -102,85 +104,88 @@ export default function users() {
               />
             </div>
           </div>
-          <table className="w-full flex flex-col">
-            <thead className="w-full">
-              <tr className="flex w-full justify-between text-slate-500">
-                <th className="flex justify-between w-2/12 px-2 py-2 border">
-                  <h3>User ID</h3>
-                  <div className="icon-thead flex gap-2">
-                    <button
-                      className="text-sm cursor-pointer"
-                      name="userid"
-                      value="asc"
-                      onClick={handleSort}
-                    >
-                      <FontAwesomeIcon icon={faArrowUp} />
-                    </button>
-                    <button
-                      className="text-sm cursor-pointer"
-                      name="userid"
-                      value="desc"
-                      onClick={handleSort}
-                    >
-                      <FontAwesomeIcon icon={faArrowDown} />
-                    </button>
-                  </div>
-                </th>
-                <th className="flex justify-between w-3/12 px-1 py-2 border">
-                  <h3>Email</h3>
-                  <div className="icon-thead flex gap-2">
-                    <button
-                      className="text-sm cursor-pointer"
-                      name="email"
-                      value="asc"
-                      onClick={handleSort}
-                    >
-                      <FontAwesomeIcon icon={faArrowUp} />
-                    </button>
-                    <button
-                      className="text-sm cursor-pointer"
-                      name="email"
-                      value="desc"
-                      onClick={handleSort}
-                    >
-                      <FontAwesomeIcon icon={faArrowDown} />
-                    </button>
-                  </div>
-                </th>
-                <th className="flex justify-between w-3/12 px-1 py-2 border">
-                  <h3>Name</h3>
-                  <div className="icon-thead flex gap-2">
-                    <FontAwesomeIcon
-                      icon={faArrowUp}
-                      className="text-sm cursor-pointer"
-                    />
-                    <FontAwesomeIcon
-                      icon={faArrowDown}
-                      className="text-sm cursor-pointer"
-                    />
-                  </div>
-                </th>
-                <th className="flex justify-between w-2/12 px-2 py-2 border">
-                  <h3>Role</h3>
-                  <div className="icon-thead flex gap-2">
-                    <FontAwesomeIcon
-                      icon={faArrowUp}
-                      className="text-sm cursor-pointer"
-                    />
-                    <FontAwesomeIcon
-                      icon={faArrowDown}
-                      className="text-sm cursor-pointer"
-                    />
-                  </div>
-                </th>
-                <th className="flex w-2/12 px-1 py-2 border">
-                  <h3>Actions</h3>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="w-full">
-              {users.length > 0
-                ? users.map((user: Users, index: any) => (
+          {isLoading ? (
+            <p className="text-center py-6 text-gray-500">Loading...</p>
+          ) : (
+            <table className="w-full flex flex-col">
+              <thead className="w-full">
+                <tr className="flex w-full justify-between text-slate-500">
+                  <th className="flex justify-between w-2/12 px-2 py-2 border">
+                    <h3>User ID</h3>
+                    <div className="icon-thead flex gap-2">
+                      <button
+                        className="text-sm cursor-pointer"
+                        name="userid"
+                        value="asc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowUp} />
+                      </button>
+                      <button
+                        className="text-sm cursor-pointer"
+                        name="userid"
+                        value="desc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowDown} />
+                      </button>
+                    </div>
+                  </th>
+                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+                    <h3>Email</h3>
+                    <div className="icon-thead flex gap-2">
+                      <button
+                        className="text-sm cursor-pointer"
+                        name="email"
+                        value="asc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowUp} />
+                      </button>
+                      <button
+                        className="text-sm cursor-pointer"
+                        name="email"
+                        value="desc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowDown} />
+                      </button>
+                    </div>
+                  </th>
+                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+                    <h3>Name</h3>
+                    <div className="icon-thead flex gap-2">
+                      <FontAwesomeIcon
+                        icon={faArrowUp}
+                        className="text-sm cursor-pointer"
+                      />
+                      <FontAwesomeIcon
+                        icon={faArrowDown}
+                        className="text-sm cursor-pointer"
+                      />
+                    </div>
+                  </th>
+                  <th className="flex justify-between w-2/12 px-2 py-2 border">
+                    <h3>Role</h3>
+                    <div className="icon-thead flex gap-2">
+                      <FontAwesomeIcon
+                        icon={faArrowUp}
+                        className="text-sm cursor-pointer"
+                      />
+                      <FontAwesomeIcon
+                        icon={faArrowDown}
+                        className="text-sm cursor-pointer"
+                      />
+                    </div>
+                  </th>
+                  <th className="flex w-2/12 px-1 py-2 border">
+                    <h3>Actions</h3>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.length > 0 ? (
+                  users.map((user: Users, index: any) => (
                     <tr
                       className="flex w-full justify-between text-slate-500"
                       key={index}
@@ -218,28 +223,35 @@ export default function users() {
                       </td>
                     </tr>
                   ))
-                : ""}
-            </tbody>
-            <tfoot className="w-full">
-              <tr className="flex w-full justify-between text-slate-500">
-                <th className="w-2/12 px-1 py-2 border">
-                  <h3 className="text-left">User ID</h3>
-                </th>
-                <th className="w-3/12 px-1 py-2 border">
-                  <h3 className="text-left">Email</h3>
-                </th>
-                <th className="w-3/12 px-1 py-2 border">
-                  <h3 className="text-left">Name</h3>
-                </th>
-                <th className="w-2/12 px-1 py-2 border">
-                  <h3 className="text-left">Role</h3>
-                </th>
-                <th className="w-2/12 px-1 py-2 border">
-                  <h3 className="text-left">Actions</h3>
-                </th>
-              </tr>
-            </tfoot>
-          </table>
+                ) : (
+                  <tr>
+                    <td className="text-center py-6 text-gray-500" colSpan={5}>
+                      No Users Found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+              <tfoot className="w-full">
+                <tr className="flex w-full justify-between text-slate-500">
+                  <th className="w-2/12 px-1 py-2 border">
+                    <h3 className="text-left">User ID</h3>
+                  </th>
+                  <th className="w-3/12 px-1 py-2 border">
+                    <h3 className="text-left">Email</h3>
+                  </th>
+                  <th className="w-3/12 px-1 py-2 border">
+                    <h3 className="text-left">Name</h3>
+                  </th>
+                  <th className="w-2/12 px-1 py-2 border">
+                    <h3 className="text-left">Role</h3>
+                  </th>
+                  <th className="w-2/12 px-1 py-2 border">
+                    <h3 className="text-left">Actions</h3>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          )}
           <div className="flex p-2 justify-between">
             <p>
               showing {state.offset + 1} to {state.limit} of {state.total}{" "}
@@ -252,7 +264,6 @@ export default function users() {
         </section>
         {showModal ? modalDelete(state.selectedUser, setShowModal) : ""}
       </div>
-      );
     </main>
   );
 }

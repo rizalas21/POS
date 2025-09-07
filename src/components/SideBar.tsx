@@ -28,7 +28,7 @@ export default function SideBar() {
             style={{ fontSize: "37px", transform: "rotate(-25deg)" }}
             icon={faFaceLaughWink}
           ></FontAwesomeIcon>
-          <h1 className="text-white font-bold text-center">POS</h1>
+          <h1 className="text-white font-bold text-center text-xl">POS</h1>
         </div>
       </section>
       <section

@@ -16,8 +16,6 @@ export default function signin() {
         ...input,
         redirect: false,
       });
-
-      console.log("ini res nya => ", res);
       if (!res?.ok || res.error) {
         return Swal.fire({
           icon: "error",
