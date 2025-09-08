@@ -1,21 +1,23 @@
 "use client";
 
+import { useUsersStore } from "@/stores/usersStore";
 import { faDatabase, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { signOut } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function EditUsers() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id;
+  const id = params.id as string;
+  const { updateUsers } = useUsersStore();
 
   const [data, setData] = useState({
     email: "",
     name: "",
-    password: "",
     role: "",
   });
 
@@ -26,25 +28,25 @@ export default function EditUsers() {
           "Content-Type": "application/json",
         },
       });
+      console.log("ini data edit page => ", data);
       setData(data);
-      return;
     };
 
     fetchUsers();
   }, []);
 
+  console.log("inilah data nya : ", data);
   const handleSubmit = async () => {
     try {
-      const token = await localStorage.getItem("token");
-
-      const res = await axios.put(`/api/users/${id}`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const res = updateUsers(id, data);
       router.push("/users");
-      return res;
+      return Swal.fire({
+        icon: "success",
+        title: "Update User Successful",
+        text: `${(data.email, data.name, data.role)}`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       signOut({ redirect: true, callbackUrl: "/" });
       return null;
@@ -98,7 +100,7 @@ export default function EditUsers() {
                 name="role"
                 onChange={handleChange}
                 value="operator"
-                checked={data.role === "operator" || data.role === "Operator"}
+                checked={data.role.toLocaleLowerCase() === "operator"}
               />
               <span>Operator</span>
             </div>
@@ -108,7 +110,7 @@ export default function EditUsers() {
                 name="role"
                 value="admin"
                 onChange={handleChange}
-                checked={data.role === "Admin" || data.role === "admin"}
+                checked={data.role.toLocaleLowerCase() === "admin"}
               />
               <span>Admin</span>
             </div>

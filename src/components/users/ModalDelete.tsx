@@ -1,29 +1,31 @@
+import { useUsersStore } from "@/stores/usersStore";
 import { Dispatch, SetStateAction } from "react";
+import Swal from "sweetalert2";
 
-export const modalDelete = (
-  selectedUser: {
-    userid: string;
-    email: string;
-  },
-  setShowModal: Dispatch<SetStateAction<boolean>>
-) => {
+export const ModalDelete = ({
+  selectedUser,
+  setShowModal,
+}: {
+  selectedUser: { userid: string; email: string };
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { deleteUsers } = useUsersStore();
+
   async function confirmDelete({ id }: { id: any }) {
-    const res = await fetch(`/api/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    console.log("ini id user nya bro => ", id);
+    const res = await deleteUsers(selectedUser.userid);
+    setShowModal(false);
+    return Swal.fire({
+      icon: "success",
+      title: "Delete User Successful",
+      text: `${selectedUser.email}`,
+      timer: 1500,
+      showConfirmButton: false,
     });
-    if (res.ok) {
-      setShowModal(false);
-    } else {
-      console.error("Failed to delete the product");
-      alert("Gagal menghapus produk. Silakan coba lagi.");
-    }
   }
 
   return (
-    <section className="flex w-screen h-screen inset-0 z-1000 fixed bg-black bg-opacity-40 justify-center py-20 ">
+    <section className="flex w-screen h-screen inset-0 z-1000 fixed bg-gray-900/50 bg-opacity-40 justify-center py-20 ">
       <div className="flex flex-col gap-5 bg-white h-3/5 w-1/2 p-5">
         <div className="h-[32%]">
           <span

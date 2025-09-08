@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         email,
         name,
         password: newPass,
-        role: role || "operator",
+        role: role || "ADMIN",
       },
     });
     return NextResponse.json(res);

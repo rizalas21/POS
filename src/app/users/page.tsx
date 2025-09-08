@@ -1,6 +1,6 @@
 "use client";
 
-import { modalDelete } from "@/components/ModalDelete";
+import { ModalDelete } from "@/components/users/ModalDelete";
 import { Users, useUsersStore } from "@/stores/usersStore";
 import {
   faArrowDown,
@@ -54,8 +54,6 @@ export default function users() {
     };
     fetchUsers();
   }, [getUsers]);
-
-  console.log(users);
 
   return (
     <main>
@@ -262,7 +260,14 @@ export default function users() {
             </div>
           </div>
         </section>
-        {showModal ? modalDelete(state.selectedUser, setShowModal) : ""}
+        {showModal ? (
+          <ModalDelete
+            selectedUser={state.selectedUser}
+            setShowModal={setShowModal}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </main>
   );

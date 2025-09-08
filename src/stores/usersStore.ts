@@ -19,7 +19,6 @@ interface usersState {
 export const useUsersStore = create<usersState>((set) => ({
   users: [],
   getUsers: async () => {
-    console.log("masuk sini ");
     try {
       const data = await axios.get("/api/users");
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
@@ -31,10 +30,12 @@ export const useUsersStore = create<usersState>((set) => ({
   },
   addUsers: async (data) => {
     try {
+      console.log("data add users store => ", data);
       const res = await axios.post("/api/users", { data });
       if (res.status >= 400) {
         return null;
       }
+      console.log("res nya ini bro => ", res);
       set((state) => ({ users: [res.data, ...state.users] }));
     } catch (error) {
       console.error("Error adding budget:", error);
@@ -43,9 +44,12 @@ export const useUsersStore = create<usersState>((set) => ({
   },
   deleteUsers: async (userid) => {
     try {
-      await axios.delete(`/api/users/${userid}`);
+      const res = await axios.delete(`/api/users/${userid}`);
+      if (res.status >= 400) {
+        return null;
+      }
       set((state) => ({
-        users: state.users.filter((item) => item.userid === userid),
+        users: state.users.filter((item) => item.userid !== userid),
       }));
     } catch (error) {
       console.error("Error deleting budget:", error);
@@ -54,6 +58,7 @@ export const useUsersStore = create<usersState>((set) => ({
   updateUsers: async (userid, data) => {
     try {
       const res = await axios.put(`/api/users/${userid}`, { data });
+      console.log("ini res store nya => ", res);
       set((state) => ({
         users: state.users.map((item) =>
           item.userid === userid ? res.data : item

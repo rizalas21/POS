@@ -19,9 +19,7 @@ export default function ClientWrapper({
         <div className="fixed w-1/5">{!hideNavbar && <SideBar />}</div>
         <div className="ml-[20%] w-4/5">
           {!hideNavbar && <Navbar />}
-          <div className="h-screen bg-slate-100 pt-[8%] px-[2%]">
-            {children}
-          </div>
+          <div className="bg-slate-100 pt-[8%] px-[2%]">{children}</div>
         </div>
       </div>
     </SessionProvider>
