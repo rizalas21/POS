@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function users() {
-  const [state, setState] = useState({
+  const [params, setParams] = useState({
     selectedUser: { userid: "", email: "" },
     keyword: "",
     limit: "3",
@@ -27,25 +27,34 @@ export default function users() {
   });
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
-  const { users, getUsers } = useUsersStore();
+  const { users, getUsers, page, pages, total } = useUsersStore();
   const [isLoading, setIsloading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
 
-    setState({ ...state, [name]: value });
+    console.log("masuk name dan value => ", name, value);
+
+    setParams({ ...params, [name]: value });
   };
 
   const handleSort = (e: any) => {
-    const { name, value } = e.target;
+    const { name, value } = e.currentTarget;
 
-    setState({ ...state, sortBy: name, sort: value });
+    setParams({ ...params, sortBy: name, sort: value });
   };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        getUsers();
+        getUsers({
+          keyword: params.keyword,
+          sortBy: params.sortBy,
+          sort: params.sort,
+          page: params.page,
+          limit: params.limit,
+        });
       } catch (error) {
         console.log("error when getUsers");
       } finally {
@@ -53,8 +62,9 @@ export default function users() {
       }
     };
     fetchUsers();
-  }, [getUsers]);
+  }, [getUsers, params]);
 
+  console.log("ini adalah limit nya => ", params.limit);
   return (
     <main>
       <h1 className="text-2xl text-gray-700">Users</h1>
@@ -85,7 +95,7 @@ export default function users() {
                 name="limit"
                 id=""
                 min={1}
-                max={state.total}
+                max={Number(total)}
                 defaultValue={3}
                 onChange={(e) => handleChange(e)}
               />
@@ -112,7 +122,13 @@ export default function users() {
                     <h3>User ID</h3>
                     <div className="icon-thead flex gap-2">
                       <button
-                        className="text-sm cursor-pointer"
+                        className={`text-sm cursor-pointer ${
+                          params.sortBy !== "userid"
+                            ? "text-gray-700/50"
+                            : params.sort === "asc"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
+                        }`}
                         name="userid"
                         value="asc"
                         onClick={handleSort}
@@ -153,27 +169,43 @@ export default function users() {
                   <th className="flex justify-between w-3/12 px-1 py-2 border">
                     <h3>Name</h3>
                     <div className="icon-thead flex gap-2">
-                      <FontAwesomeIcon
-                        icon={faArrowUp}
+                      <button
                         className="text-sm cursor-pointer"
-                      />
-                      <FontAwesomeIcon
-                        icon={faArrowDown}
+                        name="name"
+                        value="asc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowUp} />
+                      </button>
+                      <button
                         className="text-sm cursor-pointer"
-                      />
+                        name="name"
+                        value="desc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowDown} />
+                      </button>
                     </div>
                   </th>
                   <th className="flex justify-between w-2/12 px-2 py-2 border">
                     <h3>Role</h3>
                     <div className="icon-thead flex gap-2">
-                      <FontAwesomeIcon
-                        icon={faArrowUp}
+                      <button
                         className="text-sm cursor-pointer"
-                      />
-                      <FontAwesomeIcon
-                        icon={faArrowDown}
+                        name="role"
+                        value="asc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowUp} />
+                      </button>
+                      <button
                         className="text-sm cursor-pointer"
-                      />
+                        name="role"
+                        value="desc"
+                        onClick={handleSort}
+                      >
+                        <FontAwesomeIcon icon={faArrowDown} />
+                      </button>
                     </div>
                   </th>
                   <th className="flex w-2/12 px-1 py-2 border">
@@ -188,7 +220,10 @@ export default function users() {
                       className="flex w-full justify-between text-slate-500"
                       key={index}
                     >
-                      <td className="w-2/12 px-1 py-2 border">{index + 1}</td>
+                      <td className="w-2/12 px-1 py-2 border">
+                        {(Number(page) - 1) * Number(params.limit) +
+                          (index + 1)}
+                      </td>
                       <td className="w-3/12 px-1 py-2 border">{user.email}</td>
                       <td className="w-3/12 px-1 py-2 border">{user.name}</td>
                       <td className="w-2/12 px-1 py-2 border">{user.role}</td>
@@ -205,8 +240,8 @@ export default function users() {
                           <button
                             className="text-white bg-red-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-red-800"
                             onClick={() => {
-                              setState({
-                                ...state,
+                              setParams({
+                                ...params,
                                 selectedUser: {
                                   userid: user.userid,
                                   email: user.email,
@@ -252,17 +287,53 @@ export default function users() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {state.offset + 1} to {state.limit} of {state.total}{" "}
-              entries
+              showing {params.offset + 1} to {params.limit} of{" "}
+              {total.toString()} entries
             </p>
-            <div className="flex">
-              <button>p</button>
+            <div className="flex border border-gray-500/50 rounded-sm">
+              <button
+                className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
+                  page === 1
+                    ? "text-gray-500/50 cursor-default"
+                    : "cursor-pointer hover:bg-blue-500 hover:text-white"
+                }`}
+                onClick={() =>
+                  setParams({ ...params, page: (Number(page) - 1).toString() })
+                }
+              >
+                Previous
+              </button>
+              {Array.from({ length: Number(pages) }).map((_, i) => (
+                <button
+                  key={i}
+                  className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 cursor-pointer hover:text-white hover:bg-blue-500 ${
+                    i + 1 === page ? "bg-blue-500 text-white" : ""
+                  }`}
+                  onClick={() =>
+                    setParams({ ...params, page: (i + 1).toString() })
+                  }
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
+                  page === pages
+                    ? "text-gray-500/50 cursor-default"
+                    : "cursor-pointer hover:bg-blue-500 hover:text-white"
+                }`}
+                onClick={() =>
+                  setParams({ ...params, page: (Number(page) + 1).toString() })
+                }
+              >
+                Next
+              </button>
             </div>
           </div>
         </section>
         {showModal ? (
           <ModalDelete
-            selectedUser={state.selectedUser}
+            selectedUser={params.selectedUser}
             setShowModal={setShowModal}
           />
         ) : (

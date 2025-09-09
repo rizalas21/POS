@@ -47,7 +47,6 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    console.log("masuk id nya bro => ", id);
     if (!id) {
       return NextResponse.json(
         { error: "users ID is required in the URL." },
@@ -59,7 +58,6 @@ export async function DELETE(
       where: { userid: id },
       select: { userid: true, email: true, name: true, role: true },
     });
-    console.log("masuk res nya bro => ", res);
     return NextResponse.json(res);
   } catch (error) {
     console.log("error when delete user : ", error);

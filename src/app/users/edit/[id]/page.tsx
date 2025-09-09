@@ -28,14 +28,12 @@ export default function EditUsers() {
           "Content-Type": "application/json",
         },
       });
-      console.log("ini data edit page => ", data);
       setData(data);
     };
 
     fetchUsers();
   }, []);
 
-  console.log("inilah data nya : ", data);
   const handleSubmit = async () => {
     try {
       const res = updateUsers(id, data);

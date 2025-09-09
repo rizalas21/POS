@@ -21,7 +21,6 @@ export default function AddUsers() {
   const handleSubmit = async () => {
     try {
       const res = await addUsers(data);
-      console.log("res page users/add => ", res);
       router.push("/users");
       return res;
     } catch (error) {

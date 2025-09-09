@@ -8,9 +8,20 @@ export interface Users {
   role: string;
 }
 
+export interface SearchUsers {
+  keyword: string;
+  sortBy: string;
+  sort: string;
+  page: string;
+  limit: string;
+}
+
 interface usersState {
   users: Users[];
-  getUsers: () => void;
+  page: Number;
+  pages: Number;
+  total: Number;
+  getUsers: (params: SearchUsers) => void;
   addUsers: (data: Omit<Users, "userid">) => void;
   deleteUsers: (userid: string) => void;
   updateUsers: (userid: string, data: Omit<Users, "userid">) => void;
@@ -18,11 +29,20 @@ interface usersState {
 
 export const useUsersStore = create<usersState>((set) => ({
   users: [],
-  getUsers: async () => {
+  page: 1,
+  pages: 1,
+  total: 2,
+  getUsers: async (params) => {
     try {
-      const data = await axios.get("/api/users");
+      const { data } = await axios.get("/api/users", { params });
+      console.log("data ini bro => ", data);
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
-      set({ users: data.data });
+      set({
+        users: data.data,
+        page: data.page,
+        pages: data.pages,
+        total: data.total,
+      });
     } catch (error) {
       console.error("Error fetching budgets:", error);
       return null;
@@ -30,12 +50,10 @@ export const useUsersStore = create<usersState>((set) => ({
   },
   addUsers: async (data) => {
     try {
-      console.log("data add users store => ", data);
       const res = await axios.post("/api/users", { data });
       if (res.status >= 400) {
         return null;
       }
-      console.log("res nya ini bro => ", res);
       set((state) => ({ users: [res.data, ...state.users] }));
     } catch (error) {
       console.error("Error adding budget:", error);
@@ -58,7 +76,6 @@ export const useUsersStore = create<usersState>((set) => ({
   updateUsers: async (userid, data) => {
     try {
       const res = await axios.put(`/api/users/${userid}`, { data });
-      console.log("ini res store nya => ", res);
       set((state) => ({
         users: state.users.map((item) =>
           item.userid === userid ? res.data : item

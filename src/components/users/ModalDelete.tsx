@@ -12,7 +12,6 @@ export const ModalDelete = ({
   const { deleteUsers } = useUsersStore();
 
   async function confirmDelete({ id }: { id: any }) {
-    console.log("ini id user nya bro => ", id);
     const res = await deleteUsers(selectedUser.userid);
     setShowModal(false);
     return Swal.fire({
