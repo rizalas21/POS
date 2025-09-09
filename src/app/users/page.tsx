@@ -29,14 +29,17 @@ export default function users() {
   const router = useRouter();
   const { users, getUsers, page, pages, total } = useUsersStore();
   const [isLoading, setIsloading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const overLimit =
+    (Number(page) - 1) * Number(params.limit) + Number(params.limit);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
 
-    console.log("masuk name dan value => ", name, value);
-
-    setParams({ ...params, [name]: value });
+    if (name === "limit" || (name === "keyword" && page === pages)) {
+      setParams({ ...params, [name]: value, page: "1" });
+    } else {
+      setParams({ ...params, [name]: value });
+    }
   };
 
   const handleSort = (e: any) => {
@@ -287,7 +290,8 @@ export default function users() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {params.offset + 1} to {params.limit} of{" "}
+              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              {overLimit >= Number(total) ? Number(total) : overLimit} of{" "}
               {total.toString()} entries
             </p>
             <div className="flex border border-gray-500/50 rounded-sm">
