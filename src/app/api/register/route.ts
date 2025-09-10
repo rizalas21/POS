@@ -5,12 +5,12 @@ import { prisma } from "../../prisma";
 export async function POST(req: NextRequest) {
   try {
     const { email, name, password, role } = await req.json();
-    const existingUser = await prisma.user.findFirst({ where: { email } });
+    const existingUser = await prisma.users.findFirst({ where: { email } });
     if (existingUser)
       return NextResponse.json("user is already exist", { status: 402 });
 
     const newPass = await bcrypt.hash(password, 10);
-    const res = await prisma.user.create({
+    const res = await prisma.users.create({
       data: {
         email,
         name,

@@ -12,29 +12,28 @@ export async function GET(req: NextRequest) {
   // 5. sortBy
 
   // harus ada (RETURN FRONT END)
-  // 1. offset
+  // 1. page
   // 2. total
   // 3. pages
 
   const keyword = (await req.nextUrl.searchParams.get("keyword")) || "";
-  const sortBy = (await req.nextUrl.searchParams.get("sortBy")) || "email";
-  const sort = (await req.nextUrl.searchParams.get("sort")) || "desc";
+  const sortBy = (await req.nextUrl.searchParams.get("sortBy")) || "name";
+  const sort = (await req.nextUrl.searchParams.get("sort")) || "asc";
   const limit = Number(await req.nextUrl.searchParams.get("limit")) || 3;
   const page = Number(await req.nextUrl.searchParams.get("page")) || 1;
   const offset = (page - 1) * limit;
   const filterCondition = {
     OR: [
-      { email: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
       { name: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
-      { role: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
+      { note: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
     ],
   };
   try {
-    const total = await prisma.users.count({ where: filterCondition });
-    const res = await prisma.users.findMany({
+    const total = await prisma.units.count({ where: filterCondition });
+    const res = await prisma.units.findMany({
       where: filterCondition,
       orderBy: { [sortBy]: sort },
-      select: { userid: true, email: true, name: true, role: true },
+      select: { unit: true, name: true, note: true },
       take: limit,
       skip: offset,
     });
@@ -42,31 +41,28 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
-    console.log("Error when trying to get users: ", error);
-    return NextResponse.json("failed to get users");
+    console.log("Error when trying to get units: ", error);
+    return NextResponse.json("failed to get units");
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     const { data } = await req.json();
-    const existingUser = await prisma.users.findFirst({
-      where: { email: data.email },
-      select: { userid: true, email: true, name: true, role: true },
+    const existingunit = await prisma.units.findFirst({
+      where: { name: data.email },
+      select: { unit: true, name: true, note: true },
     });
-    if (existingUser)
-      return NextResponse.json("user is already exist", { status: 402 });
+    if (existingunit)
+      return NextResponse.json("unit is already exist", { status: 402 });
 
-    const newPass = await bcrypt.hash(data.password, 10);
-    const res = await prisma.users.create({
+    const res = await prisma.units.create({
       data: {
         ...data,
-        password: newPass,
-        role: data.role || "ADMIN",
       },
     });
     return NextResponse.json(res);
   } catch (error) {
-    console.log("Error when trying to POST users: ", error);
+    console.log("Error when trying to POST units: ", error);
   }
 }

@@ -8,12 +8,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Users {
   userid String @id @default(uuid())
   email String @unique
   name String
   password String
   role String
+}
+
+model Units {
+  unit String @id @db.VarChar(10)
+  name String @db.VarChar(100)
+  note String?
 }
 
 //npx prisma migrate dev --name init

@@ -1,23 +1,24 @@
+import { useUnitsStore } from "@/stores/unitsStore";
 import { useUsersStore } from "@/stores/usersStore";
 import { Dispatch, SetStateAction } from "react";
 import Swal from "sweetalert2";
 
-export const ModalDeleteUsers = ({
-  selectedUser,
+export const ModalDeleteUnits = ({
+  selectedUnits,
   setShowModal,
 }: {
-  selectedUser: { userid: string; email: string };
+  selectedUnits: { unit: string; name: string; note: string };
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { deleteUsers } = useUsersStore();
+  const { deleteUnits } = useUnitsStore();
 
   async function confirmDelete({ id }: { id: any }) {
-    const res = await deleteUsers(selectedUser.userid);
+    const res = await deleteUnits(selectedUnits.unit);
     setShowModal(false);
     return Swal.fire({
       icon: "success",
-      title: "Delete User Successful",
-      text: `${selectedUser.email}`,
+      title: "Delete Unit Successful",
+      text: `${selectedUnits.name}`,
       timer: 1500,
       showConfirmButton: false,
     });
@@ -48,7 +49,7 @@ export const ModalDeleteUsers = ({
             </button>
             <button
               className="p-2 text-base cursor-pointer h-1/2 w-[15%] text-center mx-1 rounded text-white bg-blue-600 text-white border-none transition ease hover:bg-blue-700"
-              onClick={() => confirmDelete({ id: selectedUser.userid })}
+              onClick={() => confirmDelete({ id: selectedUnits.unit })}
             >
               Yes
             </button>

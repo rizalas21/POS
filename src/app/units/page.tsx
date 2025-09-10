@@ -1,6 +1,7 @@
 "use client";
 
-import { ModalDeleteUsers } from "@/components/users/ModalDelete";
+import { ModalDeleteUnits } from "@/components/units/ModalDelete";
+import { Units, useUnitsStore } from "@/stores/unitsStore";
 import { Users, useUsersStore } from "@/stores/usersStore";
 import {
   faArrowDown,
@@ -16,21 +17,21 @@ import { useEffect, useState } from "react";
 
 export default function users() {
   const [params, setParams] = useState({
-    selectedUser: { userid: "", email: "" },
+    selectedUnits: { unit: "", name: "", note: "" },
     keyword: "",
     limit: "3",
     page: "1",
-    sortBy: "userid",
-    sort: "desc",
+    sortBy: "unit",
+    sort: "asc",
   });
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
-  const { users, getUsers, page, pages, total } = useUsersStore();
+  const { units, getUnits, page, pages, total } = useUnitsStore();
   const [isLoading, setIsloading] = useState(true);
   const overLimit =
     (Number(page) - 1) * Number(params.limit) + Number(params.limit);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
 
     if (name === "limit" || (name === "keyword" && page === pages)) {
@@ -49,13 +50,7 @@ export default function users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        getUsers({
-          keyword: params.keyword,
-          sortBy: params.sortBy,
-          sort: params.sort,
-          page: params.page,
-          limit: params.limit,
-        });
+        getUnits();
       } catch (error) {
         console.log("error when getUsers");
       } finally {
@@ -64,16 +59,14 @@ export default function users() {
     };
     fetchUsers();
   }, [params]);
-
-  console.log("unit:" + Math.floor(Math.random() * 100000));
   return (
     <main className="space-y-3">
-      <h1 className="text-2xl text-gray-700">Users</h1>
-      <p>This is data of Users</p>
+      <h1 className="text-2xl text-gray-700">Units</h1>
+      <p>This is data of Units</p>
       <div className="shadow-2xl h-auto bg-white">
         <div className="w-full h-[8vh] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] mb-2 pl-2 flex justify-start items-center bg-slate-100">
           <Link
-            href={"/users/add"}
+            href={"/units/add"}
             className="flex justify-start text-white font-thin rounded-[5px] text-center items-center hover:bg-blue-800"
           >
             <FontAwesomeIcon
@@ -120,17 +113,17 @@ export default function users() {
               <thead className="w-full">
                 <tr className="flex w-full justify-between text-slate-500">
                   <th className="flex justify-between w-2/12 px-2 py-2 border">
-                    <h3>User ID</h3>
+                    <h3>Unit</h3>
                     <div className="icon-thead flex gap-2">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "userid"
+                          params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
+                            ? "text-grayy-700"
                             : "text-gray-700/30"
                         }`}
-                        name="userid"
+                        name="unit"
                         value="asc"
                         onClick={handleSort}
                       >
@@ -138,46 +131,13 @@ export default function users() {
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "userid"
+                          params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text--700"
+                            ? "text-grayy-700"
                             : "text-gray-700/30"
                         }`}
-                        name="userid"
-                        value="desc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowDown} />
-                      </button>
-                    </div>
-                  </th>
-                  <th className="flex justify-between w-3/12 px-1 py-2 border">
-                    <h3>Email</h3>
-                    <div className="icon-thead flex gap-2">
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "email"
-                            ? "text-gray-700/50"
-                            : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="email"
-                        value="asc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowUp} />
-                      </button>
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "email"
-                            ? "text-gray-700/50"
-                            : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="email"
+                        name="unit"
                         value="desc"
                         onClick={handleSort}
                       >
@@ -193,7 +153,7 @@ export default function users() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
+                            ? "text-grayy-700"
                             : "text-gray-700/30"
                         }`}
                         name="name"
@@ -207,7 +167,7 @@ export default function users() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
+                            ? "text-grayy-700"
                             : "text-gray-700/30"
                         }`}
                         name="name"
@@ -218,18 +178,18 @@ export default function users() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-2/12 px-2 py-2 border">
-                    <h3>Role</h3>
+                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+                    <h3>Note</h3>
                     <div className="icon-thead flex gap-2">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "role"
+                          params.sortBy !== "note"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text--700"
+                            ? "text-grayy-700"
                             : "text-gray-700/30"
                         }`}
-                        name="role"
+                        name="note"
                         value="asc"
                         onClick={handleSort}
                       >
@@ -237,13 +197,13 @@ export default function users() {
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "role"
+                          params.sortBy !== "note"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
+                            ? "text-grayy-700"
                             : "text-gray-700/30"
                         }`}
-                        name="role"
+                        name="note"
                         value="desc"
                         onClick={handleSort}
                       >
@@ -257,25 +217,25 @@ export default function users() {
                 </tr>
               </thead>
               <tbody>
-                {users.length > 0 ? (
-                  users.map((user: Users, index: any) => (
+                {units.length > 0 ? (
+                  units.map((unit: Units, index: any) => (
                     <tr
                       className="flex w-full justify-between text-slate-500"
-                      key={user.userid}
+                      key={index}
                     >
                       <td className="w-2/12 px-1 py-2 border">
                         {(Number(page) - 1) * Number(params.limit) +
                           (index + 1)}
                       </td>
-                      <td className="w-3/12 px-1 py-2 border">{user.email}</td>
-                      <td className="w-3/12 px-1 py-2 border">{user.name}</td>
-                      <td className="w-2/12 px-1 py-2 border">{user.role}</td>
+                      <td className="w-3/12 px-1 py-2 border">{unit.unit}</td>
+                      <td className="w-3/12 px-1 py-2 border">{unit.name}</td>
+                      <td className="w-2/12 px-1 py-2 border">{unit.note}</td>
                       <td className="w-2/12 px-1 py-2 border">
                         <div className="flex gap-4">
                           <button
                             className="text-white hover:cursor-pointer bg-green-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-green-800"
                             onClick={() =>
-                              router.push(`/users/edit/${user.userid}`)
+                              router.push(`/units/edit/${unit.unit}`)
                             }
                           >
                             <FontAwesomeIcon icon={faCircleInfo} />
@@ -285,9 +245,10 @@ export default function users() {
                             onClick={() => {
                               setParams({
                                 ...params,
-                                selectedUser: {
-                                  userid: user.userid,
-                                  email: user.email,
+                                selectedUnits: {
+                                  unit: unit.unit,
+                                  name: unit.name,
+                                  note: unit.note,
                                 },
                               });
                               setShowModal(true);
@@ -310,16 +271,13 @@ export default function users() {
               <tfoot className="w-full">
                 <tr className="flex w-full justify-between text-slate-500">
                   <th className="w-2/12 px-1 py-2 border">
-                    <h3 className="text-left">User ID</h3>
-                  </th>
-                  <th className="w-3/12 px-1 py-2 border">
-                    <h3 className="text-left">Email</h3>
+                    <h3 className="text-left">Unit</h3>
                   </th>
                   <th className="w-3/12 px-1 py-2 border">
                     <h3 className="text-left">Name</h3>
                   </th>
-                  <th className="w-2/12 px-1 py-2 border">
-                    <h3 className="text-left">Role</h3>
+                  <th className="w-3/12 px-1 py-2 border">
+                    <h3 className="text-left">Note</h3>
                   </th>
                   <th className="w-2/12 px-1 py-2 border">
                     <h3 className="text-left">Actions</h3>
@@ -376,8 +334,8 @@ export default function users() {
           </div>
         </section>
         {showModal ? (
-          <ModalDeleteUsers
-            selectedUser={params.selectedUser}
+          <ModalDeleteUnits
+            selectedUnits={params.selectedUnits}
             setShowModal={setShowModal}
           />
         ) : (

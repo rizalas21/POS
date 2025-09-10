@@ -8,7 +8,7 @@ export interface Users {
   role: string;
 }
 
-export interface SearchUsers {
+interface SearchUsers {
   keyword: string;
   sortBy: string;
   sort: string;
@@ -35,7 +35,6 @@ export const useUsersStore = create<usersState>((set) => ({
   getUsers: async (params) => {
     try {
       const { data } = await axios.get("/api/users", { params });
-      console.log("data ini bro => ", data);
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
       set({
         users: data.data,
@@ -44,7 +43,7 @@ export const useUsersStore = create<usersState>((set) => ({
         total: data.total,
       });
     } catch (error) {
-      console.error("Error fetching budgets:", error);
+      console.error("Error fetching users:", error);
       return null;
     }
   },
@@ -56,7 +55,7 @@ export const useUsersStore = create<usersState>((set) => ({
       }
       set((state) => ({ users: [res.data, ...state.users] }));
     } catch (error) {
-      console.error("Error adding budget:", error);
+      console.error("Error adding users:", error);
       return null;
     }
   },
@@ -70,7 +69,8 @@ export const useUsersStore = create<usersState>((set) => ({
         users: state.users.filter((item) => item.userid !== userid),
       }));
     } catch (error) {
-      console.error("Error deleting budget:", error);
+      console.error("Error deleting users:", error);
+      return null;
     }
   },
   updateUsers: async (userid, data) => {
@@ -82,7 +82,8 @@ export const useUsersStore = create<usersState>((set) => ({
         ),
       }));
     } catch (error) {
-      console.error("Error updating budget:", error);
+      console.error("Error updating users:", error);
+      return null;
     }
   },
 }));

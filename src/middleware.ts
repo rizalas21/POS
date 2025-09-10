@@ -1,3 +1,4 @@
+import axios from "axios";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,5 +17,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/:path*", "/sales", "/dashboard", "/users"],
+  matcher: ["/api/:path*", "/sales", "/dashboard", "/users", "/units"],
 };

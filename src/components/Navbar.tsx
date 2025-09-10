@@ -66,9 +66,7 @@ export default function Navbar() {
 
   return (
     <div
-      className={`py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white mb-1 ${
-        path === "/signin" ? "hidden" : "flex"
-      }`}
+      className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white mb-1`}
     >
       <section className="w-[35%] bg-white flex justify-between items-center h-[110%]">
         <input
