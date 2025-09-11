@@ -16,13 +16,13 @@ import { useEffect, useState } from "react";
 
 export default function users() {
   const [params, setParams] = useState({
-    selectedUser: { userid: "", email: "" },
     keyword: "",
     limit: "3",
     page: "1",
     sortBy: "userid",
     sort: "desc",
   });
+  const [selectedUsers, setSelectedUsers] = useState({ userid: "", email: "" });
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const { users, getUsers, page, pages, total } = useUsersStore();
@@ -283,12 +283,9 @@ export default function users() {
                           <button
                             className="text-white hover:cursor-pointer bg-red-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-red-800"
                             onClick={() => {
-                              setParams({
-                                ...params,
-                                selectedUser: {
-                                  userid: user.userid,
-                                  email: user.email,
-                                },
+                              setSelectedUsers({
+                                userid: user.userid,
+                                email: user.email,
                               });
                               setShowModal(true);
                             }}
@@ -377,7 +374,7 @@ export default function users() {
         </section>
         {showModal ? (
           <ModalDeleteUsers
-            selectedUser={params.selectedUser}
+            selectedUser={selectedUsers}
             setShowModal={setShowModal}
           />
         ) : (

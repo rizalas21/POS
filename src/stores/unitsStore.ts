@@ -20,10 +20,10 @@ interface unitState {
   page: Number;
   pages: Number;
   total: Number;
-  getUnits: () => void;
-  addUnits: (data: Omit<unitState, "unit">) => void;
+  getUnits: (params: unitSearch) => void;
+  addUnits: (data: Units) => void;
   deleteUnits: (unit: string) => void;
-  updateUnits: (unit: string, data: Omit<unitState, "unit">) => void;
+  updateUnits: (unit: string, data: Units) => void;
 }
 
 export const useUnitsStore = create<unitState>((set) => ({
@@ -31,11 +31,16 @@ export const useUnitsStore = create<unitState>((set) => ({
   page: 1,
   pages: 1,
   total: 1,
-  getUnits: async () => {
+  getUnits: async (params) => {
     try {
-      const { data } = await axios.get("/api/units");
+      const { data } = await axios.get("/api/units", { params });
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
-      set({ units: data.data });
+      set({
+        units: data.data,
+        page: data.page,
+        pages: data.pages,
+        total: data.total,
+      });
     } catch (error) {
       console.error("Error fetching unit:", error);
       return null;
@@ -43,7 +48,7 @@ export const useUnitsStore = create<unitState>((set) => ({
   },
   addUnits: async (data) => {
     try {
-      const res = await axios.post("/api/units", { data });
+      const res = await axios.post("/api/units", data);
       if (res.status >= 400) {
         return null;
       }
@@ -59,6 +64,7 @@ export const useUnitsStore = create<unitState>((set) => ({
       if (res.status >= 400) {
         return null;
       }
+      console.log("res backend => ", res);
       set((state) => ({
         units: state.units.filter((item) => item.unit !== unit),
       }));
@@ -73,6 +79,7 @@ export const useUnitsStore = create<unitState>((set) => ({
       if (res.status >= 400) {
         return null;
       }
+      console.log("response back end bro => ", res);
       set((state) => ({
         units: state.units.map((item) =>
           item.unit === unit ? res.data : item

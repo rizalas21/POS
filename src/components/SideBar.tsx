@@ -17,8 +17,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function SideBar() {
-  const [isShowUtilities, setShowUtilities] = useState(false);
+  const [isShowUtilities, setIsShowUtilities] = useState(false);
   const pathname = usePathname();
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+  };
 
   return (
     <div
@@ -61,7 +64,7 @@ export default function SideBar() {
               ? "opacity-100"
               : "opacity-50"
           }`}
-          onClick={() => setShowUtilities(!isShowUtilities)}
+          onClick={() => setIsShowUtilities(!isShowUtilities)}
         >
           <div className="flex items-center">
             <FontAwesomeIcon
@@ -87,12 +90,14 @@ export default function SideBar() {
             <Link
               href={"/goods"}
               className="text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start"
+              onClick={(e) => handleClick(e)}
             >
               Goods
             </Link>
             <Link
               href={"/units"}
               className="text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start"
+              onClick={(e) => handleClick(e)}
             >
               Units
             </Link>

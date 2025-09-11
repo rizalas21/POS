@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
   const offset = (page - 1) * limit;
   const filterCondition = {
     OR: [
+      { unit: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
       { name: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
       { note: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
     ],
@@ -38,6 +39,7 @@ export async function GET(req: NextRequest) {
       skip: offset,
     });
     const pages = Math.ceil(total / limit);
+    console.log("ini total =< ", total);
 
     return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
@@ -48,18 +50,17 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { data } = await req.json();
+    const data = await req.json();
+    console.log("ini data nya bro => ", data);
     const existingunit = await prisma.units.findFirst({
-      where: { name: data.email },
+      where: { name: data.unit },
       select: { unit: true, name: true, note: true },
     });
     if (existingunit)
       return NextResponse.json("unit is already exist", { status: 402 });
 
     const res = await prisma.units.create({
-      data: {
-        ...data,
-      },
+      data,
     });
     return NextResponse.json(res);
   } catch (error) {

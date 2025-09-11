@@ -13,16 +13,20 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function users() {
+export default function units() {
   const [params, setParams] = useState({
-    selectedUnits: { unit: "", name: "", note: "" },
     keyword: "",
     limit: "3",
     page: "1",
     sortBy: "unit",
     sort: "asc",
+  });
+  const [selectedUnits, setSelectedUnits] = useState({
+    unit: "",
+    name: "",
+    note: "",
   });
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
@@ -31,7 +35,7 @@ export default function users() {
   const overLimit =
     (Number(page) - 1) * Number(params.limit) + Number(params.limit);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name === "limit" || (name === "keyword" && page === pages)) {
@@ -50,7 +54,7 @@ export default function users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        getUnits();
+        getUnits(params);
       } catch (error) {
         console.log("error when getUsers");
       } finally {
@@ -59,6 +63,7 @@ export default function users() {
     };
     fetchUsers();
   }, [params]);
+  console.log("total ini teh bro => ", total);
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Units</h1>
@@ -109,9 +114,9 @@ export default function users() {
           {isLoading ? (
             <p className="text-center py-6 text-gray-500">Loading...</p>
           ) : (
-            <table className="w-full flex flex-col">
+            <table className="w-auto flex flex-col">
               <thead className="w-full">
-                <tr className="flex w-full justify-between text-slate-500">
+                <tr className="flex w-full justify-center text-slate-500">
                   <th className="flex justify-between w-2/12 px-2 py-2 border">
                     <h3>Unit</h3>
                     <div className="icon-thead flex gap-2">
@@ -178,7 +183,7 @@ export default function users() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+                  <th className="flex justify-between w-5/12 px-1 py-2 border">
                     <h3>Note</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -220,16 +225,12 @@ export default function users() {
                 {units.length > 0 ? (
                   units.map((unit: Units, index: any) => (
                     <tr
-                      className="flex w-full justify-between text-slate-500"
+                      className="flex w-full justify-center text-slate-500"
                       key={index}
                     >
-                      <td className="w-2/12 px-1 py-2 border">
-                        {(Number(page) - 1) * Number(params.limit) +
-                          (index + 1)}
-                      </td>
-                      <td className="w-3/12 px-1 py-2 border">{unit.unit}</td>
+                      <td className="w-2/12 px-1 py-2 border">{unit.unit}</td>
                       <td className="w-3/12 px-1 py-2 border">{unit.name}</td>
-                      <td className="w-2/12 px-1 py-2 border">{unit.note}</td>
+                      <td className="w-5/12 px-1 py-2 border">{unit.note}</td>
                       <td className="w-2/12 px-1 py-2 border">
                         <div className="flex gap-4">
                           <button
@@ -243,13 +244,10 @@ export default function users() {
                           <button
                             className="text-white hover:cursor-pointer bg-red-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-red-800"
                             onClick={() => {
-                              setParams({
-                                ...params,
-                                selectedUnits: {
-                                  unit: unit.unit,
-                                  name: unit.name,
-                                  note: unit.note,
-                                },
+                              setSelectedUnits({
+                                unit: unit.unit,
+                                name: unit.name,
+                                note: unit.note,
                               });
                               setShowModal(true);
                             }}
@@ -262,8 +260,8 @@ export default function users() {
                   ))
                 ) : (
                   <tr>
-                    <td className="text-center py-6 text-gray-500" colSpan={5}>
-                      No Users Found.
+                    <td className="text-center py-6 text-gray-500" colSpan={4}>
+                      No Units Found.
                     </td>
                   </tr>
                 )}
@@ -276,7 +274,7 @@ export default function users() {
                   <th className="w-3/12 px-1 py-2 border">
                     <h3 className="text-left">Name</h3>
                   </th>
-                  <th className="w-3/12 px-1 py-2 border">
+                  <th className="w-5/12 px-1 py-2 border">
                     <h3 className="text-left">Note</h3>
                   </th>
                   <th className="w-2/12 px-1 py-2 border">
@@ -335,7 +333,7 @@ export default function users() {
         </section>
         {showModal ? (
           <ModalDeleteUnits
-            selectedUnits={params.selectedUnits}
+            selectedUnits={selectedUnits}
             setShowModal={setShowModal}
           />
         ) : (

@@ -49,7 +49,7 @@ export const useUsersStore = create<usersState>((set) => ({
   },
   addUsers: async (data) => {
     try {
-      const res = await axios.post("/api/users", { data });
+      const res = await axios.post("/api/users", data);
       if (res.status >= 400) {
         return null;
       }
@@ -75,7 +75,7 @@ export const useUsersStore = create<usersState>((set) => ({
   },
   updateUsers: async (userid, data) => {
     try {
-      const res = await axios.put(`/api/users/${userid}`, { data });
+      const res = await axios.put(`/api/users/${userid}`, data);
       set((state) => ({
         users: state.users.map((item) =>
           item.userid === userid ? res.data : item

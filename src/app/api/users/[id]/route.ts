@@ -24,12 +24,12 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { data } = await req.json();
+    const data = await req.json();
     const { id } = await params;
 
     const res = await prisma.users.update({
       where: { userid: id },
-      data: { ...data },
+      data: data,
       select: { userid: true, email: true, name: true, role: true },
     });
 

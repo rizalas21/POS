@@ -1,5 +1,6 @@
 "use client";
 
+import { useUnitsStore } from "@/stores/unitsStore";
 import { useUsersStore } from "@/stores/usersStore";
 import { faDatabase, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,40 +10,40 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export default function EditUsers() {
+export default function EditUnits() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
-  const { updateUsers } = useUsersStore();
+  const unit = params.unit as string;
+  const { updateUnits } = useUnitsStore();
 
   const [data, setData] = useState({
-    email: "",
+    unit: "",
     name: "",
-    role: "",
+    note: "",
   });
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const { data } = await axios.get(`/api/users/${id}`);
+    const fetchUnits = async () => {
+      const { data } = await axios.get(`/api/units/${unit}`);
       setData(data);
     };
 
-    fetchUsers();
+    fetchUnits();
   }, []);
 
   const handleSubmit = async () => {
     try {
-      const res = updateUsers(id, data);
-      router.push("/users");
+      const res = await updateUnits(unit, data);
+      router.push("/units");
       return Swal.fire({
         icon: "success",
-        title: "Update User Successful",
-        text: `${(data.email, data.name, data.role)}`,
+        title: "Update Unit Successful",
+        text: `${(data.unit, data.name, data.note)}`,
         timer: 1500,
         showConfirmButton: false,
       });
     } catch (error) {
-      signOut({ redirect: true, callbackUrl: "/" });
+      console.log("failed to update units => ", error);
       return null;
     }
   };
@@ -56,10 +57,11 @@ export default function EditUsers() {
       };
     });
   };
+  console.log("ini data => ", data);
 
   return (
     <main className="space-y-3">
-      <h2 className="text-2xl text-gray-700">Users</h2>
+      <h2 className="text-2xl text-gray-700">Units</h2>
 
       <div className=" flex flex-col shadow-2xl h-full bg-white">
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center pl-2">
@@ -67,14 +69,14 @@ export default function EditUsers() {
         </div>
         <form className="flex flex-col p-10 gap-5" onSubmit={handleSubmit}>
           <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Email</label>
+            <label>Unit</label>
             <input
-              placeholder="Email"
-              type="email"
+              placeholder="Units"
+              type="text"
               className="w-4/5 border p-1.5 drop-shadow"
-              name="email"
+              name="unit"
               onChange={handleChange}
-              value={data.email}
+              value={data.unit}
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -88,30 +90,16 @@ export default function EditUsers() {
               value={data.name}
             />
           </div>
-          <div className="flex justify-between w-full">
-            <label>Role</label>
-            <div className="flex flex-col w-4/5">
-              <div className="flex gap-2">
-                <input
-                  type="radio"
-                  name="role"
-                  onChange={handleChange}
-                  value="operator"
-                  checked={data.role.toLocaleLowerCase() === "operator"}
-                />
-                <span>Operator</span>
-              </div>
-              <div className="flex gap-2">
-                <input
-                  type="radio"
-                  name="role"
-                  value="admin"
-                  onChange={handleChange}
-                  checked={data.role.toLocaleLowerCase() === "admin"}
-                />
-                <span>Admin</span>
-              </div>
-            </div>
+          <div className="flex justify-between w-full h-[6vh] rounded">
+            <label>Note</label>
+            <input
+              placeholder="Note"
+              type="text"
+              className="w-4/5 border p-1.5 drop-shadow"
+              name="note"
+              onChange={handleChange}
+              value={data.note}
+            />
           </div>
         </form>
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">

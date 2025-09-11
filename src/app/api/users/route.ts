@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { data } = await req.json();
+    const data = await req.json();
     const existingUser = await prisma.users.findFirst({
       where: { email: data.email },
       select: { userid: true, email: true, name: true, role: true },
