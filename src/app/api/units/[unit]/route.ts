@@ -7,7 +7,6 @@ export async function GET(
 ) {
   try {
     const { unit } = await params;
-    console.log("ini unit nya bro => ", unit);
     if (!unit) return NextResponse.json("id not found");
     const res = await prisma.units.findFirst({
       where: { unit },

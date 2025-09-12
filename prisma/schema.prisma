@@ -20,6 +20,18 @@ model Units {
   unit String @id @db.VarChar(10)
   name String @db.VarChar(100)
   note String?
+  goods Goods[]
+}
+
+model Goods {
+  barcode String @id @db.VarChar(20)
+  name String @db.VarChar(150)
+  stock Int
+  purchaseprice Decimal @db.Decimal(19, 2)
+  sellingprice Decimal @db.Decimal(19, 2)
+  unit String @db.VarChar(10)
+  units Units @relation(fields: [unit], references: [unit])
+  picture String
 }
 
 //npx prisma migrate dev --name init
