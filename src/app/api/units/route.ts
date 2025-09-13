@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   const keyword = (await req.nextUrl.searchParams.get("keyword")) || "";
   const sortBy = (await req.nextUrl.searchParams.get("sortBy")) || "name";
   const sort = (await req.nextUrl.searchParams.get("sort")) || "asc";
-  const limit = Number(await req.nextUrl.searchParams.get("limit")) || 3;
+  const limit = Number(await req.nextUrl.searchParams.get("limit")) || 0;
   const page = Number(await req.nextUrl.searchParams.get("page")) || 1;
   const offset = (page - 1) * limit;
   const filterCondition = {
@@ -35,11 +35,9 @@ export async function GET(req: NextRequest) {
       where: filterCondition,
       orderBy: { [sortBy]: sort },
       select: { unit: true, name: true, note: true },
-      take: limit,
-      skip: offset,
+      ...(limit > 0 && { take: limit, skip: offset }),
     });
     const pages = Math.ceil(total / limit);
-    console.log("ini total =< ", total);
 
     return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
@@ -51,7 +49,6 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    console.log("ini data nya bro => ", data);
     const existingunit = await prisma.units.findFirst({
       where: { name: data.unit },
       select: { unit: true, name: true, note: true },

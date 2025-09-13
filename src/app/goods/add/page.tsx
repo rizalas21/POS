@@ -57,7 +57,7 @@ export default function AddGoods() {
       }
     };
     fetchCategories();
-  });
+  }, [getUnits]);
 
   return (
     <main className="space-y-3">
@@ -71,7 +71,7 @@ export default function AddGoods() {
             <label>Barcode</label>
             <input
               placeholder="Barcode"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="barcode"
               onChange={handleChange}
             />
@@ -81,7 +81,7 @@ export default function AddGoods() {
             <input
               placeholder="Name"
               type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="name"
               onChange={handleChange}
             />
@@ -91,7 +91,7 @@ export default function AddGoods() {
             <input
               placeholder="eg. 1000"
               type="number"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="stock"
               onChange={handleChange}
             />
@@ -101,7 +101,7 @@ export default function AddGoods() {
             <input
               placeholder="e.g 1000"
               type="number"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="purchasePrice"
               onChange={handleChange}
             />
@@ -111,15 +111,21 @@ export default function AddGoods() {
             <input
               placeholder="eg. 1000"
               type="number"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="sellingPrice"
               onChange={handleChange}
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
             <label>Unit</label>
-            <select name="unit" onChange={(e) => handleChange(e)}>
-              <option value="">Choose Unit</option>
+            <select
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
+              name="unit"
+              onChange={(e) => handleChange(e)}
+            >
+              <option defaultChecked={true} disabled value="">
+                Choose Unit
+              </option>
               {units.map((item) => (
                 <option key={item.unit} value={item.unit}>
                   {item.name}
@@ -130,14 +136,14 @@ export default function AddGoods() {
           <div className="flex justify-between w-full h-[6vh] rounded">
             <label>Picture</label>
             <input
-              type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
+              type="file"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="picture"
               onChange={handleChange}
             />
           </div>
         </form>
-        <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">
+        <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">
           <button
             className="flex w-[8vw] h-full justify-between items-center h-4/5 bg-green-600 cursor-pointer"
             type="submit"

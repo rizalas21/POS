@@ -8,11 +8,11 @@ export interface Units {
 }
 
 interface unitSearch {
-  keyword: string;
-  sortBy: string;
-  sort: string;
-  page: string;
-  limit: string;
+  keyword?: string;
+  sortBy?: string;
+  sort?: string;
+  page?: string;
+  limit?: string;
 }
 
 interface unitState {

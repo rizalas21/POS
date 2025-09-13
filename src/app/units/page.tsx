@@ -287,8 +287,10 @@ export default function units() {
           <div className="flex p-2 justify-between">
             <p>
               showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
-              {overLimit >= Number(total) ? Number(total) : overLimit} of{" "}
-              {total.toString()} entries
+              {overLimit >= Number(total) || params.limit === "0"
+                ? Number(total)
+                : overLimit}{" "}
+              of {total.toString()} entries
             </p>
             <div className="flex border border-gray-500/50 rounded-sm">
               <button

@@ -114,7 +114,7 @@ export default function EditUsers() {
             </div>
           </div>
         </form>
-        <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">
+        <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">
           <button
             className="flex w-[8vw] h-full justify-between items-center h-4/5 cursor-pointer bg-green-600"
             type="submit"
