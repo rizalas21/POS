@@ -1,7 +1,7 @@
 import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 import { Prisma } from "@/generated/prisma";
+import cloudinary from "@/lib/cloudinary";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)
@@ -29,13 +29,11 @@ export async function GET(req: NextRequest) {
     ],
   };
   try {
-    const total = await prisma.units.count({ where: filterCondition });
-    const res = await prisma.units.findMany({
+    const total = await prisma.goods.count({ where: filterCondition });
+    const res = await prisma.goods.findMany({
       where: filterCondition,
       orderBy: { [sortBy]: sort },
-      select: { unit: true, name: true, note: true },
-      take: limit,
-      skip: offset,
+      ...(limit > 0 && { take: limit, skip: offset }),
     });
     const pages = Math.ceil(total / limit);
 
@@ -48,15 +46,39 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const data = await req.json();
+    const data = await req.formData();
+    console.log("ini req back end: ", data);
+    const barcode = data.get("barcode") as string;
+    const name = data.get("name") as string;
+    const stock = Number(data.get("stock"));
+    const purchasePrice = Number(data.get("purchasePrice"));
+    const sellingPrice = Number(data.get("sellingPrice"));
+    const unit = data.get("unit") as string;
+    const picture = data.get("picture") as File | null;
+
+    let imageUrl: string | null = null;
+
+    if (picture) {
+      const uploadResponse = await cloudinary.uploader.upload(picture, {
+        folder: "nextjs_uploads",
+      });
+    }
     const existingunit = await prisma.goods.findFirst({
-      where: { name: data.unit },
+      where: { name },
     });
     if (existingunit)
       return NextResponse.json("unit is already exist", { status: 402 });
 
     const res = await prisma.goods.create({
-      data,
+      data: {
+        barcode,
+        name,
+        stock,
+        purchasePrice,
+        sellingPrice,
+        unit,
+        picture: imageUrl,
+      },
     });
     return NextResponse.json(res);
   } catch (error) {

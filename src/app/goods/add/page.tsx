@@ -18,7 +18,7 @@ export default function AddGoods() {
     purchasePrice: 1,
     sellingPrice: 1,
     unit: "",
-    picture: "",
+    picture: null,
   });
   const [params, setParams] = useState({
     keyword: "",
@@ -30,7 +30,17 @@ export default function AddGoods() {
 
   const handleSubmit = async () => {
     try {
-      const res = await addGoods(data);
+      const formData = new FormData();
+      formData.append("barcode", data.barcode);
+      formData.append("name", data.name);
+      formData.append("stock", String(data.stock));
+      formData.append("purchasePrice", String(data.purchasePrice));
+      formData.append("sellingPrice", String(data.sellingPrice));
+      formData.append("unit", data.unit);
+      if (data.picture) {
+        formData.append("picture", data.picture);
+      }
+      const res = await addGoods(formData);
       router.push("/goods");
       return res;
     } catch (error) {

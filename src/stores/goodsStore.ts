@@ -8,7 +8,7 @@ export interface Goods {
   purchasePrice: number;
   sellingPrice: number;
   unit: string;
-  picture: string;
+  picture: File | null;
 }
 
 interface searchParams {
@@ -25,7 +25,7 @@ interface goodsState {
   pages: Number;
   total: Number;
   getGoods: (params: searchParams) => void;
-  addGoods: (data: Goods) => void;
+  addGoods: (data: FormData) => void;
   deleteGoods: (barcode: string) => void;
   updateGoods: (barcode: string, data: Goods) => void;
 }
@@ -47,7 +47,9 @@ export const useGoodsStore = create<goodsState>((set) => ({
   },
   addGoods: async (data) => {
     try {
-      const res = await axios.post("/api/goods", data);
+      const res = await axios.post("/api/goods", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       if (res.status >= 400) {
         return null;
       }
