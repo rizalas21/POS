@@ -31,7 +31,7 @@ export default function units() {
     purchasePrice: 1,
     sellingPrice: 1,
     unit: "",
-    picture: "",
+    picture: null,
   });
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
@@ -120,73 +120,75 @@ export default function units() {
             <table className="w-auto flex flex-col">
               <thead className="w-full">
                 <tr className="flex w-full justify-center text-slate-500">
-                  <th className="flex justify-between w-2/12 px-2 py-2 border">
-                    <h3>Goods</h3>
-                    <div className="icon-thead flex gap-2">
+                  <th className="flex justify-between min-w-[120px] px-2 py-2 border items-center">
+                    <h3 className="text-xm">Goods</h3>
+                    <div className="icon-thead flex">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "barcode"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="barcode"
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} />
+                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "barcode"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="barcode"
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} />
+                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+
+                  <th className="flex justify-between min-w-[200px] px-1 py-2 border">
                     <h3>Name</h3>
-                    <div className="icon-thead flex gap-2">
+                    <div className="icon-thead flex">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="name"
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} />
+                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="name"
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} />
+                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-1 py-2 border">
+
+                  <th className="flex justify-between min-w-[120px] px-1 py-2 border">
                     <h3>Stock</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -194,32 +196,33 @@ export default function units() {
                           params.sortBy !== "stock"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="stock"
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} />
+                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "stock"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="stock"
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} />
+                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-1 py-2 border">
+
+                  <th className="flex justify-between min-w-[120px] px-1 py-2 border">
                     <h3>Unit</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -227,100 +230,104 @@ export default function units() {
                           params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="unit"
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} />
+                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="unit"
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} />
+                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-1 py-2 border">
+
+                  <th className="flex justify-between min-w-[200px] px-1 py-2 border">
                     <h3>Purchase Price</h3>
                     <div className="icon-thead flex gap-2">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "purcasePrice"
+                          params.sortBy !== "purchasePrice"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
-                        name="purcasePrice"
+                        name="purchasePrice"
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} />
+                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "purcasePrice"
+                          params.sortBy !== "purchasePrice"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
-                        name="purcasePrice"
+                        name="purchasePrice"
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} />
+                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-1 py-2 border">
+
+                  <th className="flex justify-between min-w-[200px] px-1 py-2 border">
                     <h3>Selling Price</h3>
-                    <div className="icon-thead flex gap-2">
+                    <div className="icon-thead flex">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "sellingPrice"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="sellingPrice"
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} />
+                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "sellingPrice"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
+                            ? "text-gray-700"
                             : "text-gray-700/30"
                         }`}
                         name="sellingPrice"
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} />
+                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-1 py-2 border">
+
+                  <th className="flex justify-between min-w-[120px] px-1 py-2 border">
                     <h3>Picture</h3>
                   </th>
+
                   <th className="flex w-2/12 px-1 py-2 border">
                     <h3>Actions</h3>
                   </th>
@@ -346,7 +353,7 @@ export default function units() {
                         {good.sellingPrice}
                       </td>
                       <td className="w-5/12 px-1 py-2 border">
-                        {good.picture}
+                        {/* {good.picture} */}
                       </td>
                       <td className="w-2/12 px-1 py-2 border">
                         <div className="flex gap-4">
@@ -362,13 +369,14 @@ export default function units() {
                             className="text-white hover:cursor-pointer bg-red-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-red-800"
                             onClick={() => {
                               setSelectedGoods({
+                                ...selectedGoods,
                                 barcode: good.barcode,
                                 name: good.name,
                                 stock: good.stock,
                                 unit: good.unit,
                                 purchasePrice: good.purchasePrice,
                                 sellingPrice: good.sellingPrice,
-                                picture: good.picture,
+                                // picture: good.picture,
                               });
                               setShowModal(true);
                             }}

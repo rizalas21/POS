@@ -25,7 +25,7 @@ export default function EditGoods() {
     purchasePrice: 1,
     sellingPrice: 1,
     unit: "",
-    picture: "",
+    picture: null,
   });
   const [params, setParams] = useState({
     keyword: "",

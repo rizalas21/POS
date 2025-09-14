@@ -49,13 +49,18 @@ export default function AddGoods() {
   };
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setData((prevData) => {
-      return {
-        ...prevData,
-        [name]: value,
-      };
-    });
+    const { name, value, files } = e.target;
+    if (name === "picture" && files) {
+      console.log("ini file nya => ", files[0]);
+      setData({ ...data, [name]: files[0] });
+    } else {
+      setData((prevData) => {
+        return {
+          ...prevData,
+          [name]: value,
+        };
+      });
+    }
   };
 
   useEffect(() => {

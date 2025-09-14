@@ -59,9 +59,20 @@ export async function POST(req: NextRequest) {
     let imageUrl: string | null = null;
 
     if (picture) {
-      const uploadResponse = await cloudinary.uploader.upload(picture, {
-        folder: "nextjs_uploads",
+      const bytes = await picture.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const result: any = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "pos-db" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(buffer);
       });
+      imageUrl = await result.secure_url;
     }
     const existingunit = await prisma.goods.findFirst({
       where: { name },
@@ -83,5 +94,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(res);
   } catch (error) {
     console.log("Error when trying to POST goods: ", error);
+    return NextResponse.json("something went wrong when try to add goods");
   }
 }
