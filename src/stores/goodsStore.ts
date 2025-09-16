@@ -8,7 +8,7 @@ export interface Goods {
   purchasePrice: number;
   sellingPrice: number;
   unit: string;
-  picture: File | null;
+  picture: string | null;
 }
 
 interface searchParams {

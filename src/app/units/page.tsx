@@ -1,8 +1,7 @@
 "use client";
 
 import { ModalDeleteUnits } from "@/components/units/ModalDelete";
-import { Units, useUnitsStore } from "@/stores/unitsStore";
-import { Users, useUsersStore } from "@/stores/usersStore";
+import { useUnitsStore } from "@/stores/unitsStore";
 import {
   faArrowDown,
   faArrowUp,
@@ -14,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Units } from "../types/units";
 
 export default function units() {
   const [params, setParams] = useState({

@@ -1,37 +1,13 @@
+import { usersState } from "@/app/types/users";
 import axios from "axios";
 import { create } from "zustand";
-
-export interface Users {
-  userid: string;
-  email: string;
-  name: string;
-  role: string;
-}
-
-interface SearchUsers {
-  keyword: string;
-  sortBy: string;
-  sort: string;
-  page: string;
-  limit: string;
-}
-
-interface usersState {
-  users: Users[];
-  page: Number;
-  pages: Number;
-  total: Number;
-  getUsers: (params: SearchUsers) => void;
-  addUsers: (data: Omit<Users, "userid">) => void;
-  deleteUsers: (userid: string) => void;
-  updateUsers: (userid: string, data: Omit<Users, "userid">) => void;
-}
 
 export const useUsersStore = create<usersState>((set) => ({
   users: [],
   page: 1,
   pages: 1,
   total: 2,
+  setUsers: async (data) => set({ users: data }),
   getUsers: async (params) => {
     try {
       const { data } = await axios.get("/api/users", { params });

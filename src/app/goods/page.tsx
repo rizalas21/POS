@@ -1,9 +1,7 @@
 "use client";
 
 import { ModalDeleteGoods } from "@/components/goods/ModalDelete";
-import { Goods, useGoodsStore } from "@/stores/goodsStore";
-import { Units, useUnitsStore } from "@/stores/unitsStore";
-import { Users, useUsersStore } from "@/stores/usersStore";
+import { useGoodsStore } from "@/stores/goodsStore";
 import {
   faArrowDown,
   faArrowUp,
@@ -15,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Goods } from "../types/goods";
 
 export default function units() {
   const [params, setParams] = useState({
@@ -31,7 +30,7 @@ export default function units() {
     purchasePrice: 1,
     sellingPrice: 1,
     unit: "",
-    picture: null,
+    picture: "",
   });
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
@@ -120,8 +119,8 @@ export default function units() {
             <table className="w-auto flex flex-col">
               <thead className="w-full">
                 <tr className="flex w-full justify-center text-slate-500">
-                  <th className="flex justify-between min-w-[120px] px-2 py-2 border items-center">
-                    <h3 className="text-xm">Goods</h3>
+                  <th className="flex justify-between min-w-[9vw] px-2 py-2 border border-gray-500/25 items-center">
+                    <h3>Barcode</h3>
                     <div className="icon-thead flex">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
@@ -135,7 +134,7 @@ export default function units() {
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
+                        <FontAwesomeIcon icon={faArrowUp} size="xs" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
@@ -149,12 +148,12 @@ export default function units() {
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
+                        <FontAwesomeIcon icon={faArrowDown} size="xs" />
                       </button>
                     </div>
                   </th>
 
-                  <th className="flex justify-between min-w-[200px] px-1 py-2 border">
+                  <th className="flex justify-between min-w-[7vw] px-2 py-2 border border-gray-500/25 items-center">
                     <h3>Name</h3>
                     <div className="icon-thead flex">
                       <button
@@ -169,7 +168,7 @@ export default function units() {
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
+                        <FontAwesomeIcon icon={faArrowUp} size="xs" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
@@ -183,14 +182,14 @@ export default function units() {
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
+                        <FontAwesomeIcon icon={faArrowDown} size="xs" />
                       </button>
                     </div>
                   </th>
 
-                  <th className="flex justify-between min-w-[120px] px-1 py-2 border">
+                  <th className="flex justify-between min-w-[7vw] px-2 py-2 border border-gray-500/25 items-center">
                     <h3>Stock</h3>
-                    <div className="icon-thead flex gap-2">
+                    <div className="icon-thead flex">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "stock"
@@ -203,7 +202,7 @@ export default function units() {
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
+                        <FontAwesomeIcon icon={faArrowUp} size="xs" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
@@ -217,14 +216,14 @@ export default function units() {
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
+                        <FontAwesomeIcon icon={faArrowDown} size="xs" />
                       </button>
                     </div>
                   </th>
 
-                  <th className="flex justify-between min-w-[120px] px-1 py-2 border">
+                  <th className="flex justify-between min-w-[7vw] px-2 py-2 border border-gray-500/25 items-center">
                     <h3>Unit</h3>
-                    <div className="icon-thead flex gap-2">
+                    <div className="icon-thead flex">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "unit"
@@ -237,7 +236,7 @@ export default function units() {
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
+                        <FontAwesomeIcon icon={faArrowUp} size="xs" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
@@ -251,14 +250,14 @@ export default function units() {
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
+                        <FontAwesomeIcon icon={faArrowDown} size="xs" />
                       </button>
                     </div>
                   </th>
 
-                  <th className="flex justify-between min-w-[200px] px-1 py-2 border">
+                  <th className="flex justify-between min-w-[12vw] px-2 py-2 border border-gray-500/25 items-center">
                     <h3>Purchase Price</h3>
-                    <div className="icon-thead flex gap-2">
+                    <div className="icon-thead flex">
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
                           params.sortBy !== "purchasePrice"
@@ -271,7 +270,7 @@ export default function units() {
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
+                        <FontAwesomeIcon icon={faArrowUp} size="xs" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
@@ -285,12 +284,12 @@ export default function units() {
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
+                        <FontAwesomeIcon icon={faArrowDown} size="xs" />
                       </button>
                     </div>
                   </th>
 
-                  <th className="flex justify-between min-w-[200px] px-1 py-2 border">
+                  <th className="flex justify-between min-w-[11vw] px-2 py-2 border border-gray-500/25 items-center">
                     <h3>Selling Price</h3>
                     <div className="icon-thead flex">
                       <button
@@ -305,7 +304,7 @@ export default function units() {
                         value="asc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowUp} size="lg" />
+                        <FontAwesomeIcon icon={faArrowUp} size="xs" />
                       </button>
                       <button
                         className={`text-sm cursor-pointer hover:text-gray-700 ${
@@ -319,16 +318,16 @@ export default function units() {
                         value="desc"
                         onClick={handleSort}
                       >
-                        <FontAwesomeIcon icon={faArrowDown} size="lg" />
+                        <FontAwesomeIcon icon={faArrowDown} size="xs" />
                       </button>
                     </div>
                   </th>
 
-                  <th className="flex justify-between min-w-[120px] px-1 py-2 border">
+                  <th className="flex justify-center items-center min-w-[11vw] px-1 py-2 border border-gray-500/25">
                     <h3>Picture</h3>
                   </th>
 
-                  <th className="flex w-2/12 px-1 py-2 border">
+                  <th className="flex justify-center items-center min-w-[10vw] px-1 py-2 border border-gray-500/25">
                     <h3>Actions</h3>
                   </th>
                 </tr>
@@ -340,22 +339,37 @@ export default function units() {
                       className="flex w-full justify-center text-slate-500"
                       key={index}
                     >
-                      <td className="w-2/12 px-1 py-2 border">
+                      <td className="min-w-[9vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
                         {good.barcode}
                       </td>
-                      <td className="w-3/12 px-1 py-2 border">{good.name}</td>
-                      <td className="w-5/12 px-1 py-2 border">{good.stock}</td>
-                      <td className="w-5/12 px-1 py-2 border">{good.unit}</td>
-                      <td className="w-5/12 px-1 py-2 border">
+                      <td className="min-w-[7vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
+                        {good.name}
+                      </td>
+                      <td className="min-w-[7vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
+                        {good.stock}
+                      </td>
+                      <td className="min-w-[7vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
+                        {good.unit}
+                      </td>
+                      <td className="min-w-[12vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
                         {good.purchasePrice}
                       </td>
-                      <td className="w-5/12 px-1 py-2 border">
+                      <td className="min-w-[11vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
                         {good.sellingPrice}
                       </td>
-                      <td className="w-5/12 px-1 py-2 border">
-                        {/* {good.picture} */}
+                      <td className="min-w-[11vw] px-1 py-2 border border-gray-500/25 text-center align-middle">
+                        {good.picture ? (
+                          <img
+                            src={good.picture}
+                            alt={good.name}
+                            className="max-w-full max-h-[120px] mx-auto"
+                          />
+                        ) : (
+                          <span className="text-gray-400">No Image</span>
+                        )}
                       </td>
-                      <td className="w-2/12 px-1 py-2 border">
+
+                      <td className="min-w-[10vw] px-1 py-2 border border-gray-500/25">
                         <div className="flex gap-4">
                           <button
                             className="text-white hover:cursor-pointer bg-green-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-green-800"
@@ -376,7 +390,7 @@ export default function units() {
                                 unit: good.unit,
                                 purchasePrice: good.purchasePrice,
                                 sellingPrice: good.sellingPrice,
-                                // picture: good.picture,
+                                picture: good.picture as string,
                               });
                               setShowModal(true);
                             }}
@@ -396,18 +410,30 @@ export default function units() {
                 )}
               </tbody>
               <tfoot className="w-full">
-                <tr className="flex w-full justify-between text-slate-500">
-                  <th className="w-2/12 px-1 py-2 border">
-                    <h3 className="text-left">Unit</h3>
+                <tr className="flex w-full justify-center text-slate-500">
+                  <th className="w-[9vw] px-2 py-2 border border-gray-500/25">
+                    <h3 className="text-left">Barcode</h3>
                   </th>
-                  <th className="w-3/12 px-1 py-2 border">
+                  <th className="w-[7vw] px-2 py-2 border border-gray-500/25">
                     <h3 className="text-left">Name</h3>
                   </th>
-                  <th className="w-5/12 px-1 py-2 border">
-                    <h3 className="text-left">Note</h3>
+                  <th className="w-[7vw] px-2 py-2 border border-gray-500/25">
+                    <h3 className="text-left">Stock</h3>
                   </th>
-                  <th className="w-2/12 px-1 py-2 border">
-                    <h3 className="text-left">Actions</h3>
+                  <th className="w-[7vw] px-2 py-2 border border-gray-500/25">
+                    <h3 className="text-left">Unit</h3>
+                  </th>
+                  <th className="w-[12vw] px-2 py-2 border border-gray-500/25">
+                    <h3 className="text-left">Purchase Price</h3>
+                  </th>
+                  <th className="w-[11vw] px-2 py-2 border border-gray-500/25">
+                    <h3 className="text-left">Selling Price</h3>
+                  </th>
+                  <th className="w-[11vw] px-2 py-2 border border-gray-500/25">
+                    <h3 className="text-left">Picture</h3>
+                  </th>
+                  <th className="w-[10vw] px-2 py-2 border border-gray-500/25">
+                    <h3 className="text-left">Action</h3>
                   </th>
                 </tr>
               </tfoot>

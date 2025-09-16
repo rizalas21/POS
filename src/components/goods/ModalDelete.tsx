@@ -14,7 +14,7 @@ export const ModalDeleteGoods = ({
     unit: string;
     purchasePrice: number;
     sellingPrice: number;
-    picture: null;
+    picture: string;
   };
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) => {
