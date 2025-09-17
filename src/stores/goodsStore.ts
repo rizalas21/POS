@@ -1,34 +1,6 @@
+import { goodsState } from "@/app/types/goods";
 import axios from "axios";
 import { create } from "zustand";
-
-export interface Goods {
-  barcode: string;
-  name: string;
-  stock: number;
-  purchasePrice: number;
-  sellingPrice: number;
-  unit: string;
-  picture: string | null;
-}
-
-interface searchParams {
-  keyword: string;
-  sortBy: string;
-  sort: string;
-  page: string;
-  limit: string;
-}
-
-interface goodsState {
-  goods: Goods[];
-  page: Number;
-  pages: Number;
-  total: Number;
-  getGoods: (params: searchParams) => void;
-  addGoods: (data: FormData) => void;
-  deleteGoods: (barcode: string) => void;
-  updateGoods: (barcode: string, data: Goods) => void;
-}
 
 export const useGoodsStore = create<goodsState>((set) => ({
   goods: [],
@@ -38,8 +10,14 @@ export const useGoodsStore = create<goodsState>((set) => ({
   getGoods: async (params) => {
     try {
       const { data } = await axios.get("/api/goods", { params });
+      console.log("ini data store nya => ", data);
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
-      set({ goods: data.data });
+      set({
+        goods: data.data,
+        page: data.page,
+        pages: data.pages,
+        total: data.total,
+      });
     } catch (error) {
       console.error("Error fetching goods:", error);
       return null;
@@ -47,7 +25,6 @@ export const useGoodsStore = create<goodsState>((set) => ({
   },
   addGoods: async (data) => {
     try {
-      console.log("ini adata bro => ", data);
       const res = await axios.post("/api/goods", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -68,6 +45,7 @@ export const useGoodsStore = create<goodsState>((set) => ({
       }
       set((state) => ({
         goods: state.goods.filter((item) => item.barcode !== barcode),
+        totat: Number(state.total) - 1,
       }));
     } catch (error) {
       console.error("Error deleting goods:", error);

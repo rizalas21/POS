@@ -89,14 +89,18 @@ export default function SideBar() {
             </p>
             <Link
               href={"/goods"}
-              className="text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start"
+              className={`text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start ${
+                pathname === "/goods" ? "bg-gray-500/25" : ""
+              }`}
               onClick={(e) => handleClick(e)}
             >
               Goods
             </Link>
             <Link
               href={"/units"}
-              className="text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start"
+              className={`text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start ${
+                pathname === "/units" ? "bg-gray-500/25" : ""
+              }`}
               onClick={(e) => handleClick(e)}
             >
               Units

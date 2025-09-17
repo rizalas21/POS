@@ -7,7 +7,6 @@ export const useUsersStore = create<usersState>((set) => ({
   page: 1,
   pages: 1,
   total: 2,
-  setUsers: async (data) => set({ users: data }),
   getUsers: async (params) => {
     try {
       const { data } = await axios.get("/api/users", { params });

@@ -24,5 +24,5 @@ export interface goodsState {
   getGoods: (params: searchParams) => void;
   addGoods: (data: FormData) => void;
   deleteGoods: (barcode: string) => void;
-  updateGoods: (barcode: string, data: Goods) => void;
+  updateGoods: (barcode: string, data: FormData) => void;
 }

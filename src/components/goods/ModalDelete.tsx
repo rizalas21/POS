@@ -1,4 +1,4 @@
-import { useUnitsStore } from "@/stores/unitsStore";
+import { useGoodsStore } from "@/stores/goodsStore";
 import { useUsersStore } from "@/stores/usersStore";
 import { Dispatch, SetStateAction } from "react";
 import Swal from "sweetalert2";
@@ -18,14 +18,14 @@ export const ModalDeleteGoods = ({
   };
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { deleteUnits } = useUnitsStore();
+  const { deleteGoods } = useGoodsStore();
 
   async function confirmDelete({ id }: { id: any }) {
-    const res = await deleteUnits(selectedGoods.unit);
+    const res = await deleteGoods(selectedGoods.barcode);
     setShowModal(false);
     return Swal.fire({
       icon: "success",
-      title: "Delete Unit Successful",
+      title: "Delete goods Successful",
       text: `${selectedGoods.name}`,
       timer: 1500,
       showConfirmButton: false,

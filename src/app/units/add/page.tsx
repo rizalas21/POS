@@ -51,6 +51,7 @@ export default function addUnits() {
               className="w-4/5 border p-1.5 drop-shadow"
               name="unit"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -61,6 +62,7 @@ export default function addUnits() {
               className="w-4/5 border p-1.5 drop-shadow"
               name="name"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -71,6 +73,7 @@ export default function addUnits() {
               className="w-4/5 border p-1.5 drop-shadow"
               name="note"
               onChange={handleChange}
+              required
             />
           </div>
         </form>

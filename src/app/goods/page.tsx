@@ -39,6 +39,19 @@ export default function units() {
   const overLimit =
     (Number(page) - 1) * Number(params.limit) + Number(params.limit);
 
+  useEffect(() => {
+    const fetchGoods = async () => {
+      try {
+        getGoods(params);
+      } catch (error) {
+        console.log("error when getGoods");
+      } finally {
+        setIsloading(false);
+      }
+    };
+    fetchGoods();
+  }, [params]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -55,18 +68,7 @@ export default function units() {
     setParams({ ...params, sortBy: name, sort: value });
   };
 
-  useEffect(() => {
-    const fetchGoods = async () => {
-      try {
-        getGoods(params);
-      } catch (error) {
-        console.log("error when getGoods");
-      } finally {
-        setIsloading(false);
-      }
-    };
-    fetchGoods();
-  }, [params]);
+  console.log("ini total data yang ada bro => ", total);
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Goods</h1>
@@ -357,12 +359,12 @@ export default function units() {
                       <td className="min-w-[11vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
                         {good.sellingPrice}
                       </td>
-                      <td className="min-w-[11vw] px-1 py-2 border border-gray-500/25 text-center align-middle">
+                      <td className="min-w-[11vw] px-1 py-2 border border-gray-500/25 text-center">
                         {good.picture ? (
                           <img
                             src={good.picture}
                             alt={good.name}
-                            className="max-w-full max-h-[120px] mx-auto"
+                            className="max-w-[9vw] max-h-[12vw] place-self-center"
                           />
                         ) : (
                           <span className="text-gray-400">No Image</span>

@@ -60,17 +60,12 @@ export async function POST(req: NextRequest) {
 
     if (picture) {
       const bytes = await picture.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+      const base64 = Buffer.from(bytes).toString("base64");
+      const mime = picture.type;
+      const base64Image = `data:${mime};base64,${base64}`;
 
-      const result: any = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: "pos-db" },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        stream.end(buffer);
+      const result = await cloudinary.uploader.upload(base64Image, {
+        folder: "post-db",
       });
       imageUrl = await result.secure_url;
     }

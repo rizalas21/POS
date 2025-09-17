@@ -54,6 +54,7 @@ export default function AddUsers() {
               className="w-4/5 border p-1.5 drop-shadow"
               name="email"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -64,6 +65,7 @@ export default function AddUsers() {
               className="w-4/5 border p-1.5 drop-shadow"
               name="name"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -74,6 +76,7 @@ export default function AddUsers() {
               className="w-4/5 border p-1.5 drop-shadow"
               name="password"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full">
@@ -85,6 +88,7 @@ export default function AddUsers() {
                   name="role"
                   value="operator"
                   onChange={handleChange}
+                  required
                 />
                 <span>Operator</span>
               </div>
@@ -94,6 +98,7 @@ export default function AddUsers() {
                   name="role"
                   value="admin"
                   onChange={handleChange}
+                  required
                 />
                 <span>Admin</span>
               </div>

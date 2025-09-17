@@ -47,7 +47,17 @@ export default function EditGoods() {
 
   const handleSubmit = async () => {
     try {
-      const res = await updateGoods(barcode, data);
+      const formData = new FormData();
+      formData.append("barcode", data.barcode);
+      formData.append("name", data.name);
+      formData.append("stock", String(data.stock));
+      formData.append("purchasePrice", String(data.purchasePrice));
+      formData.append("sellingPrice", String(data.sellingPrice));
+      formData.append("unit", data.unit);
+      if (data.picture) {
+        formData.append("picture", data.picture);
+      }
+      const res = await updateGoods(barcode, formData);
       router.push("/goods");
       return Swal.fire({
         icon: "success",
@@ -63,103 +73,118 @@ export default function EditGoods() {
   };
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setData((prevData) => {
-      return {
-        ...prevData,
-        [name]: value,
-      };
-    });
+    const { name, value, files } = e.target;
+    if (name === "picture") {
+      setData({ ...data, [name]: files[0] });
+    } else {
+      setData({ ...data, [name]: value });
+      console.log("ini data => ", data);
+    }
   };
-  console.log("ini data => ", data);
 
   return (
-    <main className="space-y-3">
+    <main className="space-y-1">
       <h2 className="text-2xl text-gray-700">Goods</h2>
-
       <div className=" flex flex-col shadow-2xl h-full bg-white">
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center pl-2">
           <p className="text-blue-600 font-bold">Form Edit</p>
         </div>
-        <form className="flex flex-col p-10 gap-5" onSubmit={handleSubmit}>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Unit</label>
+        <form className="flex flex-col px-10 gap-3" onSubmit={handleSubmit}>
+          <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">Unit</label>
             <input
               placeholder="Barcode"
               type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="barcode"
               onChange={handleChange}
               value={data.barcode}
             />
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Name</label>
+          <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">Name</label>
             <input
               placeholder="Name"
               type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="name"
               onChange={handleChange}
               value={data.name}
             />
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Stock</label>
+          <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">Stock</label>
             <input
               placeholder="eg. 1000"
               type="number"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="stock"
               onChange={handleChange}
               value={data.stock}
             />
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Purchase Price</label>
+          <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">
+              Purchase Price
+            </label>
             <input
               placeholder="e.g 1000"
               type="number"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="purchasePrice"
               onChange={handleChange}
               value={data.purchasePrice}
             />
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Selling Price</label>
+          <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">
+              Selling Price
+            </label>
             <input
               placeholder="eg. 1000"
               type="number"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="sellingPrice"
               onChange={handleChange}
               value={data.sellingPrice}
             />
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Unit</label>
-            <select name="unit" onChange={(e) => handleChange(e)}>
-              <option value="">Choose Unit</option>
+          <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">Unit</label>
+            <select
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
+              name="unit"
+              onChange={(e) => handleChange(e)}
+              value={data.unit}
+            >
+              <option disabled value="">
+                Choose Unit
+              </option>
               {units.map((item) => (
-                <option
-                  key={item.unit}
-                  value={item.unit}
-                  defaultChecked={item.unit === data.unit ? true : false}
-                >
+                <option key={item.unit} value={item.unit}>
                   {item.name}
                 </option>
               ))}
             </select>
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Picture</label>
+          <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">Picture</label>
             <input
-              type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
+              type="file"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="picture"
               onChange={handleChange}
             />
+          </div>
+          <div className="w-full flex items-start gap-[8vw]">
+            <label className="text-sm font-medium min-w-[10vw]">Preview</label>
+            {data.picture && (
+              <img
+                className="max-w-3/5 max-h-80 border rounded border-gray-500/50 p-1.5 drop-shadow"
+                src={data.picture ?? ""}
+                alt="Preview"
+              />
+            )}
           </div>
         </form>
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">

@@ -18,7 +18,6 @@ export interface usersState {
   page: Number;
   pages: Number;
   total: Number;
-  setUsers: (data: Users[]) => void;
   getUsers: (params: SearchUsers) => void;
   addUsers: (data: Omit<Users, "userid">) => void;
   deleteUsers: (userid: string) => void;

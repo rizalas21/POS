@@ -1,30 +1,6 @@
+import { unitState } from "@/app/types/units";
 import axios from "axios";
 import { create } from "zustand";
-
-export interface Units {
-  unit: string;
-  name: string;
-  note: string;
-}
-
-interface unitSearch {
-  keyword?: string;
-  sortBy?: string;
-  sort?: string;
-  page?: string;
-  limit?: string;
-}
-
-interface unitState {
-  units: Units[];
-  page: Number;
-  pages: Number;
-  total: Number;
-  getUnits: (params: unitSearch) => void;
-  addUnits: (data: Units) => void;
-  deleteUnits: (unit: string) => void;
-  updateUnits: (unit: string, data: Units) => void;
-}
 
 export const useUnitsStore = create<unitState>((set) => ({
   units: [],

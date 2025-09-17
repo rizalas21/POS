@@ -45,21 +45,25 @@ export default function AddGoods() {
       return res;
     } catch (error) {
       return null;
+    } finally {
+      setData({
+        barcode: "",
+        name: "",
+        stock: 1,
+        purchasePrice: 1,
+        sellingPrice: 1,
+        unit: "",
+        picture: null,
+      });
     }
   };
 
   const handleChange = (e: any) => {
     const { name, value, files } = e.target;
     if (name === "picture" && files) {
-      console.log("ini file nya => ", files[0]);
       setData({ ...data, [name]: files[0] });
     } else {
-      setData((prevData) => {
-        return {
-          ...prevData,
-          [name]: value,
-        };
-      });
+      setData({ ...data, [name]: value });
     }
   };
 
@@ -89,6 +93,7 @@ export default function AddGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="barcode"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -99,6 +104,7 @@ export default function AddGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="name"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -109,6 +115,7 @@ export default function AddGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="stock"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -119,6 +126,7 @@ export default function AddGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="purchasePrice"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -129,6 +137,7 @@ export default function AddGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="sellingPrice"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -137,8 +146,10 @@ export default function AddGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="unit"
               onChange={(e) => handleChange(e)}
+              required
+              value={data.unit}
             >
-              <option defaultChecked={true} disabled value="">
+              <option disabled value="">
                 Choose Unit
               </option>
               {units.map((item) => (
@@ -155,6 +166,7 @@ export default function AddGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="picture"
               onChange={handleChange}
+              required
             />
           </div>
         </form>
