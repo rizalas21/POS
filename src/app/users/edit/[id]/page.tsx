@@ -130,11 +130,11 @@ export default function EditUsers() {
           </button>
           <button className="flex w-[8vw] h-full justify-between items-center h-4/5 cursor-pointer bg-yellow-600">
             <FontAwesomeIcon
-              className="rounded-l text-center bg-yellow-700 px-2.5 py-2 text-slate-300 w-1/5 hover:bg-yellow-800 text-white"
+              className="rounded-l text-center bg-yellow-700 px-2.5 py-1.5 text-slate-300 w-1/5 hover:bg-yellow-800 text-white"
               icon={faUndo}
             />
             <p
-              className="rounded-l text-center bg-yellow-500 px-2.5 py-2 text-slate-300 w-4/5 hover:bg-yellow-800 h-full text-white font-medium"
+              className="rounded-l text-center bg-yellow-500 px-2.5 py-1.5 text-slate-300 w-4/5 hover:bg-yellow-800 h-full text-white font-medium"
               onClick={() => router.back()}
             >
               Cancel

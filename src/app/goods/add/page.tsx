@@ -179,20 +179,20 @@ export default function AddGoods() {
             onClick={handleSubmit}
           >
             <FontAwesomeIcon
-              className="rounded-l text-center bg-green-700 px-2.5 py-2 text-slate-300 w-1/5 text-white"
+              className="rounded-l text-center bg-green-700 px-2.5 py-1.5 text-slate-300 w-1/5 text-white"
               icon={faDatabase}
             />
-            <p className="rounded-l text-center bg-green-500 px-2.5 py-1 text-slate-300 w-4/5 hover:bg-green-700 h-full text-white font-medium">
+            <p className="rounded-l text-center bg-green-500 px-2.5 py-1.5 text-slate-300 w-4/5 hover:bg-green-700 h-full text-white font-medium">
               Save
             </p>
           </button>
           <button className="flex w-[8vw] h-full justify-between items-center h-4/5 bg-yellow-600">
             <FontAwesomeIcon
-              className="rounded-l text-center bg-yellow-700 px-2.5 py-2 text-slate-300 w-1/5 text-white cursor-pointer"
+              className="rounded-l text-center bg-yellow-700 px-2.5 py-1.5 text-slate-300 w-1/5 text-white cursor-pointer"
               icon={faUndo}
             />
             <p
-              className="rounded-l text-center bg-yellow-500 px-2.5 py-1 text-slate-300 w-4/5 hover:bg-yellow-700 h-full text-white font-medium cursor-pointer"
+              className="rounded-l text-center bg-yellow-500 px-2.5 py-1.5 text-slate-300 w-4/5 hover:bg-yellow-700 h-full text-white font-medium cursor-pointer"
               onClick={() => router.back()}
             >
               Cancel
