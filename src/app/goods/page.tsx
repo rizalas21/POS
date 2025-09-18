@@ -16,6 +16,11 @@ import React, { useEffect, useState } from "react";
 import { Goods } from "../types/goods";
 
 export default function units() {
+  const formatterCurrency = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
+
   const [params, setParams] = useState({
     keyword: "",
     limit: "3",
@@ -68,7 +73,8 @@ export default function units() {
     setParams({ ...params, sortBy: name, sort: value });
   };
 
-  console.log("ini total data yang ada bro => ", total);
+  console.log(total);
+
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Goods</h1>
@@ -354,10 +360,10 @@ export default function units() {
                         {good.unit}
                       </td>
                       <td className="min-w-[12vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
-                        {good.purchasePrice}
+                        {formatterCurrency.format(good.purchasePrice)}
                       </td>
                       <td className="min-w-[11vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
-                        {good.sellingPrice}
+                        {formatterCurrency.format(good.sellingPrice)}
                       </td>
                       <td className="min-w-[11vw] px-1 py-2 border border-gray-500/25 text-center">
                         {good.picture ? (
@@ -451,6 +457,7 @@ export default function units() {
             </p>
             <div className="flex border border-gray-500/50 rounded-sm">
               <button
+                disabled={page === 1}
                 className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
                   page === 1
                     ? "text-gray-500/50 cursor-default"
@@ -476,6 +483,7 @@ export default function units() {
                 </button>
               ))}
               <button
+                disabled={page === pages}
                 className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
                   page === pages
                     ? "text-gray-500/50 cursor-default"

@@ -76,6 +76,8 @@ export default function EditGoods() {
     const { name, value, files } = e.target;
     if (name === "picture") {
       setData({ ...data, [name]: files[0] });
+    } else if (name === "purchasePrice" || name === "sellingPrice") {
+      setData({ ...data, [name]: Number(value) });
     } else {
       setData({ ...data, [name]: value });
       console.log("ini data => ", data);
@@ -99,6 +101,7 @@ export default function EditGoods() {
               name="barcode"
               onChange={handleChange}
               value={data.barcode}
+              maxLength={20}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
@@ -110,6 +113,7 @@ export default function EditGoods() {
               name="name"
               onChange={handleChange}
               value={data.name}
+              maxLength={150}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">

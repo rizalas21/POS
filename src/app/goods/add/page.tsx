@@ -94,6 +94,7 @@ export default function AddGoods() {
               name="barcode"
               onChange={handleChange}
               required
+              maxLength={20}
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -105,6 +106,7 @@ export default function AddGoods() {
               name="name"
               onChange={handleChange}
               required
+              maxLength={150}
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">

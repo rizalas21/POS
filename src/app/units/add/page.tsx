@@ -52,6 +52,7 @@ export default function addUnits() {
               name="unit"
               onChange={handleChange}
               required
+              maxLength={10}
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
@@ -63,6 +64,7 @@ export default function addUnits() {
               name="name"
               onChange={handleChange}
               required
+              maxLength={100}
             />
           </div>
           <div className="flex justify-between w-full h-[6vh] rounded">
