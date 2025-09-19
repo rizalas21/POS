@@ -45,34 +45,34 @@ export default function addSuppliers() {
           <p className="text-blue-600 font-bold">Form Add</p>
         </div>
         <form className="flex flex-col p-10 gap-5" onSubmit={handleSubmit}>
-          <div className="flex justify-between w-full h-[6vh] rounded">
+          <div className="flex justify-between items-center w-full h-[6vh] rounded">
             <label>name</label>
             <input
               placeholder="Name of Suppliers"
               type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/25"
               name="name"
               onChange={handleChange}
               required
               maxLength={100}
             />
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
+          <div className="flex justify-between items-center w-full h-[6vh] rounded">
             <label>Address</label>
             <textarea
               placeholder="Address"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/25"
               name="address"
               onChange={handleChange}
               required
             />
           </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
+          <div className="flex justify-between items-center w-full h-[6vh] rounded">
             <label>Phone</label>
             <input
               placeholder="Phone"
               type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/25"
               name="phone"
               onChange={handleChange}
               required
@@ -89,7 +89,7 @@ export default function addSuppliers() {
               className="rounded-l text-center bg-green-700 px-2.5 py-2 text-slate-300 w-1/5 text-white"
               icon={faDatabase}
             />
-            <p className="rounded-l text-center bg-green-500 px-2.5 py-1 text-slate-300 w-4/5 hover:bg-green-700 h-full text-white font-medium">
+            <p className="rounded-l text-center bg-green-500 px-2.5 py-2 text-slate-300 w-4/5 hover:bg-green-700 h-full text-white font-medium">
               Save
             </p>
           </button>
@@ -99,7 +99,7 @@ export default function addSuppliers() {
               icon={faUndo}
             />
             <p
-              className="rounded-l text-center bg-yellow-500 px-2.5 py-1 text-slate-300 w-4/5 hover:bg-yellow-700 h-full text-white font-medium cursor-pointer"
+              className="rounded-l text-center bg-yellow-500 px-2.5 py-2 text-slate-300 w-4/5 hover:bg-yellow-700 h-full text-white font-medium cursor-pointer"
               onClick={() => router.back()}
             >
               Cancel

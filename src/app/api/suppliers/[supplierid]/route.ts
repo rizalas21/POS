@@ -9,7 +9,8 @@ export async function GET(
     const { supplierid } = await params;
     if (!supplierid) return NextResponse.json("id not found");
     const res = await prisma.suppliers.findFirst({
-      where: { supplierid },
+      where: { supplierid: Number(supplierid) },
+      select: { name: true, address: true, phone: true },
     });
     if (!res)
       return NextResponse.json(
@@ -28,10 +29,11 @@ export async function PUT(
 ) {
   try {
     const data = await req.json();
+    console.log("ini datanya => ", data);
     const { supplierid } = await params;
 
     const res = await prisma.suppliers.update({
-      where: { supplierid },
+      where: { supplierid: Number(supplierid) },
       data,
     });
 
@@ -57,7 +59,7 @@ export async function DELETE(
     }
 
     const res = await prisma.suppliers.delete({
-      where: { supplierid },
+      where: { supplierid: Number(supplierid) },
     });
     return NextResponse.json(res);
   } catch (error) {

@@ -277,7 +277,7 @@ export default function suppliers() {
                       <td className="w-1/5 px-1 py-2 border">
                         <div className="flex gap-4">
                           <button
-                            className="text-white hover:cursor-pointer bg-green-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-green-800"
+                            className="text-white hover:cursor-pointer bg-green-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-green-800"
                             onClick={() =>
                               router.push(
                                 `/suppliers/edit/${supplier.supplierid}`
@@ -287,7 +287,7 @@ export default function suppliers() {
                             <FontAwesomeIcon icon={faCircleInfo} />
                           </button>
                           <button
-                            className="text-white hover:cursor-pointer bg-red-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-red-800"
+                            className="text-white hover:cursor-pointer bg-red-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-red-800"
                             onClick={() => {
                               setSelectedSuppliers({
                                 supplierid: supplier.supplierid.toString(),
@@ -348,6 +348,7 @@ export default function suppliers() {
                     ? "text-gray-500/50 cursor-default"
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
+                disabled={page === 1}
                 onClick={() =>
                   setParams({ ...params, page: (Number(page) - 1).toString() })
                 }
@@ -373,6 +374,7 @@ export default function suppliers() {
                     ? "text-gray-500/50 cursor-default"
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
+                disabled={page === pages}
                 onClick={() =>
                   setParams({ ...params, page: (Number(page) + 1).toString() })
                 }

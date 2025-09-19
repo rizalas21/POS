@@ -299,6 +299,7 @@ export default function units() {
                     ? "text-gray-500/50 cursor-default"
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
+                disabled={page === 1}
                 onClick={() =>
                   setParams({ ...params, page: (Number(page) - 1).toString() })
                 }
@@ -324,6 +325,7 @@ export default function units() {
                     ? "text-gray-500/50 cursor-default"
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
+                disabled={page === pages}
                 onClick={() =>
                   setParams({ ...params, page: (Number(page) + 1).toString() })
                 }

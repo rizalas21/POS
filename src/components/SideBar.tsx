@@ -23,6 +23,8 @@ export default function SideBar() {
     e.stopPropagation();
   };
 
+  console.log(pathname);
+
   return (
     <div
       className={`flex bg-blue-600 w-full flex-col items-center h-screen z-10`}

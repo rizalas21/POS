@@ -53,6 +53,7 @@ export const useSuppliersStore = create<SuppliersState>((set) => ({
   },
   updateSuppliers: async (supplierid, data) => {
     try {
+      console.log("masuk data nya rbo => ", data);
       const res = await axios.put(`/api/suppliers/${supplierid}`, data);
       if (res.status >= 400) return null;
       set((state) => ({

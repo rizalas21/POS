@@ -21,5 +21,8 @@ export interface SuppliersState {
   getSuppliers: (params: SearchParams) => void;
   addSuppliers: (data: Omit<Suppliers, "supplierid">) => void;
   deleteSuppliers: (supplierid: string) => void;
-  updateSuppliers: (supplierid: string, data: Suppliers) => void;
+  updateSuppliers: (
+    supplierid: string,
+    data: Omit<Suppliers, "supplierid">
+  ) => void;
 }
