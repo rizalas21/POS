@@ -14,6 +14,7 @@ model Users {
   name String
   password String
   role String
+  purchases Purchases[]
 }
 
 model Units {
@@ -32,13 +33,37 @@ model Goods {
   unit String @db.VarChar(10)
   units Units @relation(fields: [unit], references: [unit])
   picture String?
+  purchaseItem PurchaseItem[]
 }
 
 model Suppliers {
   supplierid Int @id @default(autoincrement())
   name String @db.VarChar(100)
   address String
-  phone String @db.VarChar(20) 
+  phone String @db.VarChar(20)
+  purchases Purchases[] 
+}
+
+model Purchases {
+  invoice String @id @db.VarChar(20)
+  time DateTime @default(now())
+  totalsum Decimal @db.Decimal(19, 2)
+  supplier Int
+  suppliers Suppliers @relation(fields: [supplier], references: [supplierid])
+  operator String
+  users Users @relation(fields: [operator], references: [userid])
+  purchaseItem PurchaseItem[]
+}
+
+model PurchaseItem {
+  id Int @id @default(autoincrement())
+  invoice String @db.VarChar(20)
+  purchases Purchases @relation(fields: [invoice], references: [invoice])
+  itemcode String @db.VarChar(20)
+  goods Goods @relation(fields: [itemcode], references: [barcode])
+  quantity Int
+  purchasePrice Decimal @db.Decimal(19, 2)
+  totalprice Decimal @db.Decimal(19,2)
 }
 
 //npx prisma migrate dev --name init
