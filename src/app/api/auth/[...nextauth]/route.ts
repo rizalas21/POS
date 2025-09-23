@@ -24,6 +24,7 @@ export const authOptions: AuthOptions = {
         try {
           const user = await Login(credentials.email, credentials.password);
           if (!user?.email) return null;
+          console.log("authorize user: ", user);
           return user;
         } catch (error) {
           console.log("error when author => ", error);
@@ -38,20 +39,24 @@ export const authOptions: AuthOptions = {
   },
   pages: { signIn: "/signin" },
   callbacks: {
-    async jwt({ token, user }: { token: any; user: any }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-      }
-      return token;
-    },
     async session({ session, token }: { session: any; token: any }) {
       session.user = {
         ...session.user,
         id: token.id,
         email: token.email,
+        role: token.role,
+        exp: token.exp,
       };
       return session;
+    },
+    async jwt({ token, user }: { token: any; user: any }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.role = user.role;
+        token.exp = Math.floor(Date.now() / 1000) * 60 * 60;
+      }
+      return token;
     },
   },
 };

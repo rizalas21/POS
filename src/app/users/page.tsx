@@ -14,8 +14,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Users } from "../types/users";
+import { useSession } from "next-auth/react";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function users() {
+  const { data } = useSession();
   const [params, setParams] = useState({
     keyword: "",
     limit: "3",
@@ -65,8 +68,6 @@ export default function users() {
     };
     fetchUsers();
   }, [params]);
-
-  console.log("unit:" + Math.floor(Math.random() * 100000));
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Users</h1>
@@ -120,7 +121,7 @@ export default function users() {
             <table className="w-full flex flex-col">
               <thead className="w-full">
                 <tr className="flex w-full justify-between text-slate-500">
-                  <th className="flex justify-between w-2/12 px-2 py-2 border">
+                  <th className="flex justify-between w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>User ID</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -153,7 +154,7 @@ export default function users() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+                  <th className="flex justify-between w-3/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Email</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -186,7 +187,7 @@ export default function users() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+                  <th className="flex justify-between w-3/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Name</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -219,7 +220,7 @@ export default function users() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-2/12 px-2 py-2 border">
+                  <th className="flex justify-between w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Role</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -252,7 +253,7 @@ export default function users() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex w-2/12 px-1 py-2 border">
+                  <th className="flex w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Actions</h3>
                   </th>
                 </tr>
@@ -264,14 +265,20 @@ export default function users() {
                       className="flex w-full justify-between text-slate-500"
                       key={user.userid}
                     >
-                      <td className="w-2/12 px-1 py-2 border">
+                      <td className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                         {(Number(page) - 1) * Number(params.limit) +
                           (index + 1)}
                       </td>
-                      <td className="w-3/12 px-1 py-2 border">{user.email}</td>
-                      <td className="w-3/12 px-1 py-2 border">{user.name}</td>
-                      <td className="w-2/12 px-1 py-2 border">{user.role}</td>
-                      <td className="w-2/12 px-1 py-2 border">
+                      <td className="w-3/12 px-2 py-2 border border-gray-500/25 text-center">
+                        {user.email}
+                      </td>
+                      <td className="w-3/12 px-2 py-2 border border-gray-500/25 text-center">
+                        {user.name}
+                      </td>
+                      <td className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
+                        {user.role}
+                      </td>
+                      <td className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
                           <button
                             className="text-white hover:cursor-pointer bg-green-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-green-800"
@@ -307,19 +314,19 @@ export default function users() {
               </tbody>
               <tfoot className="w-full">
                 <tr className="flex w-full justify-between text-slate-500">
-                  <th className="w-2/12 px-1 py-2 border">
+                  <th className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">User ID</h3>
                   </th>
-                  <th className="w-3/12 px-1 py-2 border">
+                  <th className="w-3/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Email</h3>
                   </th>
-                  <th className="w-3/12 px-1 py-2 border">
+                  <th className="w-3/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Name</h3>
                   </th>
-                  <th className="w-2/12 px-1 py-2 border">
+                  <th className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Role</h3>
                   </th>
-                  <th className="w-2/12 px-1 py-2 border">
+                  <th className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Actions</h3>
                   </th>
                 </tr>

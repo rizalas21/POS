@@ -93,15 +93,16 @@ export default function EditGoods() {
         </div>
         <form className="flex flex-col px-10 gap-3" onSubmit={handleSubmit}>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
-            <label className="text-sm font-medium min-w-[10vw]">Unit</label>
+            <label className="text-sm font-medium min-w-[10vw]">Barcode</label>
             <input
               placeholder="Barcode"
               type="text"
-              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
+              className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50 bg-gray-500/25"
               name="barcode"
               onChange={handleChange}
               value={data.barcode}
               maxLength={20}
+              disabled
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">

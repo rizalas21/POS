@@ -10,15 +10,29 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
+import axios from "axios";
 
 export default function Navbar() {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
-  const path = usePathname();
+  const { data, status } = useSession();
 
   useEffect(() => {
+    if (status === "authenticated" && data?.user?.email) {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`/api/me/${data?.user?.email}`);
+          await sessionStorage.setItem("user", response.data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+
+      fetchUserData();
+    }
     const profiles = document.querySelector("#profiles");
     const hideMenu = document.querySelector("#hide-menu");
     const logout = document.querySelector("#logout");
@@ -99,7 +113,7 @@ export default function Navbar() {
         </div>
         <div className="items-center cursor-pointer flex" id="profiles">
           <p className="text-xl font-medium text-gray-500 relative">
-            Rubi Henjaya
+            {data?.user ? data.user.name : "User"}
           </p>
           <img
             className="object-cover rounded-full max-w-10 max-h-10 ml-4 relative "

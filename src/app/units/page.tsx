@@ -117,7 +117,7 @@ export default function units() {
             <table className="w-auto flex flex-col">
               <thead className="w-full">
                 <tr className="flex w-full justify-center text-slate-500">
-                  <th className="flex justify-between w-2/12 px-2 py-2 border">
+                  <th className="flex justify-between w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Unit</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -150,7 +150,7 @@ export default function units() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-3/12 px-1 py-2 border">
+                  <th className="flex justify-between w-3/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Name</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -183,7 +183,7 @@ export default function units() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-1 py-2 border">
+                  <th className="flex justify-between w-5/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Note</h3>
                     <div className="icon-thead flex gap-2">
                       <button
@@ -216,7 +216,7 @@ export default function units() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex w-2/12 px-1 py-2 border">
+                  <th className="flex w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Actions</h3>
                   </th>
                 </tr>
@@ -228,10 +228,16 @@ export default function units() {
                       className="flex w-full justify-center text-slate-500"
                       key={index}
                     >
-                      <td className="w-2/12 px-1 py-2 border">{unit.unit}</td>
-                      <td className="w-3/12 px-1 py-2 border">{unit.name}</td>
-                      <td className="w-5/12 px-1 py-2 border">{unit.note}</td>
-                      <td className="w-2/12 px-1 py-2 border">
+                      <td className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
+                        {unit.unit}
+                      </td>
+                      <td className="w-3/12 px-2 py-2 border border-gray-500/25 text-center">
+                        {unit.name}
+                      </td>
+                      <td className="w-5/12 px-2 py-2 border border-gray-500/25 text-center">
+                        {unit.note}
+                      </td>
+                      <td className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
                           <button
                             className="text-white hover:cursor-pointer bg-green-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-green-800"
@@ -268,16 +274,16 @@ export default function units() {
               </tbody>
               <tfoot className="w-full">
                 <tr className="flex w-full justify-between text-slate-500">
-                  <th className="w-2/12 px-1 py-2 border">
+                  <th className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Unit</h3>
                   </th>
-                  <th className="w-3/12 px-1 py-2 border">
+                  <th className="w-3/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Name</h3>
                   </th>
-                  <th className="w-5/12 px-1 py-2 border">
+                  <th className="w-5/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Note</h3>
                   </th>
-                  <th className="w-2/12 px-1 py-2 border">
+                  <th className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Actions</h3>
                   </th>
                 </tr>

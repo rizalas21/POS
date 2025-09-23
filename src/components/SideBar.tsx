@@ -39,7 +39,7 @@ export default function SideBar() {
         </div>
       </section>
       <section
-        className={`flex items-center w-4/5 h-[9%] border-b border-white py-2 px-1 ${
+        className={`flex items-center w-4/5 h-[9%] border-b border-white py-2 px-1 hover:opacity-100 ${
           pathname === "/dashboard" ? "opacity-100" : "opacity-50"
         }`}
       >
@@ -110,7 +110,7 @@ export default function SideBar() {
           </div>
         </button>
         <Link
-          className={`w-1/2 flex items-center my-2.5 no-underline text-inherit w-auto ${
+          className={`w-1/2 flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
             pathname === "/suppliers" ? "opacity-100" : "opacity-50"
           }`}
           href="/suppliers"
@@ -122,7 +122,7 @@ export default function SideBar() {
           <h4 className="ml-5 font-extralight w-auto">Suppliers</h4>
         </Link>
         <Link
-          className={`customers flex items-center my-2.5 no-underline text-inherit w-auto ${
+          className={`customers flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
             pathname === "/customers" ? "opacity-100" : "opacity-50"
           }`}
           href="/customers"
@@ -134,7 +134,7 @@ export default function SideBar() {
           <h4 className="ml-5 font-extralight w-auto ">Customers</h4>
         </Link>
         <Link
-          className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto ${
+          className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
             pathname === "/users" ? "opacity-100" : "opacity-50"
           }`}
           href="/users"
@@ -149,7 +149,7 @@ export default function SideBar() {
       <section className="text-white flex flex-col w-4/5 h-auto mt-5 pb-5 border-b border-slate-500">
         <h4 className="mb-2.5">TRANSACTIONS</h4>
         <Link
-          className={`purchases flex items-center my-2.5 no-underline text-inherit w-auto ${
+          className={`purchases flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
             pathname === "/purchases" ? "opacity-100" : "opacity-50"
           }`}
           href="/purchases"
@@ -161,7 +161,7 @@ export default function SideBar() {
           <h4 className="ml-5 font-extralight w-auto ">Purchases</h4>
         </Link>
         <Link
-          className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto ${
+          className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
             pathname === "/sales" ? "opacity-100" : "opacity-50"
           }`}
           href="/sales"

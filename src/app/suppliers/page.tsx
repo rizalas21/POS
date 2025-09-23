@@ -118,7 +118,7 @@ export default function suppliers() {
             <table className="w-auto flex flex-col">
               <thead className="w-full">
                 <tr className="flex w-full justify-center text-slate-500">
-                  <th className="flex justify-between w-1/5 px-2 py-2 border">
+                  <th className="flex justify-between w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Supplierid</h3>
                     <div className="icon-thead flex">
                       <button
@@ -151,7 +151,7 @@ export default function suppliers() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-1/5 px-1 py-2 border">
+                  <th className="flex justify-between w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Name</h3>
                     <div className="icon-thead flex">
                       <button
@@ -184,7 +184,7 @@ export default function suppliers() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-1/5 px-1 py-2 border">
+                  <th className="flex justify-between w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Address</h3>
                     <div className="icon-thead flex">
                       <button
@@ -217,7 +217,7 @@ export default function suppliers() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex justify-between w-1/5 px-1 py-2 border">
+                  <th className="flex justify-between w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Phone</h3>
                     <div className="icon-thead flex">
                       <button
@@ -250,7 +250,7 @@ export default function suppliers() {
                       </button>
                     </div>
                   </th>
-                  <th className="flex w-1/5 px-1 py-2 border">
+                  <th className="flex w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Actions</h3>
                   </th>
                 </tr>
@@ -262,19 +262,19 @@ export default function suppliers() {
                       className="flex w-full justify-center text-slate-500"
                       key={index}
                     >
-                      <td className="w-1/5 px-1 py-2 border">
+                      <td className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                         {supplier.supplierid}
                       </td>
-                      <td className="w-1/5 px-1 py-2 border">
+                      <td className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                         {supplier.name}
                       </td>
-                      <td className="w-1/5 px-1 py-2 border">
+                      <td className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                         {supplier.address}
                       </td>
-                      <td className="w-1/5 px-1 py-2 border">
+                      <td className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                         {supplier.phone}
                       </td>
-                      <td className="w-1/5 px-1 py-2 border">
+                      <td className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
                           <button
                             className="text-white hover:cursor-pointer bg-green-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-green-800"
@@ -314,19 +314,19 @@ export default function suppliers() {
               </tbody>
               <tfoot className="w-full">
                 <tr className="flex w-full justify-between text-slate-500">
-                  <th className="w-1/5 px-1 py-2 border">
+                  <th className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">supplierid</h3>
                   </th>
-                  <th className="w-1/5 px-1 py-2 border">
+                  <th className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Name</h3>
                   </th>
-                  <th className="w-1/5 px-1 py-2 border">
+                  <th className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Address</h3>
                   </th>
-                  <th className="w-1/5 px-1 py-2 border">
+                  <th className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Phone</h3>
                   </th>
-                  <th className="w-1/5 px-1 py-2 border">
+                  <th className="w-1/5 px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Actions</h3>
                   </th>
                 </tr>

@@ -1,26 +1,30 @@
 "use client";
 
+import LoadingComponent from "@/components/Loading";
+import { useAuthStore } from "@/stores/authStore";
 import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useUnitsStore } from "@/stores/unitsStore";
 import { faDatabase, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function addUnits() {
   const router = useRouter();
   const { addPurchases } = usePurchasesStore();
-  const [data, setData] = useState({
+  const { data, status } = useSession();
+  const [input, setInput] = useState({
     invoice: "",
     time: "",
     totalsum: 1,
     supplier: 1,
-    operator: "",
+    operator: data?.user.id || "",
   });
 
   const handleSubmit = async () => {
     try {
-      const res = await addPurchases(data);
+      const res = await addPurchases(input);
       router.push("/purchases");
       return res;
     } catch (error) {
@@ -30,7 +34,7 @@ export default function addUnits() {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setData((prevData) => {
+    setInput((prevData) => {
       return {
         ...prevData,
         [name]: value,
@@ -38,14 +42,43 @@ export default function addUnits() {
     });
   };
 
+  if (status === "loading") return <LoadingComponent />;
+
   return (
     <main className="space-y-3">
       <h2 className="text-2xl text-gray-700">Purchases</h2>
       <div className=" flex flex-col shadow-2xl h-full bg-white">
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center pl-2">
-          <p className="text-blue-600 font-bold">Form Add</p>
+          <p className="text-blue-600 font-bold">Transaction</p>
         </div>
-        <form className="flex flex-col p-10 gap-5" onSubmit={handleSubmit}>
+        <form className="flex flex-col px-10 gap-5" onSubmit={handleSubmit}>
+          <section className="flex justify-between py-3 border-bs">
+            <div className="space-y-2 flex flex-col w-1/3">
+              <label htmlFor="">Invoice</label>
+              <input
+                type="text"
+                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                disabled
+              />
+            </div>
+            <div className="space-y-2 flex flex-col w-1/3">
+              <label htmlFor="">Time</label>
+              <input
+                type="text"
+                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                disabled
+              />
+            </div>
+            <div className="space-y-2 flex flex-col w-1/3">
+              <label htmlFor="">Operator</label>
+              <input
+                type="text"
+                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                disabled
+                value={data?.user.name}
+              />
+            </div>
+          </section>
           <div className="flex justify-between w-full h-[6vh] rounded">
             <label>Unit</label>
             <input
