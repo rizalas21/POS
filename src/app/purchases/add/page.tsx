@@ -2,6 +2,7 @@
 
 import LoadingComponent from "@/components/Loading";
 import { useAuthStore } from "@/stores/authStore";
+import { useGoodsStore } from "@/stores/goodsStore";
 import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useUnitsStore } from "@/stores/unitsStore";
 import { faDatabase, faUndo } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +15,13 @@ export default function addUnits() {
   const router = useRouter();
   const { addPurchases } = usePurchasesStore();
   const { data, status } = useSession();
+  const [params, setParams] = useState({
+    keyword: "",
+    limit: "0",
+    page: "",
+    sortBy: "",
+    sort: "",
+  });
   const [input, setInput] = useState({
     invoice: "",
     time: "",
@@ -21,6 +29,7 @@ export default function addUnits() {
     supplier: 1,
     operator: data?.user.id || "",
   });
+  const { goods, getGoods } = useGoodsStore();
 
   const handleSubmit = async () => {
     try {
@@ -42,18 +51,22 @@ export default function addUnits() {
     });
   };
 
+  useEffect(() => {
+    getGoods(params);
+  }, []);
+
   if (status === "loading") return <LoadingComponent />;
 
   return (
     <main className="space-y-3">
       <h2 className="text-2xl text-gray-700">Purchases</h2>
       <div className=" flex flex-col shadow-2xl h-full bg-white">
-        <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center pl-2">
-          <p className="text-blue-600 font-bold">Transaction</p>
+        <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center px-2 py-2">
+          <p className="text-4xl text-slate-400 font-bold">Transaction</p>
         </div>
-        <form className="flex flex-col px-10 gap-5" onSubmit={handleSubmit}>
-          <section className="flex justify-between py-3 border-bs">
-            <div className="space-y-2 flex flex-col w-1/3">
+        <form className="flex flex-col" onSubmit={handleSubmit}>
+          <section className="flex justify-between py-3 border-y border-slate-200">
+            <div className="space-y-2 flex flex-col w-1/3 px-10">
               <label htmlFor="">Invoice</label>
               <input
                 type="text"
@@ -79,41 +92,38 @@ export default function addUnits() {
               />
             </div>
           </section>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Unit</label>
-            <input
-              placeholder="Unit"
-              type="unit"
-              className="w-4/5 border p-1.5 drop-shadow"
-              name="unit"
-              onChange={handleChange}
-              required
-              maxLength={10}
-            />
-          </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Name</label>
-            <input
-              placeholder="Name"
-              type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
-              name="name"
-              onChange={handleChange}
-              required
-              maxLength={100}
-            />
-          </div>
-          <div className="flex justify-between w-full h-[6vh] rounded">
-            <label>Note</label>
-            <input
-              placeholder="Note"
-              type="text"
-              className="w-4/5 border p-1.5 drop-shadow"
-              name="note"
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <section className="flex justify-between py-3 border-y border-slate-200">
+            <div className="space-y-2 flex flex-col w-1/3 px-10">
+              <label htmlFor="">Goods Barcode</label>
+              <select className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400">
+                <option value="">Choose Goods</option>
+                {goods.length > 0
+                  ? goods.map((item) => (
+                      <option key={item.barcode}>
+                        {item.barcode} - {item.name}
+                      </option>
+                    ))
+                  : ""}
+              </select>
+            </div>
+            <div className="space-y-2 flex flex-col w-1/3">
+              <label htmlFor="">Goods Name</label>
+              <input
+                type="text"
+                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                disabled
+              />
+            </div>
+            <div className="space-y-2 flex flex-col w-1/3">
+              <label htmlFor="">Stock</label>
+              <input
+                type="text"
+                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                disabled
+                value={data?.user.name}
+              />
+            </div>
+          </section>
         </form>
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">
           <button
