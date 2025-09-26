@@ -6,7 +6,12 @@ import { useAuthStore } from "@/stores/authStore";
 import { useGoodsStore } from "@/stores/goodsStore";
 import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useUnitsStore } from "@/stores/unitsStore";
-import { faDatabase, faPlus, faUndo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faDatabase,
+  faPlus,
+  faUndo,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -62,7 +67,7 @@ export default function addUnits() {
   return (
     <main className="space-y-3">
       <h2 className="text-2xl text-gray-700">Purchases</h2>
-      <div className=" flex flex-col shadow-2xl h-full bg-white">
+      <div className="flex flex-col shadow-2xl h-full bg-white gap-5">
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center px-2 py-2">
           <p className="text-4xl text-slate-400 font-bold">Transaction</p>
         </div>
@@ -166,25 +171,25 @@ export default function addUnits() {
             </button>
           </section>
         </form>
-        <table className="w-auto flex flex-col px-10 w-full">
-          <thead className="w-full">
-            <tr className="flex w-full justify-center text-slate-500">
-              <th className="flex justify-between w-2/12 px-2 py-2 border border-gray-500/25 text-center">
+        <table className="w-auto table-auto px-10 w-full">
+          <thead className="w-full px-10">
+            <tr className="flex justify-center text-slate-500">
+              <th className="flex justify-between w-2/12 px-2 py-2 border-y border-gray-500/25 text-center">
                 <h3>No.</h3>
               </th>
-              <th className="flex justify-between w-3/12 px-2 py-2 border border-gray-500/25 text-center">
+              <th className="flex justify-between w-3/12 px-2 py-2 border-y  border-gray-500/25 text-center">
                 <h3>Barcode</h3>
               </th>
-              <th className="flex justify-between w-5/12 px-2 py-2 border border-gray-500/25 text-center">
+              <th className="flex justify-between w-5/12 px-2 py-2 border-y  border-gray-500/25 text-center">
                 <h3>Name</h3>
               </th>
-              <th className="flex justify-between w-5/12 px-2 py-2 border border-gray-500/25 text-center">
+              <th className="flex justify-between w-5/12 px-2 py-2 border-y  border-gray-500/25 text-center">
                 <h3>Qty</h3>
               </th>
-              <th className="flex w-2/12 px-2 py-2 border border-gray-500/25 text-center">
+              <th className="flex w-2/12 px-2 py-2 border-y  border-gray-500/25 text-center">
                 <h3>Price</h3>
               </th>
-              <th className="flex w-2/12 px-2 py-2 border border-gray-500/25 text-center">
+              <th className="flex w-2/12 px-2 py-2 border-y  border-gray-500/25 text-center">
                 <h3>Total Price</h3>
               </th>
             </tr>
@@ -256,22 +261,22 @@ export default function addUnits() {
           >
             <FontAwesomeIcon
               className="rounded-l text-center bg-green-700 px-2.5 py-1.5 text-slate-300 w-1/5 text-white"
-              icon={faDatabase}
+              icon={faPlus}
             />
             <p className="rounded-l text-center bg-green-500 px-2.5 py-1.5 text-slate-300 w-4/5 hover:bg-green-700 h-full text-white font-medium">
-              Save
+              Finish
             </p>
           </button>
           <button className="flex w-[8vw] h-full justify-between items-center h-4/5 bg-yellow-600">
             <FontAwesomeIcon
               className="rounded-l text-center bg-yellow-700 px-2.5 py-1.5 text-slate-300 w-1/5 text-white cursor-pointer"
-              icon={faUndo}
+              icon={faArrowLeft}
             />
             <p
               className="rounded-l text-center bg-yellow-500 px-2.5 py-1.5 text-slate-300 w-4/5 hover:bg-yellow-700 h-full text-white font-medium cursor-pointer"
               onClick={() => router.back()}
             >
-              Cancel
+              Back
             </p>
           </button>
         </div>
