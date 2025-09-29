@@ -13,6 +13,7 @@ import {
   faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,16 +29,33 @@ export default function addUnits() {
     sortBy: "",
     sort: "",
   });
+
   const [input, setInput] = useState({
-    invoice: "",
+    invoice:
+      "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
     time: "",
     totalsum: 1,
     supplier: 1,
     operator: data?.user.id || "",
+    items: [],
   });
+  // const lastInvoice = axios.get("/api/purchases", {
+  //   params: { sortBy: "invoice" },
+  // });
   const { goods, getGoods } = useGoodsStore();
   const { purchases } = usePurchasesStore();
+  const now = new Date();
+  const options: Intl.DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  };
 
+  const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(now);
   const handleSubmit = async () => {
     try {
       const res = await addPurchases(input);
@@ -50,12 +68,7 @@ export default function addUnits() {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setInput((prevData) => {
-      return {
-        ...prevData,
-        [name]: value,
-      };
-    });
+    setInput({ ...input, [name]: value });
   };
 
   useEffect(() => {
@@ -63,6 +76,9 @@ export default function addUnits() {
   }, []);
 
   if (status === "loading") return <LoadingComponent />;
+  console.log(
+    "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1"
+  );
 
   return (
     <main className="space-y-3">
@@ -80,23 +96,25 @@ export default function addUnits() {
               <label htmlFor="">Invoice</label>
               <input
                 type="text"
-                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
                 disabled
+                defaultValue={input.invoice}
               />
             </div>
             <div className="space-y-2 flex flex-col w-1/3">
               <label htmlFor="">Time</label>
               <input
                 type="text"
-                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
                 disabled
+                defaultValue={formattedDate}
               />
             </div>
             <div className="space-y-2 flex flex-col w-1/3">
               <label htmlFor="">Operator</label>
               <input
                 type="text"
-                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
                 disabled
                 defaultValue={data?.user.name}
               />
@@ -120,7 +138,7 @@ export default function addUnits() {
               <label htmlFor="">Goods Name</label>
               <input
                 type="text"
-                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
                 disabled
               />
             </div>
@@ -128,7 +146,7 @@ export default function addUnits() {
               <label htmlFor="">Stock</label>
               <input
                 type="number"
-                className="w-11/12 p-1 drop-shadow bg-slate-300 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
                 disabled
               />
             </div>
