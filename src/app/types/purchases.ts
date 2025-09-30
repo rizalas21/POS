@@ -1,8 +1,6 @@
-import { DateTime } from "next-auth/providers/kakao";
-
 export interface Purchases {
   invoice: string;
-  time: DateTime;
+  time: Date;
   totalsum: number;
   supplier: number;
   operator: string;

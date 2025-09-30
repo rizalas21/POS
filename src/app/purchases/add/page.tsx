@@ -6,14 +6,8 @@ import { useAuthStore } from "@/stores/authStore";
 import { useGoodsStore } from "@/stores/goodsStore";
 import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useUnitsStore } from "@/stores/unitsStore";
-import {
-  faArrowLeft,
-  faDatabase,
-  faPlus,
-  faUndo,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,28 +16,6 @@ export default function addUnits() {
   const router = useRouter();
   const { addPurchases } = usePurchasesStore();
   const { data, status } = useSession();
-  const [params, setParams] = useState({
-    keyword: "",
-    limit: "0",
-    page: "",
-    sortBy: "",
-    sort: "",
-  });
-
-  const [input, setInput] = useState({
-    invoice:
-      "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
-    time: "",
-    totalsum: 1,
-    supplier: 1,
-    operator: data?.user.id || "",
-    items: [],
-  });
-  // const lastInvoice = axios.get("/api/purchases", {
-  //   params: { sortBy: "invoice" },
-  // });
-  const { goods, getGoods } = useGoodsStore();
-  const { purchases } = usePurchasesStore();
   const now = new Date();
   const options: Intl.DateTimeFormatOptions = {
     day: "2-digit",
@@ -56,6 +28,37 @@ export default function addUnits() {
   };
 
   const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(now);
+  const [input, setInput] = useState({
+    invoice:
+      "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
+    time: new Date(),
+    totalsum: 1,
+    supplier: 1,
+    operator: data?.user.id || "",
+    items: [],
+  });
+  const [item, setItem] = useState({
+    invoice: input.invoice,
+    itemcode: "",
+    quantity: 0,
+    purchasePrice: 0,
+    totalPrice: 0,
+  });
+  const [goodsItem, setGoodsItem] = useState({
+    barcode: "",
+    name: "",
+    stock: "",
+  });
+  const [params, setParams] = useState({
+    keyword: "",
+    limit: "0",
+    page: "",
+    sortBy: "",
+    sort: "",
+  });
+
+  const { goods, getGoods } = useGoodsStore();
+  const { purchases } = usePurchasesStore();
   const handleSubmit = async () => {
     try {
       const res = await addPurchases(input);
@@ -66,7 +69,24 @@ export default function addUnits() {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChangeItem = (e: any) => {
+    const { name, value } = e.target;
+    const newValue = Number(value);
+    if (name === "purchasePrice" || name === "quantity") {
+      const updatedItem = {
+        ...item,
+        [name]: newValue,
+      };
+
+      setItem({
+        ...updatedItem,
+        totalPrice: updatedItem.purchasePrice * updatedItem.quantity,
+      });
+    } else {
+      setItem({ ...item, [name]: value });
+    }
+  };
+  const handleChangeIinput = (e: any) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
@@ -76,9 +96,7 @@ export default function addUnits() {
   }, []);
 
   if (status === "loading") return <LoadingComponent />;
-  console.log(
-    "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1"
-  );
+  console.log(item.totalPrice);
 
   return (
     <main className="space-y-3">
@@ -123,11 +141,28 @@ export default function addUnits() {
           <section className="flex justify-between py-3">
             <div className="space-y-2 flex flex-col w-1/3 px-10">
               <label htmlFor="">Goods Barcode</label>
-              <select className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400">
+              <select
+                className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400"
+                required
+                onChange={(e) => {
+                  const selectedBarcode = e.target.value;
+                  const selectedItem = goods.find(
+                    (item) => item.barcode === selectedBarcode
+                  );
+
+                  if (selectedItem) {
+                    setGoodsItem({
+                      barcode: selectedItem.barcode,
+                      name: selectedItem.name,
+                      stock: String(selectedItem.stock),
+                    });
+                  }
+                }}
+              >
                 <option value="">Choose Goods</option>
                 {goods.length > 0
                   ? goods.map((item) => (
-                      <option key={item.barcode}>
+                      <option key={item.barcode} value={item.barcode}>
                         {item.barcode} - {item.name}
                       </option>
                     ))
@@ -139,6 +174,7 @@ export default function addUnits() {
               <input
                 type="text"
                 className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                defaultValue={goodsItem.name}
                 disabled
               />
             </div>
@@ -147,6 +183,7 @@ export default function addUnits() {
               <input
                 type="number"
                 className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                defaultValue={goodsItem.stock}
                 disabled
               />
             </div>
@@ -157,8 +194,8 @@ export default function addUnits() {
               <input
                 className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400"
                 type="number"
-                name=""
-                id=""
+                onChange={(e) => handleChangeItem(e)}
+                name="purchasePrice"
               />
             </div>
             <div className="space-y-2 flex flex-col w-1/3">
@@ -166,19 +203,27 @@ export default function addUnits() {
               <input
                 type="number"
                 className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400"
+                onChange={(e) => handleChangeItem(e)}
+                name="quantity"
               />
             </div>
             <div className="space-y-2 flex flex-col w-1/3">
               <label htmlFor="">Total Price</label>
               <input
                 type="number"
-                className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400"
+                className="w-11/12 p-1 drop-shadow bg-slate-200/25 cursor-not-allowed text-slate-800 rounded border border-slate-400"
+                onChange={(e) => handleChangeItem(e)}
+                name="totalPrice"
+                value={item.totalPrice}
                 disabled
               />
             </div>
           </section>
           <section className="flex justify-between py-3 px-10">
-            <button className="flex justify-center items-center text-white font-medium rounded-md text-center hover:bg-blue-800 transition-all duration-200 cursor-pointer">
+            <button
+              className="flex justify-center items-center text-white font-medium rounded-md text-center hover:bg-blue-800 transition-all duration-200 cursor-pointer"
+              onClick={() => input.items.push()}
+            >
               <FontAwesomeIcon
                 icon={faPlus}
                 className="text-blue-800 bg-blue-700 px-3 py-2 text-white w-[2.5vw] h-[2.5vw] rounded-l-md"
