@@ -1,7 +1,8 @@
 export interface PurchaseItem {
-  invoice: "";
-  itemcode: "";
-  quantity: 0;
-  purchaseprice: 0;
-  totalprice: 0;
+  invoice: string;
+  itemcode: string;
+  name?: string;
+  quantity: number;
+  purchaseprice: number;
+  totalprice: number;
 }
