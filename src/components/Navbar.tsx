@@ -25,6 +25,7 @@ export default function Navbar() {
       const fetchUserData = async () => {
         try {
           const response = await axios.get(`/api/me/${data?.user?.email}`);
+          if (!response) return signOut({ redirect: true, callbackUrl: "/" });
           await sessionStorage.setItem("user", response.data);
         } catch (error) {
           console.error("Error fetching user data:", error);
