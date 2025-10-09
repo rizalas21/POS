@@ -14,6 +14,7 @@ import PurchaseForm from "./PurchaseForm";
 import PurchaseSummary from "./PurchaseSummary";
 import PurchaseTable from "./PurchaseTable";
 import { useSuppliersStore } from "@/stores/suppliersStore";
+import axios from "axios";
 
 export default function AddPurchase() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function AddPurchase() {
   const { goods, getGoods } = useGoodsStore();
   const { suppliers, getSuppliers } = useSuppliersStore();
   const { data, status } = useSession();
+  const [invoiceChecked, setInvoiceChecked] = useState(false);
 
   const now = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -35,6 +37,13 @@ export default function AddPurchase() {
 
   const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(now);
 
+  const [supplier, setSupplier] = useState({
+    supplierid: "",
+    name: "",
+    address: "",
+    phone: "",
+  });
+
   const [input, setInput] = useState<{
     invoice: string;
     time: Date;
@@ -48,7 +57,7 @@ export default function AddPurchase() {
     time: new Date(),
     totalsum: 0,
     supplier: 0,
-    operator: data?.user.id || "",
+    operator: data?.user.id as string,
     items: [],
   });
 
@@ -66,13 +75,6 @@ export default function AddPurchase() {
     totalprice: 0,
   });
 
-  const [supplier, setSupplier] = useState({
-    supplierid: "",
-    name: "",
-    address: "",
-    phone: "",
-  });
-
   const [params] = useState({
     keyword: "",
     limit: "0",
@@ -86,20 +88,16 @@ export default function AddPurchase() {
       e.preventDefault();
       setInput({
         ...input,
-        invoice:
-          "INV-" +
-          new Date().toISOString().slice(0, 10).split("-").join("") +
-          "-" +
-          (Number(input.invoice.slice(13)) + 1),
+        // invoice:
+        //   "INV-" +
+        //   new Date().toISOString().slice(0, 10).split("-").join("") +
+        //   "-" +
+        //   (Number(input.invoice.slice(13)) + 1),
         items: [...input.items, item],
         totalsum: input.totalsum + item.purchaseprice * item.quantity,
       });
       setItem({
-        invoice:
-          "INV-" +
-          new Date().toISOString().slice(0, 10).split("-").join("") +
-          "-" +
-          (Number(input.invoice.slice(13)) + 1),
+        invoice: input.invoice,
         itemcode: "",
         quantity: 0,
         purchaseprice: 0,
@@ -114,7 +112,8 @@ export default function AddPurchase() {
 
   const handleSubmit = async () => {
     try {
-      const res = await addPurchases(input);
+      const { items, ...dataWithoutItems } = input;
+      const res = await addPurchases(dataWithoutItems, input.items);
       router.push("/purchases");
       return res;
     } catch (error) {
@@ -156,22 +155,51 @@ export default function AddPurchase() {
     setItem(updatedItem);
   };
 
-  const handleChangeIinput = (e: any) => {
-    const { name, value } = e.target;
-    setInput({ ...input, [name]: value });
-  };
-
   useEffect(() => {
-    getGoods(params);
-    getSuppliers(params);
-  }, []);
+    if (invoiceChecked) return;
+    const fetchInvoice = async () => {
+      try {
+        getGoods(params);
+        getSuppliers(params);
+        const { data } = await axios.get(`/api/purchases`, {
+          params: { sortBy: "createdAt", sort: "desc", limit: 1 },
+        });
+        console.log(
+          "ini w nya bro: ",
+          "INV-" +
+            new Date().toISOString().slice(0, 10).split("-").join("") +
+            "-" +
+            (Number(data.data[0].invoice.slice(13)) + 1)
+        );
+        console.log(
+          "ini data f nya bro: ",
+          input.invoice.slice(13),
+          data.data[0].invoice.slice(13)
+        );
+        if (input.invoice <= data.data[0].invoice) {
+          console.log(true);
+          setInput({
+            ...input,
+            invoice:
+              "INV-" +
+              new Date().toISOString().slice(0, 10).split("-").join("") +
+              "-" +
+              (Number(data.data[0].invoice.slice(13)) + 1),
+          });
+        }
+        console.log(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    setInput({ ...input, operator: data?.user.id as string });
+
+    fetchInvoice();
+  }, [data]);
 
   if (status === "loading") return <LoadingComponent />;
-  console.log(
-    "INV-" +
-      new Date().toISOString().slice(0, 10).split("-").join("") +
-      (Number(input.invoice.slice(13)) + 1)
-  );
+  console.log(input.operator);
 
   return (
     <>

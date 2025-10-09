@@ -53,6 +53,7 @@ model Purchases {
   operator String
   users Users @relation(fields: [operator], references: [userid])
   purchaseitems Purchaseitems[]
+  createdAt DateTime @default(now())
 }
 
 model Purchaseitems {

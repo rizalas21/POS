@@ -46,11 +46,13 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
+    console.log("data back end: ", data);
     const res = await prisma.purchases.create({
       data,
     });
     return NextResponse.json(res);
   } catch (error) {
     console.log("Error when trying to POST purchases: ", error);
+    NextResponse.json("error when try to post purchases");
   }
 }

@@ -76,6 +76,7 @@ export default function PurchaseSummary({
                 address: selectedItem.address,
                 phone: selectedItem.phone,
               });
+              setInput({ ...input, supplier: selectedItem.supplierid });
             }
           }}
         >

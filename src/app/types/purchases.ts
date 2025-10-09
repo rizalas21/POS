@@ -14,13 +14,21 @@ export interface SearchParams {
   limit: string;
 }
 
+export interface Item {
+  invoice: string;
+  itemcode: string;
+  quantity: number;
+  purchaseprice: number;
+  totalprice: number;
+}
+
 export interface PurchasesState {
   purchases: Purchases[];
   page: Number;
   pages: Number;
   total: Number;
   getPurchases: (params: SearchParams) => void;
-  addPurchases: (data: Purchases) => void;
+  addPurchases: (data: Purchases, item: Item[]) => void;
   deletePurchases: (barcode: string) => void;
   updatePurchases: (barcode: string, data: FormData) => void;
 }
