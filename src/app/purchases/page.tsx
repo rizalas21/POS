@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Purchases } from "../types/purchases";
 import { ModalDeletePurchases } from "@/components/purchases/ModalDelete";
+import dateToString from "@/lib/dateToString";
+import { useSuppliersStore } from "@/stores/suppliersStore";
 
 export default function purchases() {
   const [params, setParams] = useState({
@@ -267,13 +269,13 @@ export default function purchases() {
                         {purchase.invoice}
                       </td>
                       <td className="w-3/12 px-2 py-2 border  border-gray-500/25 text-center">
-                        {purchase.time}
+                        {dateToString(purchase.time.toString())}
                       </td>
                       <td className="w-5/12 px-2 py-2 border  border-gray-500/25 text-center">
                         {purchase.totalsum}
                       </td>
                       <td className="w-5/12 px-2 py-2 border  border-gray-500/25 text-center">
-                        {purchase.supplier}
+                        {purchase.suppliers.name}
                       </td>
                       <td className="w-2/12 px-2 py-2 border  border-gray-500/25 text-center">
                         <div className="flex gap-4">
@@ -290,7 +292,7 @@ export default function purchases() {
                             onClick={() => {
                               setSelectedPurchases({
                                 invoice: purchase.invoice,
-                                time: purchase.time,
+                                time: purchase.time.toString(),
                                 totalsum: purchase.totalsum,
                                 supplier: purchase.supplier,
                                 operator: String(purchase.operator),

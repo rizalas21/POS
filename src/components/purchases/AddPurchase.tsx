@@ -164,20 +164,7 @@ export default function AddPurchase() {
         const { data } = await axios.get(`/api/purchases`, {
           params: { sortBy: "createdAt", sort: "desc", limit: 1 },
         });
-        console.log(
-          "ini w nya bro: ",
-          "INV-" +
-            new Date().toISOString().slice(0, 10).split("-").join("") +
-            "-" +
-            (Number(data.data[0].invoice.slice(13)) + 1)
-        );
-        console.log(
-          "ini data f nya bro: ",
-          input.invoice.slice(13),
-          data.data[0].invoice.slice(13)
-        );
         if (input.invoice <= data.data[0].invoice) {
-          console.log(true);
           setInput({
             ...input,
             invoice:
@@ -187,7 +174,6 @@ export default function AddPurchase() {
               (Number(data.data[0].invoice.slice(13)) + 1),
           });
         }
-        console.log(false);
       } catch (error) {
         console.log(error);
       }
@@ -199,7 +185,6 @@ export default function AddPurchase() {
   }, [data]);
 
   if (status === "loading") return <LoadingComponent />;
-  console.log(input.operator);
 
   return (
     <>

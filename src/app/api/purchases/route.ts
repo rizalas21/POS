@@ -33,6 +33,13 @@ export async function GET(req: NextRequest) {
       where: filterCondition,
       orderBy: { [sortBy]: sort },
       ...(limit > 0 && { take: limit, skip: offset }),
+      include: {
+        suppliers: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
     const pages = Math.ceil(total / limit);
 
