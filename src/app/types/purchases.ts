@@ -4,7 +4,7 @@ export interface Purchases {
   totalsum: number;
   supplier: number;
   operator: string;
-  suppliers: { name: string; time: string; totalsum: string };
+  suppliers?: { name: string; time: string; totalsum: string };
 }
 
 export interface SearchParams {

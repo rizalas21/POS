@@ -48,8 +48,14 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
   },
   updatePurchases: async (invoice, data) => {
     try {
-      const res = await axios.put(`/api/purchases/${invoice}`, data);
+      console.log("ini invoice: ", invoice);
+      console.log("ini data: ", data);
+      console.log("ini items: ", items);
+      const { items, ...newData } = data;
+      const res = await axios.put(`/api/purchases/${invoice}`, newData);
       if (!res || res.status >= 400) return null;
+      await axios.delete(`/api/purchaseitem/inv/${invoice}`);
+      await axios.post("/api/purchaseitem", items);
       set((state) => ({
         purchases: state.purchases.map((item) =>
           item.invoice === invoice ? res.data : item

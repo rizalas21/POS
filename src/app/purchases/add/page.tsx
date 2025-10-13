@@ -1,4 +1,4 @@
-import AddPurchase from "@/components/purchases/AddPurchase";
+import AddPurchase from "@/components/purchases/add/AddPurchase";
 
 export default function Page() {
   return (

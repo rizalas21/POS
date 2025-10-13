@@ -1,4 +1,5 @@
 import { prisma } from "@/app/prisma";
+import { connect } from "http2";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -10,6 +11,7 @@ export async function GET(
     if (!invoice) return NextResponse.json("id not found");
     const res = await prisma.purchases.findFirst({
       where: { invoice },
+      include: { purchaseitems: true },
     });
     if (!res)
       return NextResponse.json(`invoice with invoice ${invoice} not found`);
@@ -26,11 +28,25 @@ export async function PUT(
 ) {
   try {
     const data = await req.json();
+    const { supplier, operator, ...resData } = data;
     const { invoice } = await params;
+    console.log("dari purchases back end nya bro: ", data, invoice);
 
     const res = await prisma.purchases.update({
       where: { invoice },
-      data,
+      data: {
+        ...resData,
+        suppliers: {
+          connect: {
+            supplierid: supplier,
+          },
+        },
+        users: {
+          connect: {
+            userid: operator,
+          },
+        },
+      },
     });
 
     if (!res) return NextResponse.json("something when wrong in res => ", res);

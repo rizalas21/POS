@@ -1,4 +1,5 @@
 import { useGoodsStore } from "@/stores/goodsStore";
+import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useUsersStore } from "@/stores/usersStore";
 import { Dispatch, SetStateAction } from "react";
 import Swal from "sweetalert2";
@@ -16,10 +17,10 @@ export const ModalDeletePurchases = ({
   };
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { deleteGoods } = useGoodsStore();
+  const { deletePurchases } = usePurchasesStore();
 
   async function confirmDelete({ id }: { id: any }) {
-    const res = await deleteGoods(selectedPurchases.invoice);
+    const res = await deletePurchases(selectedPurchases.invoice);
     setShowModal(false);
     return Swal.fire({
       icon: "success",

@@ -24,7 +24,7 @@ export default function purchases() {
     limit: "3",
     page: "1",
     sortBy: "invoice",
-    sort: "asc",
+    sort: "desc",
   });
   const [selectedPurchases, setSelectedPurchases] = useState({
     invoice: "",
@@ -118,169 +118,174 @@ export default function purchases() {
           {isLoading ? (
             <p className="text-center py-6 text-gray-500">Loading...</p>
           ) : (
-            <table className="w-auto flex flex-col">
-              <thead className="w-full">
-                <tr className="flex w-full justify-center text-slate-500">
-                  <th className="flex justify-between w-2/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3>Purchases</h3>
-                    <div className="icon-thead flex">
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "invoice"
-                            ? "text-gray-700/50"
-                            : params.sort === "asc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="invoice"
-                        value="asc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowUp} />
-                      </button>
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "invoice"
-                            ? "text-gray-700/50"
-                            : params.sort === "desc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="invoice"
-                        value="desc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowDown} />
-                      </button>
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="text-slate-500">
+                  <th className="px-2 py-2 border border-gray-500/25 text-center">
+                    <div className="flex justify-between items-center">
+                      <h3>Purchases</h3>
+                      <div className="flex space-x-2">
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "invoice"
+                              ? "text-gray-700/50"
+                              : params.sort === "asc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="invoice"
+                          value="asc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                        </button>
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "invoice"
+                              ? "text-gray-700/50"
+                              : params.sort === "desc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="invoice"
+                          value="desc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                        </button>
+                      </div>
                     </div>
                   </th>
-                  <th className="flex justify-between w-3/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3>Time</h3>
-                    <div className="icon-thead flex">
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "time"
-                            ? "text-gray-700/50"
-                            : params.sort === "asc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="time"
-                        value="asc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowUp} />
-                      </button>
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "time"
-                            ? "text-gray-700/50"
-                            : params.sort === "desc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="time"
-                        value="desc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowDown} />
-                      </button>
+                  <th className="px-2 py-2 border border-gray-500/25 text-center">
+                    <div className="flex justify-between items-center">
+                      <h3>Time</h3>
+                      <div className="flex space-x-2">
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "time"
+                              ? "text-gray-700/50"
+                              : params.sort === "asc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="time"
+                          value="asc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                        </button>
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "time"
+                              ? "text-gray-700/50"
+                              : params.sort === "desc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="time"
+                          value="desc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                        </button>
+                      </div>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3>Total Summary</h3>
-                    <div className="icon-thead flex">
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "totalsum"
-                            ? "text-gray-700/50"
-                            : params.sort === "asc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="totalsum"
-                        value="asc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowUp} />
-                      </button>
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "totalsum"
-                            ? "text-gray-700/50"
-                            : params.sort === "desc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="totalsum"
-                        value="desc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowDown} />
-                      </button>
+                  <th className="px-2 py-2 border border-gray-500/25 text-center">
+                    <div className="flex justify-between items-center">
+                      <h3>Total Summary</h3>
+                      <div className="flex space-x-2">
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "totalsum"
+                              ? "text-gray-700/50"
+                              : params.sort === "asc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="totalsum"
+                          value="asc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                        </button>
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "totalsum"
+                              ? "text-gray-700/50"
+                              : params.sort === "desc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="totalsum"
+                          value="desc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                        </button>
+                      </div>
                     </div>
                   </th>
-                  <th className="flex justify-between w-5/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3>Supplier</h3>
-                    <div className="icon-thead flex">
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "supplier"
-                            ? "text-gray-700/50"
-                            : params.sort === "asc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="supplier"
-                        value="asc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowUp} />
-                      </button>
-                      <button
-                        className={`text-sm cursor-pointer hover:text-gray-700 ${
-                          params.sortBy !== "supplier"
-                            ? "text-gray-700/50"
-                            : params.sort === "desc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
-                        }`}
-                        name="supplier"
-                        value="desc"
-                        onClick={handleSort}
-                      >
-                        <FontAwesomeIcon icon={faArrowDown} />
-                      </button>
+                  <th className="px-2 py-2 border border-gray-500/25 text-center">
+                    <div className="flex justify-between items-center">
+                      <h3>Supplier</h3>
+                      <div className="flex space-x-2">
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "supplier"
+                              ? "text-gray-700/50"
+                              : params.sort === "asc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="supplier"
+                          value="asc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                        </button>
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "supplier"
+                              ? "text-gray-700/50"
+                              : params.sort === "desc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="supplier"
+                          value="desc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                        </button>
+                      </div>
                     </div>
                   </th>
-                  <th className="flex w-2/12 px-2 py-2 border border-gray-500/25 text-center">
+                  <th className="px-2 py-2 border border-gray-500/25 text-center">
                     <h3>Actions</h3>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {purchases.length > 0 ? (
-                  purchases.map((purchase: Purchases, index: any) => (
-                    <tr
-                      className="flex w-full justify-center text-slate-500"
-                      key={index}
-                    >
-                      <td className="w-2/12 px-2 py-2 border  border-gray-500/25 text-center">
+                  purchases.map((purchase, index) => (
+                    <tr className="text-slate-500" key={index}>
+                      <td className="px-2 py-2 border border-gray-500/25 text-center">
                         {purchase.invoice}
                       </td>
-                      <td className="w-3/12 px-2 py-2 border  border-gray-500/25 text-center">
+                      <td className="px-2 py-2 border border-gray-500/25 text-center">
                         {dateToString(purchase.time.toString())}
                       </td>
-                      <td className="w-5/12 px-2 py-2 border  border-gray-500/25 text-center">
+                      <td className="px-2 py-2 border border-gray-500/25 text-center">
                         {purchase.totalsum}
                       </td>
-                      <td className="w-5/12 px-2 py-2 border  border-gray-500/25 text-center">
-                        {purchase.suppliers.name}
+                      <td className="px-2 py-2 border border-gray-500/25 text-center">
+                        {purchase.suppliers.name ? purchase.suppliers.name : ""}
                       </td>
-                      <td className="w-2/12 px-2 py-2 border  border-gray-500/25 text-center">
+                      <td className="px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
                           <button
-                            className="text-white hover:cursor-pointer bg-green-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-green-800"
+                            className="text-white bg-green-600 rounded-full px-2 py-1 hover:bg-green-800"
                             onClick={() =>
                               router.push(`/purchases/edit/${purchase.invoice}`)
                             }
@@ -288,7 +293,7 @@ export default function purchases() {
                             <FontAwesomeIcon icon={faCircleInfo} />
                           </button>
                           <button
-                            className="text-white hover:cursor-pointer bg-red-600 w-3/12 rounded-[50%] px-1 py-2 hover:bg-red-800"
+                            className="text-white bg-red-600 rounded-full px-2 py-1 hover:bg-red-800"
                             onClick={() => {
                               setSelectedPurchases({
                                 invoice: purchase.invoice,
@@ -308,28 +313,28 @@ export default function purchases() {
                   ))
                 ) : (
                   <tr>
-                    <td className="text-center py-6 text-gray-500" colSpan={4}>
+                    <td className="text-center py-6 text-gray-500" colSpan={5}>
                       No Purchases Found.
                     </td>
                   </tr>
                 )}
               </tbody>
-              <tfoot className="w-full">
-                <tr className="flex w-full justify-between text-slate-500">
-                  <th className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3 className="text-left">Invoice</h3>
+              <tfoot>
+                <tr className="text-slate-500">
+                  <th className="px-2 py-2 border border-gray-500/25 text-left">
+                    Invoice
                   </th>
-                  <th className="w-3/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3 className="text-left">Time</h3>
+                  <th className="px-2 py-2 border border-gray-500/25 text-left">
+                    Time
                   </th>
-                  <th className="w-5/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3 className="text-left">Total Summary</h3>
+                  <th className="px-2 py-2 border border-gray-500/25 text-left">
+                    Total Summary
                   </th>
-                  <th className="w-5/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3 className="text-left">Supplier</h3>
+                  <th className="px-2 py-2 border border-gray-500/25 text-left">
+                    Supplier
                   </th>
-                  <th className="w-2/12 px-2 py-2 border border-gray-500/25 text-center">
-                    <h3 className="text-left">Actions</h3>
+                  <th className="px-2 py-2 border border-gray-500/25 text-left">
+                    Actions
                   </th>
                 </tr>
               </tfoot>
