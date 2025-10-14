@@ -15,6 +15,7 @@ import PurchaseSummary from "./PurchaseSummary";
 import PurchaseTable from "./PurchaseTable";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import axios from "axios";
+import { Item } from "@/app/types/purchases";
 
 export default function AddPurchase() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function AddPurchase() {
     totalsum: number;
     supplier: number;
     operator: string;
-    items: PurchaseItem[];
+    items: Item[];
   }>({
     invoice:
       "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
@@ -108,7 +109,7 @@ export default function AddPurchase() {
   const handleSubmit = async () => {
     try {
       const { items, ...dataWithoutItems } = input;
-      const res = await addPurchases(dataWithoutItems, input.items);
+      const res = await addPurchases(items, dataWithoutItems);
       router.push("/purchases");
       return res;
     } catch (error) {

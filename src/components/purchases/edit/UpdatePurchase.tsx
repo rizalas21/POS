@@ -113,7 +113,11 @@ export default function EditPurchase() {
   const handleSubmit = async () => {
     try {
       const { purchaseitems, ...dataWithoutItems } = input;
-      const res = await updatePurchases(input.invoice, dataWithoutItems);
+      const res = await updatePurchases(
+        input.invoice,
+        dataWithoutItems,
+        input.purchaseitems
+      );
       router.push("/purchases");
       return res;
     } catch (error) {
