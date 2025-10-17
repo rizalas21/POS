@@ -11,7 +11,7 @@ export default function PurchaseTable({
     totalsum: number;
     supplier: number;
     operator: string;
-    purchaseitems: PurchaseItem[];
+    items: PurchaseItem[];
   };
   goods: Goods[];
 }) {
@@ -40,8 +40,8 @@ export default function PurchaseTable({
         </tr>
       </thead>
       <tbody>
-        {input.purchaseitems.length > 0 ? (
-          input.purchaseitems.map((data: PurchaseItem, index: any) => (
+        {input.items.length > 0 ? (
+          input.items.map((data: PurchaseItem, index: any) => (
             <tr
               className={`text-slate-500 ${
                 index % 2 === 0 ? "bg-slate-100" : "bg-white"

@@ -280,7 +280,9 @@ export default function purchases() {
                         {purchase.totalsum}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {purchase.suppliers.name ? purchase.suppliers.name : ""}
+                        {purchase.suppliers?.name
+                          ? purchase.suppliers.name
+                          : ""}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
@@ -299,7 +301,8 @@ export default function purchases() {
                                 invoice: purchase.invoice,
                                 time: purchase.time.toString(),
                                 totalsum: purchase.totalsum,
-                                supplier: purchase.supplier,
+                                supplier: purchase.suppliers
+                                  ?.supplierid as number,
                                 operator: String(purchase.operator),
                               });
                               setShowModal(true);

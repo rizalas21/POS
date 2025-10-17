@@ -2,7 +2,7 @@ export interface Purchases {
   invoice: string;
   time: Date;
   totalsum: number;
-  supplier: number;
+  suppliers?: { supplierid: number; name: string };
   operator: string;
 }
 
@@ -28,7 +28,7 @@ export interface PurchasesState {
   pages: Number;
   total: Number;
   getPurchases: (params: SearchParams) => void;
-  addPurchases: (data: Purchases, item: Item) => void;
-  deletePurchases: (barcode: string) => void;
-  updatePurchases: (barcode: string, data: Purchases) => void;
+  addPurchases: (data: Purchases, item: Item[]) => void;
+  deletePurchases: (invoice: string) => void;
+  updatePurchases: (invoice: string, data: Purchases, items: Item[]) => void;
 }

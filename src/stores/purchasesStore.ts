@@ -1,4 +1,4 @@
-import { PurchasesState } from "@/app/types/purchases";
+import { Item, Purchases, PurchasesState } from "@/app/types/purchases";
 import axios from "axios";
 import { create } from "zustand";
 
@@ -46,13 +46,12 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
       return null;
     }
   },
-  updatePurchases: async (invoice, data) => {
+  updatePurchases: async (invoice, data, items) => {
     try {
       console.log("ini invoice: ", invoice);
       console.log("ini data: ", data);
-      console.log("ini items: ", items);
-      const { items, ...newData } = data;
-      const res = await axios.put(`/api/purchases/${invoice}`, newData);
+      console.log("ini item: ", items);
+      const res = await axios.put(`/api/purchases/${invoice}`, data);
       if (!res || res.status >= 400) return null;
       await axios.delete(`/api/purchaseitem/inv/${invoice}`);
       await axios.post("/api/purchaseitem", items);

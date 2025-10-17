@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    console.log(data);
+    console.log("datanya bro back end purchase item: ", data);
     const res = await prisma.purchaseitems.createMany({ data });
     return NextResponse.json(res);
   } catch (error) {

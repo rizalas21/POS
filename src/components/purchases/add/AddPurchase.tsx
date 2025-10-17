@@ -109,7 +109,7 @@ export default function AddPurchase() {
   const handleSubmit = async () => {
     try {
       const { items, ...dataWithoutItems } = input;
-      const res = await addPurchases(items, dataWithoutItems);
+      const res = await addPurchases(dataWithoutItems, items);
       router.push("/purchases");
       return res;
     } catch (error) {

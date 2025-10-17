@@ -28,7 +28,7 @@ export async function PUT(
 ) {
   try {
     const data = await req.json();
-    const { supplier, operator, ...resData } = data;
+    const { supplier, operator, items, ...resData } = data;
     const { invoice } = await params;
     console.log("dari purchases back end nya bro: ", data, invoice);
 
