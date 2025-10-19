@@ -15,6 +15,7 @@ export interface SearchParams {
 }
 
 export interface Item {
+  id?: string;
   invoice: string;
   itemcode: string;
   quantity: number;

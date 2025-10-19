@@ -4,7 +4,6 @@ import { useParams, useRouter } from "next/navigation";
 import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { PurchaseItem } from "@/app/types/purchaseItem";
 import { useGoodsStore } from "@/stores/goodsStore";
 
 import LoadingComponent from "../../Loading";
@@ -15,6 +14,7 @@ import PurchaseSummary from "./PurchaseSummary";
 import PurchaseTable from "./PurchaseTable";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import axios from "axios";
+import { Item } from "@/app/types/purchases";
 
 export default function EditPurchase() {
   const router = useRouter();
@@ -24,7 +24,6 @@ export default function EditPurchase() {
   const { goods, getGoods } = useGoodsStore();
   const { suppliers, getSuppliers } = useSuppliersStore();
   const { data, status } = useSession();
-  const [invoiceChecked, setInvoiceChecked] = useState(false);
 
   const now = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -50,7 +49,7 @@ export default function EditPurchase() {
     totalsum: number;
     supplier: number;
     operator: string;
-    purchaseitems: PurchaseItem[];
+    purchaseitems: Item[];
   }>({
     invoice:
       "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
