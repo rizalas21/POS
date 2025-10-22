@@ -2,6 +2,7 @@ import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { Prisma } from "@/generated/prisma";
+import suppliers from "@/app/suppliers/page";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)
@@ -31,7 +32,10 @@ export async function GET(req: NextRequest) {
     const total = await prisma.purchases.count({ where: filterCondition });
     const res = await prisma.purchases.findMany({
       where: filterCondition,
-      orderBy: { [sortBy]: sort },
+      orderBy:
+        sortBy === "supplier"
+          ? { suppliers: { name: sort === "asc" ? "asc" : "desc" } }
+          : { [sortBy]: sort },
       ...(limit > 0 && { take: limit, skip: offset }),
       include: {
         suppliers: {

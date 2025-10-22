@@ -31,8 +31,8 @@ export async function PUT(
 
     const name = data.get("name") as string;
     const stock = Number(data.get("stock"));
-    const purchasePrice = Number(data.get("purchasePrice"));
-    const sellingPrice = Number(data.get("sellingPrice"));
+    const purchaseprice = Number(data.get("purchasePrice"));
+    const sellingprice = Number(data.get("sellingPrice"));
     const unit = data.get("unit") as string;
     const picture = data.get("picture") as File | null;
 
@@ -58,8 +58,8 @@ export async function PUT(
           barcode,
           name,
           stock,
-          purchasePrice,
-          sellingPrice,
+          purchaseprice,
+          sellingprice,
           unit,
           picture: typeof picture === "string" ? picture : imageUrl,
         },

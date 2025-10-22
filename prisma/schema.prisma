@@ -67,4 +67,11 @@ model Purchaseitems {
   totalprice Decimal @db.Decimal(19,2)
 }
 
+model customers {
+  customerid Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+  address String
+  phone String @db.VarChar(20)
+}
+
 //npx prisma migrate dev --name init

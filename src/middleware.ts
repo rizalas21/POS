@@ -10,6 +10,10 @@ export default async function middleware(req: NextRequest) {
 
   if (!token) return NextResponse.redirect(new URL("/signin", req.url));
 
+  if (typeof token.exp === "number" && Date.now() / 1000 > token.exp) {
+    return NextResponse.redirect(new URL("/signin?expired=true", req.url));
+  }
+
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("user-id", token.id as string);
 

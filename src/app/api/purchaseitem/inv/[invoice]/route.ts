@@ -5,9 +5,10 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { invoice: string } }
 ) {
+  console.log("masuk sini");
   try {
-    console.log(req);
-    const { invoice } = params;
+    console.log("masuk dalam");
+    const { invoice } = await params;
     if (!invoice) return NextResponse.json("invoice not found purchase item");
     const res = await prisma.purchaseitems.deleteMany({ where: { invoice } });
     if (!res)

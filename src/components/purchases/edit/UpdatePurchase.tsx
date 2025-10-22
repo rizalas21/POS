@@ -51,8 +51,7 @@ export default function EditPurchase() {
     operator: string;
     purchaseitems: Item[];
   }>({
-    invoice:
-      "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
+    invoice: invoice,
     time: new Date(),
     totalsum: 0,
     supplier: 0,

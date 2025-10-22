@@ -1,5 +1,5 @@
 import { Goods } from "@/app/types/goods";
-import { PurchaseItem } from "@/app/types/purchaseItem";
+import { Item } from "@/app/types/purchases";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction } from "react";
@@ -15,7 +15,7 @@ export default function PurchaseTable({
     totalsum: number;
     supplier: number;
     operator: string;
-    purchaseitems: PurchaseItem[];
+    purchaseitems: Item[];
   };
   setInput: Dispatch<
     SetStateAction<{
@@ -24,7 +24,7 @@ export default function PurchaseTable({
       totalsum: number;
       supplier: number;
       operator: string;
-      purchaseitems: PurchaseItem[];
+      purchaseitems: Item[];
     }>
   >;
   goods: Goods[];
@@ -58,7 +58,7 @@ export default function PurchaseTable({
       </thead>
       <tbody>
         {input.purchaseitems.length > 0 ? (
-          input.purchaseitems.map((data: PurchaseItem, index: any) => (
+          input.purchaseitems.map((data: Item, index: any) => (
             <tr
               className={`text-slate-500 ${
                 index % 2 === 0 ? "bg-slate-100" : "bg-white"
@@ -83,7 +83,7 @@ export default function PurchaseTable({
                       totalsum:
                         Number(input.totalsum) - Number(data.totalprice),
                       purchaseitems: input.purchaseitems.filter(
-                        (item) => item.itemcode !== data.itemcode
+                        (item) => item.id !== data.id
                       ),
                     });
                   }}
