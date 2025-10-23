@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { PurchaseItem } from "@/app/types/purchaseItem";
 import { useGoodsStore } from "@/stores/goodsStore";
 
 import LoadingComponent from "@/components/Loading";

@@ -360,10 +360,10 @@ export default function units() {
                         {good.unit}
                       </td>
                       <td className="min-w-[12vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
-                        {formatterCurrency.format(good.purchasePrice)}
+                        {formatterCurrency.format(good.purchaseprice)}
                       </td>
                       <td className="min-w-[11vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
-                        {formatterCurrency.format(good.sellingPrice)}
+                        {formatterCurrency.format(good.sellingprice)}
                       </td>
                       <td className="min-w-[11vw] px-1 py-2 border border-gray-500/25 text-center">
                         {good.picture ? (
@@ -396,8 +396,8 @@ export default function units() {
                                 name: good.name,
                                 stock: good.stock,
                                 unit: good.unit,
-                                purchasePrice: good.purchasePrice,
-                                sellingPrice: good.sellingPrice,
+                                purchasePrice: good.purchaseprice,
+                                sellingPrice: good.sellingprice,
                                 picture: good.picture as string,
                               });
                               setShowModal(true);

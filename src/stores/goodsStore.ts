@@ -10,7 +10,7 @@ export const useGoodsStore = create<goodsState>((set) => ({
   getGoods: async (params) => {
     try {
       const { data } = await axios.get("/api/goods", { params });
-      console.log("ini data store nya => ", data);
+      console.log("ini data store nya => ", data.data);
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
       set({
         goods: data.data,

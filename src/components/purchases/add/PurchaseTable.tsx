@@ -1,5 +1,5 @@
 import { Goods } from "@/app/types/goods";
-import { PurchaseItem } from "@/app/types/purchaseItem";
+import { Item } from "@/app/types/purchases";
 
 export default function PurchaseTable({
   input,
@@ -11,7 +11,7 @@ export default function PurchaseTable({
     totalsum: number;
     supplier: number;
     operator: string;
-    items: PurchaseItem[];
+    items: Item[];
   };
   goods: Goods[];
 }) {
@@ -41,7 +41,7 @@ export default function PurchaseTable({
       </thead>
       <tbody>
         {input.items.length > 0 ? (
-          input.items.map((data: PurchaseItem, index: any) => (
+          input.items.map((data: Item, index: any) => (
             <tr
               className={`text-slate-500 ${
                 index % 2 === 0 ? "bg-slate-100" : "bg-white"

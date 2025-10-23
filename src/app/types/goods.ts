@@ -2,8 +2,8 @@ export interface Goods {
   barcode: string;
   name: string;
   stock: number;
-  purchasePrice: number;
-  sellingPrice: number;
+  purchaseprice: number;
+  sellingprice: number;
   unit: string;
   picture: string | null;
 }

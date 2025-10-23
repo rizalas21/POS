@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
       ...(limit > 0 && { take: limit, skip: offset }),
     });
     const pages = Math.ceil(total / limit);
-
+    console.log(res);
     return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
     console.log("Error when trying to get goods: ", error);

@@ -13,6 +13,9 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import { Suppliers } from "../types/suppliers";
+import { useCustomersStore } from "@/stores/customersStore";
+import { Customers } from "../types/customers";
+import { ModalDeleteCustomers } from "@/components/customers/ModalDelete";
 
 export default function suppliers() {
   const [params, setParams] = useState({
@@ -22,15 +25,15 @@ export default function suppliers() {
     sortBy: "supplierid",
     sort: "asc",
   });
-  const [selectedSuppliers, setSelectedSuppliers] = useState({
-    supplierid: "",
+  const [selectedCustomers, setSelectedCustomers] = useState({
+    customerid: "",
     name: "",
     address: "",
     phone: "",
   });
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
-  const { suppliers, getSuppliers, page, pages, total } = useSuppliersStore();
+  const { customers, getCustomers, page, pages, total } = useCustomersStore();
   const [isLoading, setIsloading] = useState(true);
   const overLimit =
     (Number(page) - 1) * Number(params.limit) + Number(params.limit);
@@ -54,7 +57,7 @@ export default function suppliers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        getSuppliers(params);
+        getCustomers(params);
       } catch (error) {
         console.log("error when getUsers");
       } finally {
@@ -66,12 +69,12 @@ export default function suppliers() {
   console.log("total ini teh bro => ", total);
   return (
     <main className="space-y-3">
-      <h1 className="text-2xl text-gray-700">Suppliers</h1>
-      <p>This is data of Suppliers</p>
+      <h1 className="text-2xl text-gray-700">Customers</h1>
+      <p>This is data of Customers</p>
       <div className="shadow-2xl h-auto bg-white">
         <div className="w-full h-[8vh] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] mb-2 pl-2 flex justify-start items-center bg-slate-100">
           <Link
-            href={"/suppliers/add"}
+            href={"/customers/add"}
             className="flex justify-start text-white font-thin rounded-[5px] text-center items-center hover:bg-blue-800"
           >
             <FontAwesomeIcon
@@ -119,17 +122,17 @@ export default function suppliers() {
                 <tr className="text-slate-500">
                   <th className="px-2 py-2 border border-gray-500/25 text-center">
                     <div className="w-full flex justify-between">
-                      <h3>Supplierid</h3>
+                      <h3>Customer id</h3>
                       <div className="icon-thead flex">
                         <button
                           className={`text-sm cursor-pointer hover:text-gray-700 ${
-                            params.sortBy !== "supplierid"
+                            params.sortBy !== "customerid"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
                               ? "text-grayy-700"
                               : "text-gray-700/30"
                           }`}
-                          name="supplierid"
+                          name="customerid"
                           value="asc"
                           onClick={handleSort}
                         >
@@ -137,13 +140,13 @@ export default function suppliers() {
                         </button>
                         <button
                           className={`text-sm cursor-pointer hover:text-gray-700 ${
-                            params.sortBy !== "supplierid"
+                            params.sortBy !== "customerid"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
                               ? "text-grayy-700"
                               : "text-gray-700/30"
                           }`}
-                          name="supplierid"
+                          name="customerid"
                           value="desc"
                           onClick={handleSort}
                         >
@@ -263,20 +266,20 @@ export default function suppliers() {
                 </tr>
               </thead>
               <tbody>
-                {suppliers.length > 0 ? (
-                  suppliers.map((supplier: Suppliers, index: any) => (
+                {customers.length > 0 ? (
+                  customers.map((customer: Customers, index: any) => (
                     <tr className="text-slate-500" key={index}>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {supplier.supplierid}
+                        {customer.customerid}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {supplier.name}
+                        {customer.name}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {supplier.address}
+                        {customer.address}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {supplier.phone}
+                        {customer.phone}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
@@ -284,7 +287,7 @@ export default function suppliers() {
                             className="text-white hover:cursor-pointer bg-green-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-green-800"
                             onClick={() =>
                               router.push(
-                                `/suppliers/edit/${supplier.supplierid}`
+                                `/customers/edit/${customer.customerid}`
                               )
                             }
                           >
@@ -293,11 +296,11 @@ export default function suppliers() {
                           <button
                             className="text-white hover:cursor-pointer bg-red-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-red-800"
                             onClick={() => {
-                              setSelectedSuppliers({
-                                supplierid: supplier.supplierid.toString(),
-                                name: supplier.name,
-                                address: supplier.address,
-                                phone: supplier.phone,
+                              setSelectedCustomers({
+                                customerid: customer.customerid.toString(),
+                                name: customer.name,
+                                address: customer.address,
+                                phone: customer.phone,
                               });
                               setShowModal(true);
                             }}
@@ -311,7 +314,7 @@ export default function suppliers() {
                 ) : (
                   <tr>
                     <td className="text-center py-6 text-gray-500" colSpan={4}>
-                      No Suppliers Found.
+                      No Customers Found.
                     </td>
                   </tr>
                 )}
@@ -319,7 +322,7 @@ export default function suppliers() {
               <tfoot>
                 <tr className="text-slate-500">
                   <th className="px-2 py-2 border border-gray-500/25 text-center">
-                    <h3 className="text-left">supplierid</h3>
+                    <h3 className="text-left">Customer id</h3>
                   </th>
                   <th className="px-2 py-2 border border-gray-500/25 text-center">
                     <h3 className="text-left">Name</h3>
@@ -389,8 +392,8 @@ export default function suppliers() {
           </div>
         </section>
         {showModal ? (
-          <ModalDeleteSuppliers
-            selectedSuppliers={selectedSuppliers}
+          <ModalDeleteCustomers
+            selectedCustomers={selectedCustomers}
             setShowModal={setShowModal}
           />
         ) : (
