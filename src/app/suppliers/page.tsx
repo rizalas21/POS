@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import { Suppliers } from "../types/suppliers";
+import { ModalDeleteSuppliers } from "@/components/suppliers/ModalDelete";
 
 export default function suppliers() {
   const [params, setParams] = useState({

@@ -22,8 +22,8 @@ export default function suppliers() {
     keyword: "",
     limit: "3",
     page: "1",
-    sortBy: "supplierid",
-    sort: "asc",
+    sortBy: "",
+    sort: "",
   });
   const [selectedCustomers, setSelectedCustomers] = useState({
     customerid: "",
