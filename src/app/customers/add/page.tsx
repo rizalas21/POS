@@ -1,14 +1,13 @@
 "use client";
 
 import { useCustomersStore } from "@/stores/customersStore";
-import { useSuppliersStore } from "@/stores/suppliersStore";
 import { useUnitsStore } from "@/stores/unitsStore";
 import { faDatabase, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function addSuppliers() {
+export default function addCustomers() {
   const router = useRouter();
   const { addCustomers } = useCustomersStore();
   const [data, setData] = useState({
@@ -48,7 +47,7 @@ export default function addSuppliers() {
           <div className="flex justify-between items-center w-full h-[6vh] rounded">
             <label>name</label>
             <input
-              placeholder="Name of Suppliers"
+              placeholder="Name of Customers"
               type="text"
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/25"
               name="name"

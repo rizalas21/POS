@@ -1,7 +1,6 @@
 "use client";
 
 import { useCustomersStore } from "@/stores/customersStore";
-import { useSuppliersStore } from "@/stores/suppliersStore";
 import { faDatabase, faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";

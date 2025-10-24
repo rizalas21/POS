@@ -11,19 +11,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useSuppliersStore } from "@/stores/suppliersStore";
-import { Suppliers } from "../types/suppliers";
 import { useCustomersStore } from "@/stores/customersStore";
 import { Customers } from "../types/customers";
 import { ModalDeleteCustomers } from "@/components/customers/ModalDelete";
 
-export default function suppliers() {
+export default function customers() {
   const [params, setParams] = useState({
     keyword: "",
     limit: "3",
     page: "1",
-    sortBy: "",
-    sort: "",
+    sortBy: "customerid",
+    sort: "asc",
   });
   const [selectedCustomers, setSelectedCustomers] = useState({
     customerid: "",
@@ -98,7 +96,7 @@ export default function suppliers() {
                 id=""
                 min={1}
                 max={Number(total)}
-                defaultValue={3}
+                value={Number(params.limit)}
                 onChange={(e) => handleChange(e)}
               />
               <p>entries</p>
@@ -342,7 +340,11 @@ export default function suppliers() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              showing{" "}
+              {Number(total) < 1
+                ? 0
+                : (Number(page) - 1) * Number(params.limit) + 1}{" "}
+              to{" "}
               {overLimit >= Number(total) || params.limit === "0"
                 ? Number(total)
                 : overLimit}{" "}
