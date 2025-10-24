@@ -1,5 +1,5 @@
 import { Goods } from "@/app/types/goods";
-import { PurchaseItem } from "@/app/types/purchaseItem";
+import { Item } from "@/app/types/purchases";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction } from "react";
@@ -23,7 +23,7 @@ export default function PurchaseForm({
     totalsum: number;
     supplier: number;
     operator: string;
-    purchaseitems: PurchaseItem[];
+    purchaseitems: Item[];
   };
   formattedDate: string;
   data: any;

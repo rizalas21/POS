@@ -110,12 +110,7 @@ export default function EditPurchase() {
 
   const handleSubmit = async () => {
     try {
-      const { purchaseitems, ...dataWithoutItems } = input;
-      const res = await updatePurchases(
-        input.invoice,
-        dataWithoutItems,
-        input.purchaseitems
-      );
+      const res = await updatePurchases(input.invoice, input);
       router.push("/purchases");
       return res;
     } catch (error) {
@@ -169,7 +164,6 @@ export default function EditPurchase() {
         setInput({
           ...data,
           time: new Date(data.time),
-          items: data.purchaseitems,
         });
         setSupplier({ ...supplier, supplierid: data.supplier });
       } catch (error) {
@@ -184,7 +178,7 @@ export default function EditPurchase() {
   }, [data]);
 
   if (status === "loading") return <LoadingComponent />;
-  console.log(typeof input.time);
+  console.log(input);
 
   return (
     <>

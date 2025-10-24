@@ -27,30 +27,55 @@ export async function PUT(
   { params }: { params: { invoice: string } }
 ) {
   try {
-    const data = await req.json();
-    const { supplier, operator, items, ...resData } = data;
+    const datas = await req.json();
+    const { supplier, operator, purchaseitems, ...resData } = datas;
+    console.log("res data nya bro: ", resData);
     const { invoice } = await params;
-    console.log("dari purchases back end nya bro: ", data, invoice);
-
-    const res = await prisma.purchases.update({
+    const existingPurchases = await prisma.purchases.findFirst({
       where: { invoice },
-      data: {
-        ...resData,
-        suppliers: {
-          connect: {
-            supplierid: supplier,
-          },
-        },
-        users: {
-          connect: {
-            userid: operator,
-          },
-        },
-      },
+      include: { purchaseitems: true },
     });
 
-    if (!res) return NextResponse.json("something when wrong in res => ", res);
-    return NextResponse.json(res);
+    if (!existingPurchases) {
+      return NextResponse.json(
+        { error: "Purchase not found" },
+        { status: 404 }
+      );
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+      const updatePurchases = await tx.purchases.update({
+        where: { invoice },
+        data: {
+          ...resData,
+          suppliers: { connect: { supplierid: supplier } },
+          users: { connect: { userid: operator } },
+        },
+      });
+      for (const data of datas?.purchaseitems || []) {
+        console.log("Data bro: ", data);
+        if (!data.id) {
+          await tx.purchaseitems.create({
+            data: {
+              ...data,
+              invoice,
+            },
+          });
+        }
+      }
+
+      for (const old of existingPurchases?.purchaseitems || []) {
+        const stillExisting = purchaseitems.find((i: any) => i.id === old.id);
+        if (!stillExisting)
+          await tx.purchaseitems.delete({ where: { id: old.id } });
+      }
+
+      return await tx.purchases.findUnique({
+        where: { invoice },
+        include: { purchaseitems: true },
+      });
+    });
+    return NextResponse.json(result);
   } catch (error) {
     console.log("error when update purchases : ", error);
     return NextResponse.json("failed to put purchases");

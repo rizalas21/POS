@@ -36,6 +36,7 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 3600,
   },
   pages: { signIn: "/signin" },
   callbacks: {
@@ -44,20 +45,15 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.role = user.role;
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60;
       }
-      const isExpired = token.exp && Date.now() / 1000 > token.exp;
-      if (isExpired) token.expired = true;
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      if (token.expired) return null;
       session.user = {
         ...session.user,
         id: token.id,
         email: token.email,
         role: token.role,
-        exp: token.exp,
       };
       return session;
     },

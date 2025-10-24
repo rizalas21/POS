@@ -40,9 +40,10 @@ export const useUnitsStore = create<unitState>((set) => ({
       if (res.status >= 400) {
         return null;
       }
-      console.log("res backend => ", res);
+
       set((state) => ({
         units: state.units.filter((item) => item.unit !== unit),
+        total: Number(state.total) - 1,
       }));
     } catch (error) {
       console.error("Error deleting unit:", error);

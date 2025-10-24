@@ -42,6 +42,7 @@ export const useUsersStore = create<usersState>((set) => ({
       }
       set((state) => ({
         users: state.users.filter((item) => item.userid !== userid),
+        total: Number(state.total) - 1,
       }));
     } catch (error) {
       console.error("Error deleting users:", error);

@@ -41,35 +41,18 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
       if (!res || res.status >= 400) return null;
       set((state) => ({
         purchases: state.purchases.filter((item) => item.invoice !== invoice),
+        total: Number(state.total) - 1,
       }));
     } catch (error) {
       console.error("Error delete purchases: ", error);
       return null;
     }
   },
-  updatePurchases: async (invoice, data, items) => {
+  updatePurchases: async (invoice, data) => {
     try {
-      console.log("ini invoice: ", invoice);
-      console.log("ini item: ", items);
+      console.log("data update purchase: ", data);
       const res = await axios.put(`/api/purchases/${invoice}`, data);
-      const purchases = await axios.get(`/api/purchases/${invoice}`);
-      const olditem = purchases.data.purchaseitems || [];
-      console.log(
-        "ini item dari purchases bro: ",
-        purchases.data.purchaseitems
-      );
       if (!res || res.status >= 400) return null;
-      for (const item of items) {
-        if (!item.id) {
-          await axios.post("/api/purchaseitem", item);
-        }
-      }
-
-      for (const old of olditem) {
-        const existingItem = items.find((i) => i.id === old.id);
-        console.log(existingItem);
-        if (!existingItem) await axios.delete(`/api/purchaseitem/${old.id}`);
-      }
 
       set((state) => ({
         purchases: state.purchases.map((item) =>

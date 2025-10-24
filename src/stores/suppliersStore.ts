@@ -45,6 +45,7 @@ export const useSuppliersStore = create<SuppliersState>((set) => ({
         suppliers: state.suppliers.filter(
           (item) => item.supplierid !== Number(supplierid)
         ),
+        total: Number(state.total) - 1,
       }));
     } catch (error) {
       console.log("error when delete suppliers: ", error);

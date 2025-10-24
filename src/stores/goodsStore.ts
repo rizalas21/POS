@@ -43,6 +43,7 @@ export const useGoodsStore = create<goodsState>((set) => ({
       if (res.status >= 400) {
         return null;
       }
+
       set((state) => ({
         goods: state.goods.filter((item) => item.barcode !== barcode),
         totat: Number(state.total) - 1,

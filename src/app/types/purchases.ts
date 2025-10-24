@@ -4,6 +4,7 @@ export interface Purchases {
   totalsum: number;
   suppliers?: { supplierid: number; name: string };
   operator: string;
+  purchaseitems?: Item[];
 }
 
 export interface SearchParams {
@@ -31,5 +32,5 @@ export interface PurchasesState {
   getPurchases: (params: SearchParams) => void;
   addPurchases: (data: Purchases, item: Item[]) => void;
   deletePurchases: (invoice: string) => void;
-  updatePurchases: (invoice: string, data: Purchases, items: Item[]) => void;
+  updatePurchases: (invoice: string, data: Purchases) => void;
 }

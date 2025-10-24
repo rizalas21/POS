@@ -40,6 +40,7 @@ export const useCustomersStore = create<customersState>((set) => ({
         customers: state.customers.filter(
           (item) => item.customerid !== Number(customerid)
         ),
+        total: Number(state.total) - 1,
       }));
     } catch (error) {
       console.error("Error delete customers: ", error);
