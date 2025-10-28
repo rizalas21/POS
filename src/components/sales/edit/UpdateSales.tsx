@@ -1,28 +1,29 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useGoodsStore } from "@/stores/goodsStore";
 
-import LoadingComponent from "@/components/Loading";
+import LoadingComponent from "../../Loading";
 
-import PurchaseActions from "./PurchaseActions";
-import PurchaseForm from "./PurchaseForm";
-import PurchaseSummary from "./PurchaseSummary";
-import PurchaseTable from "./PurchaseTable";
+import PurchaseActions from "./SalesActions";
+import PurchaseForm from "./SalesForm";
+import PurchaseSummary from "./SalesSummary";
+import PurchaseTable from "./SalesTable";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import axios from "axios";
 import { Item } from "@/app/types/purchases";
 
-export default function AddPurchase() {
+export default function EditPurchase() {
   const router = useRouter();
-  const { addPurchases } = usePurchasesStore();
+  const paramsB = useParams();
+  const invoice = paramsB.invoice as string;
+  const { updatePurchases } = usePurchasesStore();
   const { goods, getGoods } = useGoodsStore();
   const { suppliers, getSuppliers } = useSuppliersStore();
   const { data, status } = useSession();
-  const [invoiceChecked, setInvoiceChecked] = useState(false);
 
   const now = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -34,8 +35,6 @@ export default function AddPurchase() {
     second: "2-digit",
     hour12: false,
   };
-
-  const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(now);
 
   const [supplier, setSupplier] = useState({
     supplierid: "",
@@ -50,17 +49,19 @@ export default function AddPurchase() {
     totalsum: number;
     supplier: number;
     operator: string;
-    items: Item[];
+    purchaseitems: Item[];
   }>({
-    invoice:
-      "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
+    invoice: invoice,
     time: new Date(),
     totalsum: 0,
     supplier: 0,
     operator: data?.user.id as string,
-    items: [],
+    purchaseitems: [],
   });
 
+  const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(
+    input.time
+  );
   const [goodsItem, setGoodsItem] = useState({
     barcode: "",
     name: "",
@@ -88,8 +89,10 @@ export default function AddPurchase() {
       e.preventDefault();
       setInput({
         ...input,
-        items: [...input.items, item],
-        totalsum: input.totalsum + item.purchaseprice * item.quantity,
+        purchaseitems: [...input.purchaseitems, item],
+        totalsum:
+          Number(input.totalsum) +
+          Number(item.purchaseprice) * Number(item.quantity),
       });
       setItem({
         invoice: input.invoice,
@@ -107,7 +110,7 @@ export default function AddPurchase() {
 
   const handleSubmit = async () => {
     try {
-      const res = await addPurchases(input);
+      const res = await updatePurchases(input.invoice, input);
       router.push("/purchases");
       return res;
     } catch (error) {
@@ -150,35 +153,32 @@ export default function AddPurchase() {
   };
 
   useEffect(() => {
-    if (invoiceChecked) return;
     const fetchInvoice = async () => {
       try {
         getGoods(params);
         getSuppliers(params);
-        const { data } = await axios.get(`/api/purchases`, {
+        const { data } = await axios.get(`/api/purchases/${invoice}`, {
           params: { sortBy: "createdAt", sort: "desc", limit: 1 },
         });
-        if (input.invoice <= data.data[0].invoice) {
-          setInput({
-            ...input,
-            invoice:
-              "INV-" +
-              new Date().toISOString().slice(0, 10).split("-").join("") +
-              "-" +
-              (Number(data.data[0].invoice.slice(13)) + 1),
-          });
-        }
+        console.log("data invpoce nih: ", data);
+        setInput({
+          ...data,
+          time: new Date(data.time),
+        });
+        setSupplier({ ...supplier, supplierid: data.supplier });
       } catch (error) {
         console.log(error);
       }
     };
 
     setInput({ ...input, operator: data?.user.id as string });
+    console.log("masuk tengah => ", input);
 
     fetchInvoice();
   }, [data]);
 
   if (status === "loading") return <LoadingComponent />;
+  console.log(input);
 
   return (
     <>
@@ -195,7 +195,8 @@ export default function AddPurchase() {
         handleChangeItem={handleChangeItem}
       />
       <PurchaseTable
-        input={{ ...input, items: input.items || [] }}
+        input={{ ...input, purchaseitems: input.purchaseitems || [] }}
+        setInput={setInput}
         goods={goods}
       />
       <PurchaseSummary

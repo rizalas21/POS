@@ -8,19 +8,21 @@ import { useGoodsStore } from "@/stores/goodsStore";
 
 import LoadingComponent from "@/components/Loading";
 
-import PurchaseActions from "./PurchaseActions";
-import PurchaseForm from "./PurchaseForm";
-import PurchaseSummary from "./PurchaseSummary";
-import PurchaseTable from "./PurchaseTable";
+import PurchaseActions from "./SalesActions";
+import PurchaseForm from "./SalesForm";
+import PurchaseSummary from "./SalesSummary";
+import PurchaseTable from "./SalesTable";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import axios from "axios";
-import { Item } from "@/app/types/purchases";
+import { useSalesStore } from "@/stores/salesStore";
+import { Item } from "@/app/types/sales";
+import { useCustomersStore } from "@/stores/customersStore";
 
-export default function AddPurchase() {
+export default function AddSales() {
   const router = useRouter();
-  const { addPurchases } = usePurchasesStore();
+  const { addSales } = useSalesStore();
   const { goods, getGoods } = useGoodsStore();
-  const { suppliers, getSuppliers } = useSuppliersStore();
+  const { customers, getCustomers } = useCustomersStore();
   const { data, status } = useSession();
   const [invoiceChecked, setInvoiceChecked] = useState(false);
 
@@ -37,8 +39,8 @@ export default function AddPurchase() {
 
   const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(now);
 
-  const [supplier, setSupplier] = useState({
-    supplierid: "",
+  const [customer, setCustomer] = useState({
+    customerid: "",
     name: "",
     address: "",
     phone: "",
@@ -48,7 +50,9 @@ export default function AddPurchase() {
     invoice: string;
     time: Date;
     totalsum: number;
-    supplier: number;
+    pay: number;
+    change: number;
+    customer: number;
     operator: string;
     items: Item[];
   }>({
@@ -56,7 +60,9 @@ export default function AddPurchase() {
       "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
     time: new Date(),
     totalsum: 0,
-    supplier: 0,
+    pay: 0,
+    change: 0,
+    customer: 0,
     operator: data?.user.id as string,
     items: [],
   });
@@ -71,7 +77,7 @@ export default function AddPurchase() {
     invoice: input.invoice,
     itemcode: "",
     quantity: 0,
-    purchaseprice: 0,
+    sellingprice: 0,
     totalprice: 0,
   });
 
@@ -89,13 +95,13 @@ export default function AddPurchase() {
       setInput({
         ...input,
         items: [...input.items, item],
-        totalsum: input.totalsum + item.purchaseprice * item.quantity,
+        totalsum: input.totalsum + item.sellingprice * item.quantity,
       });
       setItem({
         invoice: input.invoice,
         itemcode: "",
         quantity: 0,
-        purchaseprice: 0,
+        sellingprice: 0,
         totalprice: 0,
       });
       setGoodsItem({ barcode: "", name: "", stock: "" });
@@ -107,7 +113,8 @@ export default function AddPurchase() {
 
   const handleSubmit = async () => {
     try {
-      const res = await addPurchases(input);
+      const { items, ...dataWithoutItems } = input;
+      const res = await addSales(dataWithoutItems, items);
       router.push("/purchases");
       return res;
     } catch (error) {
@@ -127,19 +134,19 @@ export default function AddPurchase() {
         updatedItem = {
           ...updatedItem,
           quantity: stock,
-          totalprice: stock * updatedItem.purchaseprice,
+          totalprice: stock * updatedItem.sellingprice,
         };
       } else {
         updatedItem = {
           ...updatedItem,
           quantity: qty,
-          totalprice: qty * updatedItem.purchaseprice,
+          totalprice: qty * updatedItem.sellingprice,
         };
       }
-    } else if (name === "purchaseprice") {
+    } else if (name === "sellingprice") {
       updatedItem = {
         ...updatedItem,
-        purchaseprice: newValue,
+        sellingprice: newValue,
         totalprice: updatedItem.quantity * newValue,
       };
     } else {
@@ -154,7 +161,7 @@ export default function AddPurchase() {
     const fetchInvoice = async () => {
       try {
         getGoods(params);
-        getSuppliers(params);
+        getCustomers(params);
         const { data } = await axios.get(`/api/purchases`, {
           params: { sortBy: "createdAt", sort: "desc", limit: 1 },
         });
@@ -201,9 +208,9 @@ export default function AddPurchase() {
       <PurchaseSummary
         input={input}
         setInput={setInput}
-        suppliers={suppliers}
-        supplier={supplier}
-        setSupplier={setSupplier}
+        customers={customers}
+        customer={customer}
+        setCustomer={setCustomer}
       />
       <PurchaseActions handleSubmit={handleSubmit} router={router} />
     </>

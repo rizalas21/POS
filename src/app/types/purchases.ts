@@ -30,7 +30,7 @@ export interface PurchasesState {
   pages: Number;
   total: Number;
   getPurchases: (params: SearchParams) => void;
-  addPurchases: (data: Purchases, item: Item[]) => void;
+  addPurchases: (data: Purchases) => void;
   deletePurchases: (invoice: string) => void;
   updatePurchases: (invoice: string, data: Purchases) => void;
 }

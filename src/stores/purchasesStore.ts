@@ -23,11 +23,10 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
       return null;
     }
   },
-  addPurchases: async (data, item) => {
+  addPurchases: async (data) => {
     try {
       const res = await axios.post("/api/purchases", data);
       if (!res || res.status >= 400) return null;
-      await axios.post("/api/purchaseitem", item);
       set((state) => ({ purchases: [res.data, ...state.purchases] }));
     } catch (error) {
       console.error("Error adding data: ", error);

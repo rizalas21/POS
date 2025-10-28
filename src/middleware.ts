@@ -28,5 +28,9 @@ export const config = {
     "/users",
     "/units",
     "/goods",
+    "/suppliers",
+    "/purchases",
+    "/customers",
+    "/sales",
   ],
 };

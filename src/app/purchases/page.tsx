@@ -68,6 +68,7 @@ export default function purchases() {
     };
     fetchUsers();
   }, [params]);
+  console.log(purchases);
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Purchases</h1>
@@ -267,7 +268,7 @@ export default function purchases() {
                 </tr>
               </thead>
               <tbody>
-                {purchases.length > 0 ? (
+                {purchases.length > 0 || purchases ? (
                   purchases.map((purchase, index) => (
                     <tr className="text-slate-500" key={index}>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
