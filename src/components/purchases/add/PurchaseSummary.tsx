@@ -1,4 +1,4 @@
-import { PurchaseItem } from "@/app/types/purchaseItem";
+import { Item } from "@/app/types/purchases";
 import { Suppliers } from "@/app/types/suppliers";
 import { Dispatch, SetStateAction } from "react";
 
@@ -15,7 +15,7 @@ export default function PurchaseSummary({
     totalsum: number;
     supplier: number;
     operator: string;
-    items: PurchaseItem[];
+    items: Item[];
   };
   setInput: Dispatch<
     SetStateAction<{
@@ -24,7 +24,7 @@ export default function PurchaseSummary({
       totalsum: number;
       supplier: number;
       operator: string;
-      items: PurchaseItem[];
+      items: Item[];
     }>
   >;
   suppliers: Suppliers[];

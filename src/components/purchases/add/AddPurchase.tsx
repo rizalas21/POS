@@ -22,7 +22,6 @@ export default function AddPurchase() {
   const { goods, getGoods } = useGoodsStore();
   const { suppliers, getSuppliers } = useSuppliersStore();
   const { data, status } = useSession();
-  const [invoiceChecked, setInvoiceChecked] = useState(false);
 
   const now = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -150,7 +149,6 @@ export default function AddPurchase() {
   };
 
   useEffect(() => {
-    if (invoiceChecked) return;
     const fetchInvoice = async () => {
       try {
         getGoods(params);
