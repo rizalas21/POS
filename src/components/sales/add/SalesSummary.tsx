@@ -1,6 +1,5 @@
 import { Customers } from "@/app/types/customers";
 import { Item } from "@/app/types/sales";
-import { Suppliers } from "@/app/types/suppliers";
 import { Dispatch, SetStateAction } from "react";
 
 export default function SalesSummary({
@@ -18,7 +17,7 @@ export default function SalesSummary({
     change: number;
     customer: number;
     operator: string;
-    items: Item[];
+    saleitems: Item[];
   };
   setInput: Dispatch<
     SetStateAction<{
@@ -29,7 +28,7 @@ export default function SalesSummary({
       change: number;
       customer: number;
       operator: string;
-      items: Item[];
+      saleitems: Item[];
     }>
   >;
   customers: Customers[];
@@ -62,7 +61,7 @@ export default function SalesSummary({
         />
       </div>
       <div className="flex justify-between items-center">
-        <label>Supplier</label>
+        <label>Customer</label>
         <select
           className="border rounded border-gray-300 w-4/5 min-h-8"
           name=""
@@ -70,9 +69,9 @@ export default function SalesSummary({
           required
           value={String(customer.customerid)}
           onChange={(e) => {
-            const selectedSupplierid = e.target.value;
+            const selectedCustomerid = e.target.value;
             const selectedItem = customers.find(
-              (item) => String(item.customerid) === selectedSupplierid
+              (item) => String(item.customerid) === selectedCustomerid
             );
             if (selectedItem) {
               setCustomer({

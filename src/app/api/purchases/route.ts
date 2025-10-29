@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { Prisma } from "@/generated/prisma";
 import suppliers from "@/app/suppliers/page";
+import { time } from "console";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)
@@ -57,13 +58,21 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    console.log("data back end: ", data);
-    const res = await prisma.purchases.create({
-      data,
+    const { items, ...dataWithoutItems } = data;
+    console.log("data without items: ", dataWithoutItems);
+    console.log("items: ", items, "selesai");
+    const result = await prisma.$transaction(async (tx) => {
+      const createPurchase = await tx.purchases.create({
+        data: { ...dataWithoutItems, time: new Date(dataWithoutItems.time) },
+      });
+
+      await tx.purchaseitems.createMany({ data: items });
+
+      return createPurchase;
     });
-    return NextResponse.json(res);
+    return NextResponse.json(result);
   } catch (error) {
     console.log("Error when trying to POST purchases: ", error);
-    NextResponse.json("error when try to post purchases");
+    return NextResponse.json("error when try to post purchases");
   }
 }

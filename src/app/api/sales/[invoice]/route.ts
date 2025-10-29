@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { invoice } = await params;
-    if (!invoice) return NextResponse.json("invoice not found");
+    if (!invoice) return NextResponse.json("id not found");
     const res = await prisma.sales.findFirst({
       where: { invoice },
       include: { saleitems: true },
@@ -28,7 +28,7 @@ export async function PUT(
 ) {
   try {
     const datas = await req.json();
-    const { customer, operator, saleitems, ...resData } = datas;
+    const { customer, operator, items, ...resData } = datas;
     console.log("res data nya bro: ", resData);
     const { invoice } = await params;
     const existingSales = await prisma.sales.findFirst({
@@ -37,10 +37,7 @@ export async function PUT(
     });
 
     if (!existingSales) {
-      return NextResponse.json(
-        { error: "Purchase not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Sales not found" }, { status: 404 });
     }
 
     const result = await prisma.$transaction(async (tx) => {
@@ -48,7 +45,7 @@ export async function PUT(
         where: { invoice },
         data: {
           ...resData,
-          suppliers: { connect: { customerid: customer } },
+          customer: { connect: { customerid: customer } },
           users: { connect: { userid: operator } },
         },
       });
@@ -65,7 +62,7 @@ export async function PUT(
       }
 
       for (const old of existingSales?.saleitems || []) {
-        const stillExisting = saleitems.find((i: any) => i.id === old.id);
+        const stillExisting = items.find((i: any) => i.id === old.id);
         if (!stillExisting)
           await tx.saleitems.delete({ where: { id: old.id } });
       }
@@ -77,8 +74,8 @@ export async function PUT(
     });
     return NextResponse.json(result);
   } catch (error) {
-    console.log("error when update sales : ", error);
-    return NextResponse.json("failed to put sales");
+    console.log("error when update Sales : ", error);
+    return NextResponse.json("failed to put Sales");
   }
 }
 
@@ -95,12 +92,14 @@ export async function DELETE(
       );
     }
 
-    const res = await prisma.sales.delete({
-      where: { invoice },
+    const result = await prisma.$transaction(async (tx) => {
+      await tx.saleitems.deleteMany({ where: { invoice } });
+      const res = await tx.sales.delete({ where: { invoice } });
+      return res;
     });
-    return NextResponse.json(res);
+    return NextResponse.json(result);
   } catch (error) {
-    console.log("error when delete purchase : ", error);
-    return NextResponse.json("failed to delete purchase");
+    console.log("error when delete sales : ", error);
+    return NextResponse.json("failed to delete sales");
   }
 }

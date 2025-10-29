@@ -1,28 +1,28 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useGoodsStore } from "@/stores/goodsStore";
 
 import LoadingComponent from "../../Loading";
 
-import PurchaseActions from "./SalesActions";
-import PurchaseForm from "./SalesForm";
-import PurchaseSummary from "./SalesSummary";
-import PurchaseTable from "./SalesTable";
-import { useSuppliersStore } from "@/stores/suppliersStore";
+import SalesActions from "./SalesActions";
+import SalesForm from "./SalesForm";
+import SalesSummary from "./SalesSummary";
+import SalesTable from "./SalesTable";
 import axios from "axios";
-import { Item } from "@/app/types/purchases";
+import { useSalesStore } from "@/stores/salesStore";
+import { Item } from "@/app/types/sales";
+import { useCustomersStore } from "@/stores/customersStore";
 
-export default function EditPurchase() {
+export default function EditSales() {
   const router = useRouter();
   const paramsB = useParams();
   const invoice = paramsB.invoice as string;
-  const { updatePurchases } = usePurchasesStore();
+  const { updateSales } = useSalesStore();
   const { goods, getGoods } = useGoodsStore();
-  const { suppliers, getSuppliers } = useSuppliersStore();
+  const { customers, getCustomers } = useCustomersStore();
   const { data, status } = useSession();
 
   const now = new Date();
@@ -36,8 +36,8 @@ export default function EditPurchase() {
     hour12: false,
   };
 
-  const [supplier, setSupplier] = useState({
-    supplierid: "",
+  const [customer, setCustomer] = useState({
+    customerid: "",
     name: "",
     address: "",
     phone: "",
@@ -47,16 +47,20 @@ export default function EditPurchase() {
     invoice: string;
     time: Date;
     totalsum: number;
-    supplier: number;
+    pay: number;
+    change: number;
+    customer: number;
     operator: string;
-    purchaseitems: Item[];
+    saleItems: Item[];
   }>({
     invoice: invoice,
     time: new Date(),
     totalsum: 0,
-    supplier: 0,
+    pay: 0,
+    change: 0,
+    customer: 0,
     operator: data?.user.id as string,
-    purchaseitems: [],
+    saleItems: [],
   });
 
   const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(
@@ -72,7 +76,7 @@ export default function EditPurchase() {
     invoice: input.invoice,
     itemcode: "",
     quantity: 0,
-    purchaseprice: 0,
+    sellingprice: 0,
     totalprice: 0,
   });
 
@@ -89,16 +93,16 @@ export default function EditPurchase() {
       e.preventDefault();
       setInput({
         ...input,
-        purchaseitems: [...input.purchaseitems, item],
+        saleItems: [...input.saleItems, item],
         totalsum:
           Number(input.totalsum) +
-          Number(item.purchaseprice) * Number(item.quantity),
+          Number(item.sellingprice) * Number(item.quantity),
       });
       setItem({
         invoice: input.invoice,
         itemcode: "",
         quantity: 0,
-        purchaseprice: 0,
+        sellingprice: 0,
         totalprice: 0,
       });
       setGoodsItem({ barcode: "", name: "", stock: "" });
@@ -110,8 +114,8 @@ export default function EditPurchase() {
 
   const handleSubmit = async () => {
     try {
-      const res = await updatePurchases(input.invoice, input);
-      router.push("/purchases");
+      const res = await updateSales(input.invoice, input);
+      router.push("/sales");
       return res;
     } catch (error) {
       return null;
@@ -130,19 +134,19 @@ export default function EditPurchase() {
         updatedItem = {
           ...updatedItem,
           quantity: stock,
-          totalprice: stock * updatedItem.purchaseprice,
+          totalprice: stock * updatedItem.sellingprice,
         };
       } else {
         updatedItem = {
           ...updatedItem,
           quantity: qty,
-          totalprice: qty * updatedItem.purchaseprice,
+          totalprice: qty * updatedItem.sellingprice,
         };
       }
-    } else if (name === "purchaseprice") {
+    } else if (name === "sellingprice") {
       updatedItem = {
         ...updatedItem,
-        purchaseprice: newValue,
+        sellingprice: newValue,
         totalprice: updatedItem.quantity * newValue,
       };
     } else {
@@ -156,8 +160,8 @@ export default function EditPurchase() {
     const fetchInvoice = async () => {
       try {
         getGoods(params);
-        getSuppliers(params);
-        const { data } = await axios.get(`/api/purchases/${invoice}`, {
+        getCustomers(params);
+        const { data } = await axios.get(`/api/sales/${invoice}`, {
           params: { sortBy: "createdAt", sort: "desc", limit: 1 },
         });
         console.log("data invpoce nih: ", data);
@@ -165,7 +169,7 @@ export default function EditPurchase() {
           ...data,
           time: new Date(data.time),
         });
-        setSupplier({ ...supplier, supplierid: data.supplier });
+        setCustomer({ ...customer, customerid: data.customer });
       } catch (error) {
         console.log(error);
       }
@@ -182,7 +186,7 @@ export default function EditPurchase() {
 
   return (
     <>
-      <PurchaseForm
+      <SalesForm
         handleAdd={handleAdd}
         input={input}
         formattedDate={formattedDate}
@@ -194,19 +198,19 @@ export default function EditPurchase() {
         setItem={setItem}
         handleChangeItem={handleChangeItem}
       />
-      <PurchaseTable
-        input={{ ...input, purchaseitems: input.purchaseitems || [] }}
+      <SalesTable
+        input={{ ...input, saleItems: input.saleItems || [] }}
         setInput={setInput}
         goods={goods}
       />
-      <PurchaseSummary
+      <SalesSummary
         input={input}
         setInput={setInput}
-        suppliers={suppliers}
-        supplier={supplier}
-        setSupplier={setSupplier}
+        customers={customers}
+        customer={customer}
+        setCustomer={setCustomer}
       />
-      <PurchaseActions handleSubmit={handleSubmit} router={router} />
+      <SalesActions handleSubmit={handleSubmit} router={router} />
     </>
   );
 }

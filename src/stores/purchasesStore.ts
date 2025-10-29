@@ -10,7 +10,6 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
   getPurchases: async (params) => {
     try {
       const { data } = await axios.get("/api/purchases", { params });
-      console.log("datanya bro: ", data);
       if (data.status >= 400) return null;
       set({
         purchases: data.data,
@@ -35,7 +34,6 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
   },
   deletePurchases: async (invoice) => {
     try {
-      await axios.delete(`/api/purchaseitem/inv/${invoice}`);
       const res = await axios.delete(`/api/purchases/${invoice}`);
       if (!res || res.status >= 400) return null;
       set((state) => ({

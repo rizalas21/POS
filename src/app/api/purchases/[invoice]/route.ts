@@ -95,10 +95,12 @@ export async function DELETE(
       );
     }
 
-    const res = await prisma.purchases.delete({
-      where: { invoice },
+    const result = await prisma.$transaction(async (tx) => {
+      await tx.purchaseitems.deleteMany({ where: { invoice } });
+      const res = await tx.purchases.delete({ where: { invoice } });
+      return res;
     });
-    return NextResponse.json(res);
+    return NextResponse.json(result);
   } catch (error) {
     console.log("error when delete purchase : ", error);
     return NextResponse.json("failed to delete purchase");

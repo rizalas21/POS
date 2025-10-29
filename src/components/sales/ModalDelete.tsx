@@ -1,7 +1,4 @@
-import { useGoodsStore } from "@/stores/goodsStore";
-import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useSalesStore } from "@/stores/salesStore";
-import { useUsersStore } from "@/stores/usersStore";
 import { Dispatch, SetStateAction } from "react";
 import Swal from "sweetalert2";
 

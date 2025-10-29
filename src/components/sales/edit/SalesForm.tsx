@@ -1,10 +1,10 @@
 import { Goods } from "@/app/types/goods";
-import { Item } from "@/app/types/purchases";
+import { Item } from "@/app/types/sales";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction } from "react";
 
-export default function PurchaseForm({
+export default function SalesForm({
   handleAdd,
   input,
   formattedDate,
@@ -21,9 +21,11 @@ export default function PurchaseForm({
     invoice: string;
     time: Date;
     totalsum: number;
-    supplier: number;
+    pay: number;
+    change: number;
+    customer: number;
     operator: string;
-    purchaseitems: Item[];
+    saleItems: Item[];
   };
   formattedDate: string;
   data: any;
@@ -40,7 +42,7 @@ export default function PurchaseForm({
     invoice: string;
     itemcode: string;
     quantity: number;
-    purchaseprice: number;
+    sellingprice: number;
     totalprice: number;
   };
   setItem: Dispatch<
@@ -48,7 +50,7 @@ export default function PurchaseForm({
       invoice: string;
       itemcode: string;
       quantity: number;
-      purchaseprice: number;
+      sellingprice: number;
       totalprice: number;
     }>
   >;
@@ -149,14 +151,14 @@ export default function PurchaseForm({
       </section>
       <section className="flex justify-between py-3">
         <div className="space-y-2 flex flex-col w-1/3 px-10">
-          <label htmlFor="purchaseprice">Purchase Price</label>
+          <label htmlFor="sellingprice">Selling Price</label>
           <input
             className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400"
-            id="purchaseprice"
+            id="sellingprice"
             type="number"
             onChange={(e) => handleChangeItem(e)}
-            value={item.purchaseprice ? item.purchaseprice : ""}
-            name="purchaseprice"
+            value={item.sellingprice ? item.sellingprice : ""}
+            name="sellingprice"
           />
         </div>
         <div className="space-y-2 flex flex-col w-1/3">

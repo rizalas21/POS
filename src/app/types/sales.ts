@@ -32,7 +32,7 @@ export interface SalesState {
   pages: Number;
   total: Number;
   getSales: (params: SearchParams) => void;
-  addSales: (data: Sales, item: Item[]) => void;
+  addSales: (data: Sales) => void;
   deleteSales: (invoice: string) => void;
   updateSales: (invoice: string, data: Sales) => void;
 }

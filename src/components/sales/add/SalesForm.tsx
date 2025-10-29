@@ -25,7 +25,7 @@ export default function SalesForm({
     change: number;
     customer: number;
     operator: string;
-    items: Item[];
+    saleitems: Item[];
   };
   formattedDate: string;
   data: any;
@@ -151,14 +151,14 @@ export default function SalesForm({
       </section>
       <section className="flex justify-between py-3">
         <div className="space-y-2 flex flex-col w-1/3 px-10">
-          <label htmlFor="purchaseprice">Purchase Price</label>
+          <label htmlFor="sellingprice">Selling Price</label>
           <input
             className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400"
-            id="purchaseprice"
+            id="sellingprice"
             type="number"
             onChange={(e) => handleChangeItem(e)}
             value={item.sellingprice ? item.sellingprice : ""}
-            name="purchaseprice"
+            name="sellingprice"
           />
         </div>
         <div className="space-y-2 flex flex-col w-1/3">

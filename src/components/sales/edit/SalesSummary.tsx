@@ -1,49 +1,52 @@
-import { PurchaseItem } from "@/app/types/purchaseItem";
-import { Suppliers } from "@/app/types/suppliers";
+import { Customers } from "@/app/types/customers";
+import { Item } from "@/app/types/sales";
 import { Dispatch, SetStateAction } from "react";
 
-export default function PurchaseSummary({
+export default function SalesSummary({
   input,
   setInput,
-  suppliers,
-  supplier,
-  setSupplier,
+  customers,
+  customer,
+  setCustomer,
 }: {
   input: {
     invoice: string;
     time: Date;
     totalsum: number;
-    supplier: number;
+    pay: number;
+    change: number;
+    customer: number;
     operator: string;
-    purchaseitems: PurchaseItem[];
+    saleItems: Item[];
   };
   setInput: Dispatch<
     SetStateAction<{
       invoice: string;
       time: Date;
       totalsum: number;
-      supplier: number;
+      pay: number;
+      change: number;
+      customer: number;
       operator: string;
-      purchaseitems: PurchaseItem[];
+      saleItems: Item[];
     }>
   >;
-  suppliers: Suppliers[];
-  supplier: {
-    supplierid: string;
+  customers: Customers[];
+  customer: {
+    customerid: string;
     name: string;
     address: string;
     phone: string;
   };
-  setSupplier: Dispatch<
+  setCustomer: Dispatch<
     SetStateAction<{
-      supplierid: string;
+      customerid: string;
       name: string;
       address: string;
       phone: string;
     }>
   >;
 }) {
-  console.log(supplier, suppliers);
   return (
     <section className="px-10 space-y-5">
       <div className="flex justify-between items-center">
@@ -58,33 +61,33 @@ export default function PurchaseSummary({
         />
       </div>
       <div className="flex justify-between items-center">
-        <label>Supplier</label>
+        <label>Customer</label>
         <select
           className="border rounded border-gray-300 w-4/5 min-h-8"
           name=""
           id=""
           required
-          value={String(supplier.supplierid)}
+          value={String(customer.customerid)}
           onChange={(e) => {
-            const selectedSupplierid = e.target.value;
-            const selectedItem = suppliers.find(
-              (item) => String(item.supplierid) === selectedSupplierid
+            const selectedCustomerid = e.target.value;
+            const selectedItem = customers.find(
+              (item) => String(item.customerid) === selectedCustomerid
             );
             if (selectedItem) {
-              setSupplier({
-                supplierid: String(selectedItem.supplierid),
+              setCustomer({
+                customerid: String(selectedItem.customerid),
                 name: selectedItem.name,
                 address: selectedItem.address,
                 phone: selectedItem.phone,
               });
-              setInput({ ...input, supplier: selectedItem.supplierid });
+              setInput({ ...input, customer: selectedItem.customerid });
             }
           }}
         >
           <option value="">Choose Goods</option>
-          {suppliers.length > 0
-            ? suppliers.map((item) => (
-                <option key={item.supplierid} value={item.supplierid}>
+          {customers.length > 0
+            ? customers.map((item) => (
+                <option key={item.customerid} value={item.customerid}>
                   {item.name}
                 </option>
               ))

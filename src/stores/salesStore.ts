@@ -22,11 +22,11 @@ export const useSalesStore = create<SalesState>((set) => ({
       return null;
     }
   },
-  addSales: async (data, item) => {
+  addSales: async (data) => {
     try {
+      console.log("data nya: ", data);
       const res = await axios.post("/api/sales", data);
       if (!res || res.status >= 400) return null;
-      await axios.post("/api/salesItem", item);
       set((state) => ({ sales: [res.data, ...state.sales] }));
     } catch (error) {
       console.error("Error adding data: ", error);

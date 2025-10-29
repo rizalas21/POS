@@ -9,9 +9,11 @@ export default function SalesTable({
     invoice: string;
     time: Date;
     totalsum: number;
+    pay: number;
+    change: number;
     customer: number;
     operator: string;
-    items: Item[];
+    saleitems: Item[];
   };
   goods: Goods[];
 }) {
@@ -40,8 +42,8 @@ export default function SalesTable({
         </tr>
       </thead>
       <tbody>
-        {input.items.length > 0 ? (
-          input.items.map((data: Item, index: any) => (
+        {input.saleitems.length > 0 ? (
+          input.saleitems.map((data: Item, index: any) => (
             <tr
               className={`text-slate-500 ${
                 index % 2 === 0 ? "bg-slate-100" : "bg-white"

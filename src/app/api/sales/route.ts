@@ -1,8 +1,6 @@
 import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 import { Prisma } from "@/generated/prisma";
-import suppliers from "@/app/suppliers/page";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)
@@ -18,8 +16,8 @@ export async function GET(req: NextRequest) {
   // 3. pages
 
   const keyword = (await req.nextUrl.searchParams.get("keyword")) || "";
-  const sortBy = (await req.nextUrl.searchParams.get("sortBy")) || "invoice";
-  const sort = (await req.nextUrl.searchParams.get("sort")) || "desc";
+  const sortBy = (await req.nextUrl.searchParams.get("sortBy")) || "name";
+  const sort = (await req.nextUrl.searchParams.get("sort")) || "asc";
   const limit = Number(await req.nextUrl.searchParams.get("limit")) || 0;
   const page = Number(await req.nextUrl.searchParams.get("page")) || 1;
   const offset = (page - 1) * limit;
@@ -33,7 +31,7 @@ export async function GET(req: NextRequest) {
     const res = await prisma.sales.findMany({
       where: filterCondition,
       orderBy:
-        sortBy === "supplier"
+        sortBy === "customer"
           ? { customers: { name: sort === "asc" ? "asc" : "desc" } }
           : { [sortBy]: sort },
       ...(limit > 0 && { take: limit, skip: offset }),
@@ -49,20 +47,27 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
-    console.log("Error when trying to get Sales: ", error);
-    return NextResponse.json("failed to get Sales");
+    console.log("Error when trying to get sales: ", error);
+    return NextResponse.json("failed to get sales");
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const res = await prisma.sales.create({
-      data,
+    const { saleitems, ...dataWithoutItems } = data;
+    const result = await prisma.$transaction(async (tx) => {
+      const createSales = await tx.sales.create({
+        data: { ...dataWithoutItems, time: new Date(dataWithoutItems.time) },
+      });
+
+      await tx.saleitems.createMany({ data: saleitems });
+
+      return createSales;
     });
-    return NextResponse.json(res);
+    return NextResponse.json(result);
   } catch (error) {
-    console.log("Error when trying to POST Sales: ", error);
-    NextResponse.json("error when try to post Sales");
+    console.log("Error when trying to POST sales: ", error);
+    return NextResponse.json("error when try to post sales");
   }
 }

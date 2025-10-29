@@ -1,18 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { usePurchasesStore } from "@/stores/purchasesStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useGoodsStore } from "@/stores/goodsStore";
 
 import LoadingComponent from "@/components/Loading";
 
-import PurchaseActions from "./SalesActions";
-import PurchaseForm from "./SalesForm";
-import PurchaseSummary from "./SalesSummary";
-import PurchaseTable from "./SalesTable";
-import { useSuppliersStore } from "@/stores/suppliersStore";
+import SalesActions from "./SalesActions";
+import SalesForm from "./SalesForm";
+import SalesSummary from "./SalesSummary";
+import SalesTable from "./SalesTable";
 import axios from "axios";
 import { useSalesStore } from "@/stores/salesStore";
 import { Item } from "@/app/types/sales";
@@ -24,7 +22,6 @@ export default function AddSales() {
   const { goods, getGoods } = useGoodsStore();
   const { customers, getCustomers } = useCustomersStore();
   const { data, status } = useSession();
-  const [invoiceChecked, setInvoiceChecked] = useState(false);
 
   const now = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -54,17 +51,19 @@ export default function AddSales() {
     change: number;
     customer: number;
     operator: string;
-    items: Item[];
+    saleitems: Item[];
   }>({
     invoice:
-      "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
+      "INV-PENJ" +
+      new Date().toISOString().slice(0, 10).split("-").join("") +
+      "-1",
     time: new Date(),
     totalsum: 0,
     pay: 0,
     change: 0,
     customer: 0,
     operator: data?.user.id as string,
-    items: [],
+    saleitems: [],
   });
 
   const [goodsItem, setGoodsItem] = useState({
@@ -94,7 +93,7 @@ export default function AddSales() {
       e.preventDefault();
       setInput({
         ...input,
-        items: [...input.items, item],
+        saleitems: [...input.saleitems, item],
         totalsum: input.totalsum + item.sellingprice * item.quantity,
       });
       setItem({
@@ -113,9 +112,8 @@ export default function AddSales() {
 
   const handleSubmit = async () => {
     try {
-      const { items, ...dataWithoutItems } = input;
-      const res = await addSales(dataWithoutItems, items);
-      router.push("/purchases");
+      const res = await addSales(input);
+      router.push("/sales");
       return res;
     } catch (error) {
       return null;
@@ -157,22 +155,21 @@ export default function AddSales() {
   };
 
   useEffect(() => {
-    if (invoiceChecked) return;
     const fetchInvoice = async () => {
       try {
         getGoods(params);
         getCustomers(params);
-        const { data } = await axios.get(`/api/purchases`, {
+        const { data } = await axios.get(`/api/sales`, {
           params: { sortBy: "createdAt", sort: "desc", limit: 1 },
         });
         if (input.invoice <= data.data[0].invoice) {
           setInput({
             ...input,
             invoice:
-              "INV-" +
+              "INV-PENJ" +
               new Date().toISOString().slice(0, 10).split("-").join("") +
               "-" +
-              (Number(data.data[0].invoice.slice(13)) + 1),
+              (Number(data.data[0].invoice.slice(17)) + 1),
           });
         }
       } catch (error) {
@@ -189,7 +186,7 @@ export default function AddSales() {
 
   return (
     <>
-      <PurchaseForm
+      <SalesForm
         handleAdd={handleAdd}
         input={input}
         formattedDate={formattedDate}
@@ -201,18 +198,18 @@ export default function AddSales() {
         setItem={setItem}
         handleChangeItem={handleChangeItem}
       />
-      <PurchaseTable
-        input={{ ...input, items: input.items || [] }}
+      <SalesTable
+        input={{ ...input, saleitems: input.saleitems || [] }}
         goods={goods}
       />
-      <PurchaseSummary
+      <SalesSummary
         input={input}
         setInput={setInput}
         customers={customers}
         customer={customer}
         setCustomer={setCustomer}
       />
-      <PurchaseActions handleSubmit={handleSubmit} router={router} />
+      <SalesActions handleSubmit={handleSubmit} router={router} />
     </>
   );
 }

@@ -88,6 +88,7 @@ model Sales {
   operator String
   users Users @relation(fields:[operator], references: [userid])
   saleitems Saleitems[]
+  createdAt DateTime @default(now())
 }
 
 model Saleitems {

@@ -2,7 +2,7 @@ import { faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-export default function PurchaseActions({
+export default function SalesActions({
   handleSubmit,
   router,
 }: {
