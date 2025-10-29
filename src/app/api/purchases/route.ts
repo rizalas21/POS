@@ -59,8 +59,6 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     const { items, ...dataWithoutItems } = data;
-    console.log("data without items: ", dataWithoutItems);
-    console.log("items: ", items, "selesai");
     const result = await prisma.$transaction(async (tx) => {
       const createPurchase = await tx.purchases.create({
         data: { ...dataWithoutItems, time: new Date(dataWithoutItems.time) },

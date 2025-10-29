@@ -17,7 +17,7 @@ export default function SalesTable({
     change: number;
     customer: number;
     operator: string;
-    saleItems: Item[];
+    saleitems: Item[];
   };
   setInput: Dispatch<
     SetStateAction<{
@@ -28,11 +28,12 @@ export default function SalesTable({
       change: number;
       customer: number;
       operator: string;
-      saleItems: Item[];
+      saleitems: Item[];
     }>
   >;
   goods: Goods[];
 }) {
+  console.log(input);
   return (
     <table className="w-full table-auto border-collapse">
       <thead>
@@ -61,8 +62,8 @@ export default function SalesTable({
         </tr>
       </thead>
       <tbody>
-        {input.saleItems.length > 0 ? (
-          input.saleItems.map((data: Item, index: any) => (
+        {input.saleitems.length > 0 ? (
+          input.saleitems.map((data: Item, index: any) => (
             <tr
               className={`text-slate-500 ${
                 index % 2 === 0 ? "bg-slate-100" : "bg-white"
@@ -86,7 +87,7 @@ export default function SalesTable({
                       ...input,
                       totalsum:
                         Number(input.totalsum) - Number(data.totalprice),
-                      saleItems: input.saleItems.filter(
+                      saleitems: input.saleitems.filter(
                         (item) => item.id !== data.id
                       ),
                     });

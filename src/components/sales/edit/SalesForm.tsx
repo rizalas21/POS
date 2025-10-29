@@ -25,7 +25,7 @@ export default function SalesForm({
     change: number;
     customer: number;
     operator: string;
-    saleItems: Item[];
+    saleitems: Item[];
   };
   formattedDate: string;
   data: any;

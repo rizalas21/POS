@@ -171,6 +171,14 @@ export default function AddSales() {
               "-" +
               (Number(data.data[0].invoice.slice(17)) + 1),
           });
+          setItem({
+            ...item,
+            invoice:
+              "INV-PENJ" +
+              new Date().toISOString().slice(0, 10).split("-").join("") +
+              "-" +
+              (Number(data.data[0].invoice.slice(17)) + 1),
+          });
         }
       } catch (error) {
         console.log(error);

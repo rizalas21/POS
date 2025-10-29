@@ -52,9 +52,7 @@ export default function AddPurchase() {
     items: Item[];
   }>({
     invoice:
-      "INV-PENJ" +
-      new Date().toISOString().slice(0, 10).split("-").join("") +
-      "-1",
+      "INV-" + new Date().toISOString().slice(0, 10).split("-").join("") + "-1",
     time: new Date(),
     totalsum: 0,
     supplier: 0,
@@ -162,7 +160,15 @@ export default function AddPurchase() {
           setInput({
             ...input,
             invoice:
-              "INV-PENJ" +
+              "INV-" +
+              new Date().toISOString().slice(0, 10).split("-").join("") +
+              "-" +
+              (Number(data.data[0].invoice.slice(13)) + 1),
+          });
+          setItem({
+            ...item,
+            invoice:
+              "INV-" +
               new Date().toISOString().slice(0, 10).split("-").join("") +
               "-" +
               (Number(data.data[0].invoice.slice(13)) + 1),

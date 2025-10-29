@@ -17,7 +17,7 @@ export default function SalesSummary({
     change: number;
     customer: number;
     operator: string;
-    saleItems: Item[];
+    saleitems: Item[];
   };
   setInput: Dispatch<
     SetStateAction<{
@@ -28,7 +28,7 @@ export default function SalesSummary({
       change: number;
       customer: number;
       operator: string;
-      saleItems: Item[];
+      saleitems: Item[];
     }>
   >;
   customers: Customers[];

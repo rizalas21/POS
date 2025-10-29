@@ -1,5 +1,6 @@
 import AddPurchase from "@/components/purchases/add/AddPurchase";
 import EditPurchase from "@/components/purchases/edit/UpdatePurchase";
+import EditSales from "@/components/sales/edit/UpdateSales";
 
 export default function Page() {
   return (
@@ -9,7 +10,7 @@ export default function Page() {
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center px-2 py-2">
           <p className="text-4xl text-slate-400 font-bold">Transaction</p>
         </div>
-        <EditPurchase />
+        <EditSales />
       </div>
     </main>
   );

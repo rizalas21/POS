@@ -51,7 +51,7 @@ export default function EditSales() {
     change: number;
     customer: number;
     operator: string;
-    saleItems: Item[];
+    saleitems: Item[];
   }>({
     invoice: invoice,
     time: new Date(),
@@ -60,7 +60,7 @@ export default function EditSales() {
     change: 0,
     customer: 0,
     operator: data?.user.id as string,
-    saleItems: [],
+    saleitems: [],
   });
 
   const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(
@@ -93,7 +93,7 @@ export default function EditSales() {
       e.preventDefault();
       setInput({
         ...input,
-        saleItems: [...input.saleItems, item],
+        saleitems: [...input.saleitems, item],
         totalsum:
           Number(input.totalsum) +
           Number(item.sellingprice) * Number(item.quantity),
@@ -199,7 +199,7 @@ export default function EditSales() {
         handleChangeItem={handleChangeItem}
       />
       <SalesTable
-        input={{ ...input, saleItems: input.saleItems || [] }}
+        input={{ ...input, saleitems: input.saleitems || [] }}
         setInput={setInput}
         goods={goods}
       />
