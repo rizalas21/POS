@@ -28,13 +28,20 @@ export async function PUT(
 ) {
   try {
     const datas = await req.json();
-    const { customer, operator, items, ...resData } = datas;
+    const { customer, operator, saleitems, ...resData } = datas;
+    console.log("datas nya bro: ", datas);
     console.log("res data nya bro: ", resData);
     const { invoice } = await params;
     const existingSales = await prisma.sales.findFirst({
       where: { invoice },
       include: { saleitems: true },
     });
+
+    if (!customer || !operator)
+      return NextResponse.json(
+        { error: "customer or operator not found" },
+        { status: 404 }
+      );
 
     if (!existingSales) {
       return NextResponse.json({ error: "Sales not found" }, { status: 404 });
@@ -45,12 +52,11 @@ export async function PUT(
         where: { invoice },
         data: {
           ...resData,
-          customer: { connect: { customerid: customer } },
+          customers: { connect: { customerid: customer } },
           users: { connect: { userid: operator } },
         },
       });
       for (const data of datas?.saleitems || []) {
-        console.log("Data bro: ", data);
         if (!data.id) {
           await tx.saleitems.create({
             data: {
@@ -62,7 +68,7 @@ export async function PUT(
       }
 
       for (const old of existingSales?.saleitems || []) {
-        const stillExisting = items.find((i: any) => i.id === old.id);
+        const stillExisting = saleitems.find((i: any) => i.id === old.id);
         if (!stillExisting)
           await tx.saleitems.delete({ where: { id: old.id } });
       }
@@ -94,7 +100,7 @@ export async function DELETE(
 
     const result = await prisma.$transaction(async (tx) => {
       await tx.saleitems.deleteMany({ where: { invoice } });
-      const res = await tx.sales.delete({ where: { invoice } });
+      const res = await tx.sales.deleteMany({ where: { invoice } });
       return res;
     });
     return NextResponse.json(result);

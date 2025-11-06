@@ -35,7 +35,7 @@ export const useSalesStore = create<SalesState>((set) => ({
   },
   deleteSales: async (invoice) => {
     try {
-      await axios.delete(`/api/sales/inv/${invoice}`);
+      await axios.delete(`/api/sales/${invoice}`);
       const res = await axios.delete(`/api/sales/${invoice}`);
       if (!res || res.status >= 400) return null;
       set((state) => ({

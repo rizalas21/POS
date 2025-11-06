@@ -1,5 +1,3 @@
-import AddPurchase from "@/components/purchases/add/AddPurchase";
-import EditPurchase from "@/components/purchases/edit/UpdatePurchase";
 import EditSales from "@/components/sales/edit/UpdateSales";
 
 export default function Page() {
