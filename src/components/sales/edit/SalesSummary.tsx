@@ -49,7 +49,7 @@ export default function SalesSummary({
 }) {
   console.log("customers ini bro: ", customers);
   return (
-    <section className="px-10 space-y-5">
+    <section className="px-10 space-y-2">
       <div className="flex justify-between items-center">
         <span>Total Summary</span>
         <input
@@ -57,7 +57,33 @@ export default function SalesSummary({
           type="text"
           name=""
           id=""
-          value={input.totalsum + ".00"}
+          value={"Rp " + input.totalsum + ".00"}
+          disabled
+        />
+      </div>
+      <div className="flex justify-between items-center">
+        <span>Pay</span>
+        <input
+          className="border rounded border-gray-300 w-4/5 min-h-8 bg-white text-slate-800"
+          type="text"
+          name="pay"
+          id=""
+          value={input.pay + ".00"}
+          onChange={(e) => {
+            const payValue = Number(e.target.value) || 0;
+            const newChange = payValue - Number(input.totalsum);
+            setInput({ ...input, pay: payValue, change: newChange });
+          }}
+        />
+      </div>
+      <div className="flex justify-between items-center">
+        <span>Change</span>
+        <input
+          className="border rounded border-gray-300 w-4/5 min-h-8 bg-slate-200/25 cursor-not-allowed text-slate-800"
+          type="text"
+          name=""
+          id=""
+          value={"Rp " + input.change + ".00"}
           disabled
         />
       </div>

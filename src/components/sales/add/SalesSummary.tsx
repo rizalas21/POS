@@ -48,11 +48,11 @@ export default function SalesSummary({
   >;
 }) {
   return (
-    <section className="px-10 space-y-5">
+    <section className="px-10 space-y-2">
       <div className="flex justify-between items-center">
         <span>Total Summary</span>
         <input
-          className="border rounded border-gray-300 w-4/5 min-h-8 bg-slate-200/25 cursor-not-allowed text-slate-800"
+          className="border rounded border-gray-300 w-4/5 min-h-8 bg-slate-200/25 cursor-not-allowed text-slate-800 px-2"
           type="text"
           name=""
           id=""
@@ -61,10 +61,38 @@ export default function SalesSummary({
         />
       </div>
       <div className="flex justify-between items-center">
+        <span>Pay</span>
+        <input
+          className="border rounded border-gray-300 w-4/5 min-h-8 text-slate-800 px-2"
+          type="text"
+          name=""
+          id=""
+          value={input.pay}
+          onChange={(e) => {
+            setInput({
+              ...input,
+              pay: Number(e.target.value),
+              change: Number(e.target.value) - input.totalsum,
+            });
+          }}
+        />
+      </div>
+      <div className="flex justify-between items-center">
+        <span>Change</span>
+        <input
+          className="border rounded border-gray-300 w-4/5 min-h-8 bg-slate-200/25 cursor-not-allowed text-slate-800 px-2"
+          type="text"
+          name="change"
+          id=""
+          value={input.change + ".00"}
+          disabled
+        />
+      </div>
+      <div className="flex justify-between items-center">
         <label>Customer</label>
         <select
           className="border rounded border-gray-300 w-4/5 min-h-8"
-          name=""
+          name="customer"
           id=""
           required
           value={String(customer.customerid)}
@@ -84,7 +112,9 @@ export default function SalesSummary({
             }
           }}
         >
-          <option value="">Choose Goods</option>
+          <option value="" disabled>
+            Choose Goods
+          </option>
           {customers.length > 0
             ? customers.map((item) => (
                 <option key={item.customerid} value={item.customerid}>

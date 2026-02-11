@@ -59,7 +59,6 @@ export default function SalesForm({
   return (
     <form
       className="flex flex-col border-y border-slate-200"
-      // onSubmit={handleSubmit}
       onSubmit={handleAdd}
     >
       <section className="flex justify-between py-3 border-y border-slate-200">

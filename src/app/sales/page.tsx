@@ -123,8 +123,8 @@ export default function sales() {
                 <tr className="text-slate-500">
                   <th className="px-2 py-2 border border-gray-500/25 text-center">
                     <div className="flex justify-between items-center">
-                      <h3>Sales</h3>
-                      <div className="flex space-x-2">
+                      <h3>Invoice</h3>
+                      <div className="flex">
                         <button
                           className={`text-sm cursor-pointer hover:text-gray-700 ${
                             params.sortBy !== "invoice"
@@ -159,7 +159,7 @@ export default function sales() {
                   <th className="px-2 py-2 border border-gray-500/25 text-center">
                     <div className="flex justify-between items-center">
                       <h3>Time</h3>
-                      <div className="flex space-x-2">
+                      <div className="flex">
                         <button
                           className={`text-sm cursor-pointer hover:text-gray-700 ${
                             params.sortBy !== "time"
@@ -194,7 +194,7 @@ export default function sales() {
                   <th className="px-2 py-2 border border-gray-500/25 text-center">
                     <div className="flex justify-between items-center">
                       <h3>Total Summary</h3>
-                      <div className="flex space-x-2">
+                      <div className="flex">
                         <button
                           className={`text-sm cursor-pointer hover:text-gray-700 ${
                             params.sortBy !== "totalsum"
@@ -228,17 +228,17 @@ export default function sales() {
                   </th>
                   <th className="px-2 py-2 border border-gray-500/25 text-center">
                     <div className="flex justify-between items-center">
-                      <h3>Supplier</h3>
-                      <div className="flex space-x-2">
+                      <h3>Pay</h3>
+                      <div className="flex">
                         <button
                           className={`text-sm cursor-pointer hover:text-gray-700 ${
-                            params.sortBy !== "supplier"
+                            params.sortBy !== "pay"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
                               ? "text-gray-700"
                               : "text-gray-700/30"
                           }`}
-                          name="supplier"
+                          name="pay"
                           value="asc"
                           onClick={handleSort}
                         >
@@ -246,13 +246,83 @@ export default function sales() {
                         </button>
                         <button
                           className={`text-sm cursor-pointer hover:text-gray-700 ${
-                            params.sortBy !== "supplier"
+                            params.sortBy !== "pay"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
                               ? "text-gray-700"
                               : "text-gray-700/30"
                           }`}
-                          name="supplier"
+                          name="pay"
+                          value="desc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                        </button>
+                      </div>
+                    </div>
+                  </th>
+                  <th className="px-2 py-2 border border-gray-500/25 text-center">
+                    <div className="flex justify-between items-center">
+                      <h3>Change</h3>
+                      <div className="flex">
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "change"
+                              ? "text-gray-700/50"
+                              : params.sort === "asc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="change"
+                          value="asc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                        </button>
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "change"
+                              ? "text-gray-700/50"
+                              : params.sort === "desc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="change"
+                          value="desc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                        </button>
+                      </div>
+                    </div>
+                  </th>
+                  <th className="px-2 py-2 border border-gray-500/25 text-center">
+                    <div className="flex justify-between items-center">
+                      <h3>Customer</h3>
+                      <div className="flex">
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "customer"
+                              ? "text-gray-700/50"
+                              : params.sort === "asc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="customer"
+                          value="asc"
+                          onClick={handleSort}
+                        >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                        </button>
+                        <button
+                          className={`text-sm cursor-pointer hover:text-gray-700 ${
+                            params.sortBy !== "customer"
+                              ? "text-gray-700/50"
+                              : params.sort === "desc"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
+                          }`}
+                          name="customer"
                           value="desc"
                           onClick={handleSort}
                         >
@@ -278,6 +348,12 @@ export default function sales() {
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
                         {sale.totalsum}
+                      </td>
+                      <td className="px-2 py-2 border border-gray-500/25 text-center">
+                        {sale.pay}
+                      </td>
+                      <td className="px-2 py-2 border border-gray-500/25 text-center">
+                        {sale.change}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
                         {sale.customers?.name ? sale.customers.name : ""}
@@ -333,7 +409,13 @@ export default function sales() {
                     Total Summary
                   </th>
                   <th className="px-2 py-2 border border-gray-500/25 text-left">
-                    Supplier
+                    Pay
+                  </th>
+                  <th className="px-2 py-2 border border-gray-500/25 text-left">
+                    Change
+                  </th>
+                  <th className="px-2 py-2 border border-gray-500/25 text-left">
+                    Customer
                   </th>
                   <th className="px-2 py-2 border border-gray-500/25 text-left">
                     Actions

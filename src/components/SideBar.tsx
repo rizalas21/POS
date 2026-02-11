@@ -37,12 +37,12 @@ export default function SideBar() {
         </div>
       </section>
       <section
-        className={`flex items-center w-4/5 h-[9%] border-b border-white py-2 px-1 hover:opacity-100 ${
-          pathname === "/dashboard" ? "opacity-100" : "opacity-50"
+        className={`flex items-center w-4/5 h-[9%] border-b border-white py-2 px-1 hover:text-white ${
+          pathname === "/dashboard" ? "text-white" : "text-slate-200/50"
         }`}
       >
         <Link
-          className="flex justify-between items-center w-1/2 no-underline text-white"
+          className="flex justify-between items-center w-1/2 no-underline"
           href="/dashboard"
         >
           <FontAwesomeIcon
@@ -53,7 +53,7 @@ export default function SideBar() {
             }}
             icon={faTachometerAlt}
           ></FontAwesomeIcon>
-          <h3>Dashboard</h3>
+          <h3 className={``}>Dashboard</h3>
         </Link>
       </section>
       <section className="text-white flex flex-col w-4/5 h-auto border-b border-white mt-5 pb-5">

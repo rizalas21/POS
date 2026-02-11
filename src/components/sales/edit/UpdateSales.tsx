@@ -91,12 +91,15 @@ export default function EditSales() {
   const handleAdd = async (e: React.FormEvent): Promise<void> => {
     try {
       e.preventDefault();
+      const newTotal =
+        Number(input.totalsum) +
+        Number(item.sellingprice) * Number(item.quantity);
+
       setInput({
         ...input,
         saleitems: [...input.saleitems, item],
-        totalsum:
-          Number(input.totalsum) +
-          Number(item.sellingprice) * Number(item.quantity),
+        totalsum: newTotal,
+        change: Number(input.pay) - newTotal,
       });
       setItem({
         invoice: input.invoice,
