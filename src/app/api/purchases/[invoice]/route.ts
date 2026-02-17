@@ -1,4 +1,6 @@
 import { prisma } from "@/app/prisma";
+import { Purchases } from "@/app/types/purchases";
+import { Purchaseitems } from "@/generated/prisma";
 import { connect } from "http2";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -52,18 +54,24 @@ export async function PUT(
           users: { connect: { userid: operator } },
         },
       });
+      // adding data
       for (const data of datas?.purchaseitems || []) {
-        console.log("Data bro: ", data);
         if (!data.id) {
+          console.log("Data bro: ", data);
           await tx.purchaseitems.create({
             data: {
               ...data,
               invoice,
             },
           });
+          await tx.goods.update({
+            where: { barcode: data.itemcode },
+            data: { stock: { decrement: data.quantity } },
+          });
         }
       }
 
+      // delete data
       for (const old of existingPurchases?.purchaseitems || []) {
         const stillExisting = purchaseitems.find((i: any) => i.id === old.id);
         if (!stillExisting)
