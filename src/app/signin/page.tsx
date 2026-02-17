@@ -7,11 +7,13 @@ import Swal from "sweetalert2";
 
 export default function signin() {
   const [input, setInput] = useState({ email: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleForm = async (e: any) => {
     try {
       e.preventDefault();
+      setIsLoading(true);
       const res = await signIn("auth-session", {
         ...input,
         redirect: false,
@@ -40,6 +42,8 @@ export default function signin() {
         title: "Network Error",
         text: "Something went wrong during login.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -76,11 +80,16 @@ export default function signin() {
               </div>
               <div className="my-2.5 flex flex-col w-11/12 h-1/2 items-center">
                 <button
-                  className="w-full py-3 px-4 rounded-3xl bg-blue-700 text-white text-lg cursor-pointer hover:bg-blue-900"
+                  className={`w-full py-3 px-4 rounded-3xl text-white text-lg cursor-pointer hover:bg-blue-900 flex justify-center items-center ${isLoading ? "bg-blue-900" : "bg-blue-700"}`}
                   onClick={(e) => handleForm(e)}
                   type="submit"
+                  disabled={isLoading}
                 >
-                  Login
+                  {!isLoading ? (
+                    <p>Login</p>
+                  ) : (
+                    <svg className="size-4 rounded-full animate-spin border-2 border-t-transparent self-center"></svg>
+                  )}
                 </button>
               </div>
             </form>

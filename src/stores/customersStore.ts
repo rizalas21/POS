@@ -38,7 +38,7 @@ export const useCustomersStore = create<customersState>((set) => ({
       if (!res || res.status >= 400) return null;
       set((state) => ({
         customers: state.customers.filter(
-          (item) => item.customerid !== Number(customerid)
+          (item) => item.customerid !== Number(customerid),
         ),
         total: Number(state.total) - 1,
       }));
@@ -53,7 +53,7 @@ export const useCustomersStore = create<customersState>((set) => ({
       if (!res || res.status >= 400) return null;
       set((state) => ({
         customers: state.customers.map((item) =>
-          item.customerid === Number(customerid) ? res.data : item
+          item.customerid === Number(customerid) ? res.data : item,
         ),
       }));
     } catch (error) {

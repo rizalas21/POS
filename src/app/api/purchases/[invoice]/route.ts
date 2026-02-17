@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { invoice: string } }
+  { params }: { params: { invoice: string } },
 ) {
   try {
     const { invoice } = await params;
@@ -24,7 +24,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { invoice: string } }
+  { params }: { params: { invoice: string } },
 ) {
   try {
     const datas = await req.json();
@@ -39,7 +39,7 @@ export async function PUT(
     if (!existingPurchases) {
       return NextResponse.json(
         { error: "Purchase not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -84,18 +84,27 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { invoice: string } }
+  { params }: { params: { invoice: string } },
 ) {
   try {
     const { invoice } = await params;
     if (!invoice) {
       return NextResponse.json(
         { error: "invoice is required in the URL." },
-        { status: 400 }
+        { status: 400 },
       );
     }
+    const item = await prisma.purchaseitems.findMany({ where: { invoice } });
 
     const result = await prisma.$transaction(async (tx) => {
+      await Promise.all(
+        item.map((item) => {
+          return tx.goods.update({
+            where: { barcode: item.itemcode },
+            data: { stock: { increment: item.quantity } },
+          });
+        }),
+      );
       await tx.purchaseitems.deleteMany({ where: { invoice } });
       const res = await tx.purchases.deleteMany({ where: { invoice } });
       return res;

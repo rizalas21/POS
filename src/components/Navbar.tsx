@@ -124,7 +124,7 @@ export default function Navbar() {
 
           {/* HIDE MENU START */}
           <div
-            className={`bg-white absolute mt-[35vh] mr-[1vw] h-auto w-[13vw] flex-col items-center justify-between rounded cursor-default transition  ${
+            className={`bg-white absolute mt-[35vh] mr-10 right-0 h-auto w-[13vw] flex-col items-center justify-between rounded cursor-default transition  ${
               isShowMenu ? "flex visible" : "hidden invisible"
             }`}
             id="hide-menu"

@@ -37,19 +37,32 @@ export const useSuppliersStore = create<SuppliersState>((set) => ({
   deleteSuppliers: async (supplierid) => {
     try {
       const res = await axios.delete(`/api/suppliers/${supplierid}`);
+      console.log("masuk res store -> ", res.data);
       if (res.status >= 400) {
-        return null;
+        return { success: false, message: "Unknown Error" };
       }
 
       set((state) => ({
         suppliers: state.suppliers.filter(
-          (item) => item.supplierid !== Number(supplierid)
+          (item) => item.supplierid !== Number(supplierid),
         ),
         total: Number(state.total) - 1,
       }));
-    } catch (error) {
-      console.log("error when delete suppliers: ", error);
-      return null;
+      return { success: true, message: "Deleted Supplier Success" };
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        return {
+          success: false,
+          message:
+            error.response?.data?.message ||
+            error.response?.data ||
+            "Terjadi kesalahan",
+        };
+      }
+      return {
+        success: false,
+        message: "Unknown error",
+      };
     }
   },
   updateSuppliers: async (supplierid, data) => {
@@ -58,7 +71,7 @@ export const useSuppliersStore = create<SuppliersState>((set) => ({
       if (res.status >= 400) return null;
       set((state) => ({
         suppliers: state.suppliers.map((item) =>
-          item.supplierid === Number(supplierid) ? res.data : item
+          item.supplierid === Number(supplierid) ? res.data : item,
         ),
       }));
     } catch (error) {

@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { Prisma } from "@/generated/prisma";
 import suppliers from "@/app/suppliers/page";
 import { time } from "console";
+import { Item } from "@/app/types/sales";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)
@@ -63,6 +64,15 @@ export async function POST(req: NextRequest) {
       const createPurchase = await tx.purchases.create({
         data: { ...dataWithoutItems, time: new Date(dataWithoutItems.time) },
       });
+
+      await Promise.all(
+        items.map((item: Item) => {
+          return tx.goods.update({
+            where: { barcode: item.itemcode },
+            data: { stock: { decrement: item.quantity } },
+          });
+        }),
+      );
 
       await tx.purchaseitems.createMany({ data: items });
 

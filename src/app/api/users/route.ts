@@ -2,6 +2,7 @@ import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { Prisma } from "@/generated/prisma";
+import getUserid from "../getUserid";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
   const limit = Number(await req.nextUrl.searchParams.get("limit")) || 3;
   const page = Number(await req.nextUrl.searchParams.get("page")) || 1;
   const offset = (page - 1) * limit;
+  const userid = await getUserid();
   const filterCondition = {
     OR: [
       { email: { contains: keyword, mode: Prisma.QueryMode.insensitive } },
@@ -39,8 +41,9 @@ export async function GET(req: NextRequest) {
       skip: offset,
     });
     const pages = Math.ceil(total / limit);
+    const data = res.filter((item) => item.userid !== userid);
 
-    return NextResponse.json({ data: res, total, pages, page });
+    return NextResponse.json({ data, total, pages, page });
   } catch (error) {
     console.log("Error when trying to get users: ", error);
     return NextResponse.json("failed to get users");

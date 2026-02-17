@@ -18,13 +18,22 @@ export const ModalDeleteSuppliers = ({
 
   async function confirmDelete({ id }: { id: any }) {
     const res = await deleteSuppliers(selectedSuppliers.supplierid);
+    console.log("masuk res delete modal -> ", res);
+    if (!res.success) {
+      setShowModal(false);
+      return Swal.fire({
+        icon: "error",
+        title: "Delete suppliers Failed",
+        text: `${res.message}`,
+        showConfirmButton: true,
+      });
+    }
     setShowModal(false);
     return Swal.fire({
       icon: "success",
       title: "Delete suppliers Successful",
       text: `${selectedSuppliers.name}`,
-      timer: 1500,
-      showConfirmButton: false,
+      showConfirmButton: true,
     });
   }
 

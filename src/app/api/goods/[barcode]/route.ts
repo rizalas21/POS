@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { barcode: string } }
+  { params }: { params: { barcode: string } },
 ) {
   try {
     const { barcode } = await params;
@@ -23,7 +23,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { barcode: string } }
+  { params }: { params: { barcode: string } },
 ) {
   try {
     const data = await req.formData();
@@ -64,13 +64,14 @@ export async function PUT(
           picture: typeof picture === "string" ? picture : imageUrl,
         },
       });
+      console.log("res nya ini bro -> ", res);
 
       return NextResponse.json(res);
     } catch (err) {
       console.error("Error update goods:", err);
       return NextResponse.json(
         { error: "Failed to update goods" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   } catch (error) {
@@ -81,7 +82,7 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { barcode: string } }
+  { params }: { params: { barcode: string } },
 ) {
   const { barcode } = await params;
   console.log("ini barcode nya => ", barcode);
@@ -89,7 +90,7 @@ export async function DELETE(
     if (!barcode) {
       return NextResponse.json(
         { error: "barcode is required in the URL." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

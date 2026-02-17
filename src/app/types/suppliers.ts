@@ -20,9 +20,12 @@ export interface SuppliersState {
   total: number;
   getSuppliers: (params: SearchParams) => void;
   addSuppliers: (data: Omit<Suppliers, "supplierid">) => void;
-  deleteSuppliers: (supplierid: string) => void;
+  deleteSuppliers: (supplierid: string) => Promise<{
+    success: boolean;
+    message: string;
+  }>;
   updateSuppliers: (
     supplierid: string,
-    data: Omit<Suppliers, "supplierid">
+    data: Omit<Suppliers, "supplierid">,
   ) => void;
 }

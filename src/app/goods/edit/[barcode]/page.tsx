@@ -22,8 +22,8 @@ export default function EditGoods() {
     barcode: "",
     name: "",
     stock: 1,
-    purchasePrice: 1,
-    sellingPrice: 1,
+    purchaseprice: 1,
+    sellingprice: 1,
     unit: "",
     picture: null,
   });
@@ -51,8 +51,8 @@ export default function EditGoods() {
       formData.append("barcode", data.barcode);
       formData.append("name", data.name);
       formData.append("stock", String(data.stock));
-      formData.append("purchasePrice", String(data.purchasePrice));
-      formData.append("sellingPrice", String(data.sellingPrice));
+      formData.append("purchaseprice", String(data.purchaseprice));
+      formData.append("sellingprice", String(data.sellingprice));
       formData.append("unit", data.unit);
       if (data.picture) {
         formData.append("picture", data.picture);
@@ -76,13 +76,15 @@ export default function EditGoods() {
     const { name, value, files } = e.target;
     if (name === "picture") {
       setData({ ...data, [name]: files[0] });
-    } else if (name === "purchasePrice" || name === "sellingPrice") {
+    } else if (name === "purchaseprice" || name === "sellingprice") {
       setData({ ...data, [name]: Number(value) });
     } else {
       setData({ ...data, [name]: value });
       console.log("ini data => ", data);
     }
   };
+
+  console.log(data);
 
   return (
     <main className="space-y-1">
@@ -136,9 +138,9 @@ export default function EditGoods() {
               placeholder="e.g 1000"
               type="number"
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
-              name="purchasePrice"
+              name="purchaseprice"
               onChange={handleChange}
-              value={data.purchasePrice}
+              defaultValue={data.purchaseprice}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
@@ -149,9 +151,9 @@ export default function EditGoods() {
               placeholder="eg. 1000"
               type="number"
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
-              name="sellingPrice"
+              name="sellingprice"
               onChange={handleChange}
-              value={data.sellingPrice}
+              defaultValue={data.sellingprice}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">

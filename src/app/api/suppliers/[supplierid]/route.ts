@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { supplierid: number } }
+  { params }: { params: { supplierid: number } },
 ) {
   try {
     const { supplierid } = await params;
@@ -14,7 +14,7 @@ export async function GET(
     });
     if (!res)
       return NextResponse.json(
-        `supplierid with supplierid ${supplierid} not found`
+        `supplierid with supplierid ${supplierid} not found`,
       );
     return NextResponse.json(res);
   } catch (error) {
@@ -25,7 +25,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { supplierid: number } }
+  { params }: { params: { supplierid: number } },
 ) {
   try {
     const data = await req.json();
@@ -47,20 +47,34 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { supplierid: number } }
+  { params }: { params: { supplierid: number } },
 ) {
   try {
     const { supplierid } = await params;
     if (!supplierid) {
       return NextResponse.json(
         { error: "supplierid is required in the URL." },
-        { status: 400 }
+        { status: 400 },
       );
     }
+
+    const checkPurchase = await prisma.purchases.findFirst({
+      where: { supplier: Number(supplierid) },
+    });
+
+    if (checkPurchase)
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Supplier is Used in Transactions and Cannot be Deleted",
+        },
+        { status: 409 },
+      );
 
     const res = await prisma.suppliers.delete({
       where: { supplierid: Number(supplierid) },
     });
+    console.log("masuk res backend -> ", res);
     return NextResponse.json(res);
   } catch (error) {
     console.log("error when delete user : ", error);
