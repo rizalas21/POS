@@ -76,6 +76,10 @@ export async function PUT(
         const stillExisting = purchaseitems.find((i: any) => i.id === old.id);
         if (!stillExisting)
           await tx.purchaseitems.delete({ where: { id: old.id } });
+        await tx.goods.update({
+          where: { barcode: old.itemcode },
+          data: { stock: { increment: old.quantity } },
+        });
       }
 
       return await tx.purchases.findUnique({
