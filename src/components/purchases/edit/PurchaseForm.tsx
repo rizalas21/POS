@@ -57,7 +57,6 @@ export default function PurchaseForm({
   return (
     <form
       className="flex flex-col border-y border-slate-200"
-      // onSubmit={handleSubmit}
       onSubmit={handleAdd}
     >
       <section className="flex justify-between py-3 border-y border-slate-200">
@@ -103,7 +102,7 @@ export default function PurchaseForm({
             onChange={(e) => {
               const selectedBarcode = e.target.value;
               const selectedItem = goods.find(
-                (item) => item.barcode === selectedBarcode
+                (item) => item.barcode === selectedBarcode,
               );
 
               if (selectedItem) {

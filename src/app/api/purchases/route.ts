@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         items.map((item: Item) => {
           return tx.goods.update({
             where: { barcode: item.itemcode },
-            data: { stock: { decrement: item.quantity } },
+            data: { stock: { increment: item.quantity } },
           });
         }),
       );

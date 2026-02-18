@@ -1,6 +1,7 @@
 import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/generated/prisma";
+import { Item } from "@/app/types/sales";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)
@@ -60,6 +61,15 @@ export async function POST(req: NextRequest) {
       const createSales = await tx.sales.create({
         data: { ...dataWithoutItems, time: new Date(dataWithoutItems.time) },
       });
+
+      await Promise.all(
+        saleitems.map((item: Item) => {
+          return tx.goods.update({
+            where: { barcode: item.itemcode },
+            data: { stock: { decrement: item.quantity } },
+          });
+        }),
+      );
 
       await tx.saleitems.createMany({ data: saleitems });
 

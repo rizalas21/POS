@@ -66,7 +66,7 @@ export async function PUT(
           });
           await tx.goods.update({
             where: { barcode: data.itemcode },
-            data: { stock: { decrement: data.quantity } },
+            data: { stock: { increment: data.quantity } },
           });
         }
       }
@@ -78,7 +78,7 @@ export async function PUT(
           await tx.purchaseitems.delete({ where: { id: old.id } });
         await tx.goods.update({
           where: { barcode: old.itemcode },
-          data: { stock: { increment: old.quantity } },
+          data: { stock: { decrement: old.quantity } },
         });
       }
 
@@ -113,7 +113,7 @@ export async function DELETE(
         item.map((item) => {
           return tx.goods.update({
             where: { barcode: item.itemcode },
-            data: { stock: { increment: item.quantity } },
+            data: { stock: { decrement: item.quantity } },
           });
         }),
       );

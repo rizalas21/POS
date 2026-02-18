@@ -60,7 +60,7 @@ export default function EditPurchase() {
   });
 
   const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(
-    input.time
+    input.time,
   );
   const [goodsItem, setGoodsItem] = useState({
     barcode: "",
@@ -124,21 +124,12 @@ export default function EditPurchase() {
     let updatedItem = { ...item };
     if (name === "quantity") {
       const qty = Number(value);
-      const stock = Number(goodsItem.stock);
 
-      if (qty > stock) {
-        updatedItem = {
-          ...updatedItem,
-          quantity: stock,
-          totalprice: stock * updatedItem.purchaseprice,
-        };
-      } else {
-        updatedItem = {
-          ...updatedItem,
-          quantity: qty,
-          totalprice: qty * updatedItem.purchaseprice,
-        };
-      }
+      updatedItem = {
+        ...updatedItem,
+        quantity: qty,
+        totalprice: qty * updatedItem.purchaseprice,
+      };
     } else if (name === "purchaseprice") {
       updatedItem = {
         ...updatedItem,

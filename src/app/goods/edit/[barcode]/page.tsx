@@ -130,7 +130,7 @@ export default function EditGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="stock"
               onChange={handleChange}
-              value={data.stock}
+              defaultValue={data.stock}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
@@ -143,7 +143,7 @@ export default function EditGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="purchaseprice"
               onChange={handleChange}
-              defaultValue={String(data.purchaseprice)}
+              defaultValue={data.purchaseprice}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
@@ -156,7 +156,7 @@ export default function EditGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="sellingprice"
               onChange={handleChange}
-              defaultValue={String(data.sellingprice)}
+              defaultValue={data.sellingprice}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { invoice: string } }
+  { params }: { params: { invoice: string } },
 ) {
   try {
     const { invoice } = await params;
@@ -24,7 +24,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { invoice: string } }
+  { params }: { params: { invoice: string } },
 ) {
   try {
     const datas = await req.json();
@@ -40,7 +40,7 @@ export async function PUT(
     if (!customer || !operator)
       return NextResponse.json(
         { error: "customer or operator not found" },
-        { status: 404 }
+        { status: 404 },
       );
 
     if (!existingSales) {
@@ -56,6 +56,8 @@ export async function PUT(
           users: { connect: { userid: operator } },
         },
       });
+
+      // adding sales
       for (const data of datas?.saleitems || []) {
         if (!data.id) {
           await tx.saleitems.create({
@@ -64,13 +66,23 @@ export async function PUT(
               invoice,
             },
           });
+          await tx.goods.update({
+            where: { barcode: data.itemcode },
+            data: { stock: { decrement: data.quantity } },
+          });
         }
       }
 
+      // delete sales
       for (const old of existingSales?.saleitems || []) {
         const stillExisting = saleitems.find((i: any) => i.id === old.id);
-        if (!stillExisting)
+        if (!stillExisting) {
           await tx.saleitems.delete({ where: { id: old.id } });
+          await tx.goods.update({
+            where: { barcode: old.itemcode },
+            data: { stock: { increment: old.quantity } },
+          });
+        }
       }
 
       return await tx.sales.findUnique({
@@ -87,14 +99,14 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { invoice: string } }
+  { params }: { params: { invoice: string } },
 ) {
   try {
     const { invoice } = await params;
     if (!invoice) {
       return NextResponse.json(
         { error: "invoice is required in the URL." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
