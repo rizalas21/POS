@@ -10,7 +10,6 @@ export const useGoodsStore = create<goodsState>((set) => ({
   getGoods: async (params) => {
     try {
       const { data } = await axios.get("/api/goods", { params });
-      console.log("ini data store nya => ", data.data);
       if (data.status >= 400 || !Array.isArray(data?.data)) return null;
       set({
         goods: data.data,
@@ -25,6 +24,7 @@ export const useGoodsStore = create<goodsState>((set) => ({
   },
   addGoods: async (data) => {
     try {
+      console.log("line 27 -> ", data);
       const res = await axios.post("/api/goods", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -61,7 +61,7 @@ export const useGoodsStore = create<goodsState>((set) => ({
       }
       set((state) => ({
         goods: state.goods.map((item) =>
-          item.barcode === barcode ? res.data : item
+          item.barcode === barcode ? res.data : item,
         ),
       }));
     } catch (error) {

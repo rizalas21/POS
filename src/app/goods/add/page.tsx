@@ -15,8 +15,8 @@ export default function AddGoods() {
     barcode: "",
     name: "",
     stock: 1,
-    purchasePrice: 1,
-    sellingPrice: 1,
+    purchaseprice: 1,
+    sellingprice: 1,
     unit: "",
     picture: null,
   });
@@ -28,30 +28,33 @@ export default function AddGoods() {
     sort: "",
   });
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       const formData = new FormData();
       formData.append("barcode", data.barcode);
       formData.append("name", data.name);
       formData.append("stock", String(data.stock));
-      formData.append("purchasePrice", String(data.purchasePrice));
-      formData.append("sellingPrice", String(data.sellingPrice));
+      formData.append("purchaseprice", String(data.purchaseprice));
+      formData.append("sellingprice", String(data.sellingprice));
       formData.append("unit", data.unit);
       if (data.picture) {
         formData.append("picture", data.picture);
       }
+      console.log("line 43 -> ");
       const res = await addGoods(formData);
-      router.push("/goods");
+      // router.push("/goods");
       return res;
     } catch (error) {
+      console.log(error);
       return null;
     } finally {
       setData({
         barcode: "",
         name: "",
         stock: 1,
-        purchasePrice: 1,
-        sellingPrice: 1,
+        purchaseprice: 1,
+        sellingprice: 1,
         unit: "",
         picture: null,
       });
@@ -78,14 +81,19 @@ export default function AddGoods() {
     fetchCategories();
   }, [getUnits]);
 
+  console.log(data);
+
   return (
     <main className="space-y-3">
       <h2 className="text-2xl text-gray-700">Goods</h2>
-      <div className=" flex flex-col shadow-2xl h-full bg-white">
+      <form
+        onSubmit={handleSubmit}
+        className=" flex flex-col shadow-2xl h-full bg-white"
+      >
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center mb-2 bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center pl-2">
           <p className="text-blue-600 font-bold">Form Add</p>
         </div>
-        <form className="flex flex-col p-10 gap-5" onSubmit={handleSubmit}>
+        <div className="flex flex-col p-10 gap-5" onSubmit={handleSubmit}>
           <div className="flex justify-between w-full h-[6vh] rounded">
             <label>Barcode</label>
             <input
@@ -126,7 +134,7 @@ export default function AddGoods() {
               placeholder="e.g 1000"
               type="number"
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
-              name="purchasePrice"
+              name="purchaseprice"
               onChange={handleChange}
               required
             />
@@ -137,7 +145,7 @@ export default function AddGoods() {
               placeholder="eg. 1000"
               type="number"
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
-              name="sellingPrice"
+              name="sellingprice"
               onChange={handleChange}
               required
             />
@@ -171,12 +179,11 @@ export default function AddGoods() {
               required
             />
           </div>
-        </form>
+        </div>
         <div className="flex w-full justify-start text-white font-thin rounded-[5px] text-center bg-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] h-[8vh] items-center gap-5 px-5 py-2">
           <button
             className="flex w-[8vw] h-full justify-between items-center h-4/5 bg-green-600 cursor-pointer"
             type="submit"
-            onClick={handleSubmit}
           >
             <FontAwesomeIcon
               className="rounded-l text-center bg-green-700 px-2.5 py-1.5 text-slate-300 w-1/5 text-white"
@@ -199,7 +206,7 @@ export default function AddGoods() {
             </p>
           </button>
         </div>
-      </div>
+      </form>
     </main>
   );
 }

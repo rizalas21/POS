@@ -38,12 +38,15 @@ export default function EditGoods() {
   useEffect(() => {
     const fetchGoods = async () => {
       const { data } = await axios.get(`/api/goods/${barcode}`);
+      console.log("line 41 -> ", data);
       setData(data);
     };
     getUnits(params);
 
     fetchGoods();
   }, []);
+
+  console.log("line 48 -> ", data);
 
   const handleSubmit = async () => {
     try {
@@ -140,7 +143,7 @@ export default function EditGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="purchaseprice"
               onChange={handleChange}
-              defaultValue={data.purchaseprice}
+              defaultValue={String(data.purchaseprice)}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">
@@ -153,7 +156,7 @@ export default function EditGoods() {
               className="w-4/5 border p-1.5 drop-shadow rounded border-gray-500/50"
               name="sellingprice"
               onChange={handleChange}
-              defaultValue={data.sellingprice}
+              defaultValue={String(data.sellingprice)}
             />
           </div>
           <div className="flex items-start w-full h-[6vh] rounded gap-[8vw]">

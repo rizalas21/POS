@@ -29,10 +29,12 @@ export async function PUT(
     const data = await req.formData();
     const { barcode } = await params;
 
+    console.log("line 32 -> ", data);
+
     const name = data.get("name") as string;
     const stock = Number(data.get("stock"));
-    const purchaseprice = Number(data.get("purchasePrice"));
-    const sellingprice = Number(data.get("sellingPrice"));
+    const purchaseprice = Number(data.get("purchaseprice"));
+    const sellingprice = Number(data.get("sellingprice"));
     const unit = data.get("unit") as string;
     const picture = data.get("picture") as File | null;
 

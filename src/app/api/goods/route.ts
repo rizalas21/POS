@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   const keyword = (await req.nextUrl.searchParams.get("keyword")) || "";
   const sortBy = (await req.nextUrl.searchParams.get("sortBy")) || "name";
   const sort = (await req.nextUrl.searchParams.get("sort")) || "asc";
-  const limit = Number(await req.nextUrl.searchParams.get("limit")) || 3;
+  const limit = Number(await req.nextUrl.searchParams.get("limit"));
   const page = Number(await req.nextUrl.searchParams.get("page")) || 1;
   const offset = (page - 1) * limit;
   const filterCondition = {
@@ -35,8 +35,8 @@ export async function GET(req: NextRequest) {
       orderBy: { [sortBy]: sort },
       ...(limit > 0 && { take: limit, skip: offset }),
     });
+    console.log("response goods api", limit);
     const pages = Math.ceil(total / limit);
-    console.log(res);
     return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
     console.log("Error when trying to get goods: ", error);
@@ -69,9 +69,10 @@ export async function POST(req: NextRequest) {
       });
       imageUrl = await result.secure_url;
     }
-    const existingunit = await prisma.goods.findFirst({
-      where: { name },
+    const existingunit = await prisma.goods.findUnique({
+      where: { barcode },
     });
+    console.log("line 75", existingunit);
     if (existingunit)
       return NextResponse.json("unit is already exist", { status: 402 });
 
@@ -86,6 +87,7 @@ export async function POST(req: NextRequest) {
         picture: imageUrl,
       },
     });
+    console.log("barcode iki bro -> ", res);
     return NextResponse.json(res);
   } catch (error) {
     console.log("Error when trying to POST goods: ", error);
