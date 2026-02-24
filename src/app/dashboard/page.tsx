@@ -22,7 +22,8 @@ import {
   Title,
 } from "chart.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 ChartJS.register(LineElement, PointElement, LinearScale, Title);
 
@@ -34,6 +35,35 @@ export default function dashboard() {
     sortBy: "",
     sort: "asc",
   });
+  const [cards, setCards] = useState({
+    earnings: 0,
+    purchases: 0,
+    sales: 0,
+    totalSales: 0,
+  });
+  const [dataTable, setDataDatble] = useState([]);
+  const today = new Date();
+  const year = today.getFullYear();
+  const startDate = String(
+    new Date(year, today.getMonth(), 1).getDate(),
+  ).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const lastDate = String(
+    new Date(year, today.getMonth() + 1, 0).getDate(),
+  ).padStart(2, "0");
+  console.log(new Date(year, today.getMonth() + 1, 0).getDate());
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      const { data } = await axios.get("/api/dashboard");
+      setDataDatble(data.dataTable);
+      setCards(data.cards);
+    };
+
+    fetchDashboard();
+  }, []);
+
+  console.log("line 52 res dashboard: ", dataTable);
   return (
     <main className="space-y-3 mb-[7%] bg-gray-400/25">
       <header className="flex justify-between">
@@ -53,6 +83,7 @@ export default function dashboard() {
             <input
               type="date"
               className="border rounded py-1 px-2 border-slate-500/50"
+              defaultValue={`${year}-${month}-${startDate}`}
             />
           </fieldset>
           <fieldset className="space-y-2 flex flex-col w-2/5">
@@ -60,6 +91,7 @@ export default function dashboard() {
             <input
               type="date"
               className="border rounded py-1 px-2 border-slate-500/50"
+              defaultValue={`${year}-${month}-${lastDate}`}
             />
           </fieldset>
         </form>
@@ -97,14 +129,14 @@ export default function dashboard() {
             <label className="text-sm text-blue-700 font-bold ">
               PURCHASES
             </label>
-            <p className="text-lg font-bold">RP 715.000,00</p>
+            <p className="text-lg font-bold">RP {cards.purchases},00</p>
           </div>
           <FontAwesomeIcon icon={faCalendar} className="text-4xl opacity-25" />
         </div>
         <div className="flex justify-between items-center px-4 py-4 border-l-3 border-green-600 rounded-md bg-white text-slate-900 shadow-lg">
           <div>
             <label className="text-sm text-green-600 font-bold ">SALES</label>
-            <p className="text-lg font-bold">RP 859.000,00</p>
+            <p className="text-lg font-bold">RP {cards.sales},00</p>
           </div>
           <FontAwesomeIcon
             icon={faDollarSign}
@@ -114,7 +146,7 @@ export default function dashboard() {
         <div className="flex justify-between items-center px-4 py-4 border-l-3 border-cyan-500 rounded-md bg-white text-slate-900 shadow-lg">
           <div>
             <label className="text-sm text-cyan-500 font-bold ">EARNINGS</label>
-            <p className="text-lg font-bold">RP 144.000,00</p>
+            <p className="text-lg font-bold">RP {cards.earnings},00</p>
           </div>
           <FontAwesomeIcon
             icon={faDollarSign}
@@ -126,7 +158,7 @@ export default function dashboard() {
             <label className="text-sm text-yellow-500 font-bold ">
               TOTAL SALES
             </label>
-            <p className="text-lg font-bold">4</p>
+            <p className="text-lg font-bold">{cards.totalSales}</p>
           </div>
           <FontAwesomeIcon icon={faComments} className="text-4xl opacity-25" />
         </div>
@@ -190,8 +222,8 @@ export default function dashboard() {
                         params.sortBy !== "customerid"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="Monthly"
                       value="asc"
@@ -204,8 +236,8 @@ export default function dashboard() {
                         params.sortBy !== "customerid"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="customerid"
                       value="desc"
@@ -225,8 +257,8 @@ export default function dashboard() {
                         params.sortBy !== "name"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="expense"
                       value="asc"
@@ -239,8 +271,8 @@ export default function dashboard() {
                         params.sortBy !== "name"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="expense"
                       value="desc"
@@ -260,8 +292,8 @@ export default function dashboard() {
                         params.sortBy !== "address"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="revenue"
                       value="asc"
@@ -274,8 +306,8 @@ export default function dashboard() {
                         params.sortBy !== "address"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="revenue"
                       value="desc"
@@ -295,8 +327,8 @@ export default function dashboard() {
                         params.sortBy !== "phone"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="revenue"
                       value="asc"
@@ -309,8 +341,8 @@ export default function dashboard() {
                         params.sortBy !== "phone"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
-                          ? "text-grayy-700"
-                          : "text-gray-700/30"
+                            ? "text-grayy-700"
+                            : "text-gray-700/30"
                       }`}
                       name="revenue"
                       value="desc"
@@ -367,13 +399,13 @@ export default function dashboard() {
                   </td>
                 </tr>
               )) */}
-            ) : (
+            {/* ) : ( */}
             <tr>
               <td className="text-center py-6 text-gray-500" colSpan={4}>
                 No Customers Found.
               </td>
             </tr>
-            )
+            {/* ) */}
           </tbody>
         </table>
       </section>
