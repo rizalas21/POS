@@ -8,12 +8,26 @@ export async function GET(req: NextRequest) {
     const endDate = searchParams.get("endDate");
     const sort = searchParams.get("sort");
     const sortBy = searchParams.get("sortBy");
+    const page = searchParams.get("page");
+    const limit = searchParams.get("limit");
     const totalSales = await prisma.sales.count();
     const purchases = await prisma.purchases.aggregate({
       _sum: { totalsum: true },
     });
     const sales = await prisma.sales.aggregate({
       _sum: { totalsum: true },
+    });
+    const directRevenue = await prisma.sales.aggregate({
+      _sum: { totalsum: true },
+      where: {
+        customer: 3,
+      },
+    });
+    const customerRevenue = await prisma.sales.aggregate({
+      _sum: { totalsum: true },
+      where: {
+        customer: { not: 3 },
+      },
     });
     const cards = {
       purchases: Number(purchases._sum.totalsum),
@@ -60,21 +74,26 @@ COALESCE(s."totalSales", 0) - COALESCE(e."expense", 0) AS "earning"
 FROM sales s
 FULL OUTER JOIN expense e
 ON s.month_date = e.month_date
-ORDER BY month
+ORDER BY ${sortBy} ${sort}
 
   `,
       start,
       end,
     );
 
-    // const q = await prisma.$query
-
-    console.log("data sale bro: ", dataTable);
-
     const data = {
       cards,
       dataTable,
+      customerRevenue: {
+        label: "Customer Revenue",
+        value: Number(customerRevenue._sum.totalsum),
+      },
+      directRevenue: {
+        label: "Direct Revenue",
+        value: Number(directRevenue._sum.totalsum),
+      },
     };
+    console.log("all data: ", data);
     return NextResponse.json(data);
   } catch (error) {
     console.log("error when get dashboard: ", error);

@@ -18,21 +18,33 @@ import {
   Chart as ChartJS,
   LineElement,
   PointElement,
+  ArcElement,
   LinearScale,
+  CategoryScale,
   Title,
+  Tooltip,
+  ChartOptions,
 } from "chart.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-ChartJS.register(LineElement, PointElement, LinearScale, Title);
+ChartJS.register(
+  LineElement,
+  PointElement,
+  ArcElement,
+  LinearScale,
+  CategoryScale,
+  Title,
+  Tooltip,
+);
 
 export default function dashboard() {
   const [params, setParams] = useState({
     keyword: "",
     limit: "3",
     page: "1",
-    sortBy: "",
+    sortBy: "month",
     sort: "asc",
   });
   const [cards, setCards] = useState({
@@ -42,6 +54,10 @@ export default function dashboard() {
     totalSales: 0,
   });
   const [dataTable, setDataDatble] = useState([]);
+  const [dataRevenue, setDataRevenue] = useState({
+    customerRevenue: { label: "", value: 0 },
+    directRevenue: { label: "", value: 0 },
+  });
   const today = new Date();
   const year = today.getFullYear();
   const startDate = String(
@@ -52,16 +68,119 @@ export default function dashboard() {
     new Date(year, today.getMonth() + 1, 0).getDate(),
   ).padStart(2, "0");
   console.log(new Date(year, today.getMonth() + 1, 0).getDate());
+  const lineData = {
+    labels: dataTable.map((item: any) => item.month),
+    datasets: [
+      {
+        label: "Earnings",
+        data: dataTable.map((item: any) => item.earning),
+        fill: true,
+        borderColor: "rgb(0, 68, 255)",
+        backgroundColor: "rgb(255, 255, 255)",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: "rgb(0, 68, 255)",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
+      },
+    ],
+  };
+  const lineOptions = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: false,
+        text: "Chart.js Line Chart",
+      },
+      Tooltip: {
+        enabled: true,
+        callbacks: {
+          title: (context: any) => {
+            console.log("context title: ", context);
+            return `Month: ${context[0].label}`;
+          },
+          label: function (context: any) {
+            const value = context.raw;
+            console.log("context value: ", context);
+            return "Earnings: Rp " + value.toLocaleString();
+          },
+        },
+      },
+    },
+    hover: {
+      mode: "index" as const,
+      intersect: false,
+    },
+    scales: {
+      x: {
+        border: {
+          display: true,
+        },
+        grid: {
+          display: false,
+          drawOnChartArea: true,
+          drawTicks: false,
+        },
+      },
+
+      y: {
+        border: { display: false },
+      },
+    },
+  };
+  const doughData = {
+    labels: [
+      dataRevenue.customerRevenue.label,
+      dataRevenue.directRevenue.label,
+    ],
+    datasets: [
+      {
+        label: "Revenue",
+        data: [
+          dataRevenue.customerRevenue.value,
+          dataRevenue.directRevenue.value,
+        ],
+
+        backgroundColor: ["#4e73df", "#1cc88a"],
+      },
+    ],
+    hoverOffset: 4,
+  };
+  const doughOptions: ChartOptions<"doughnut"> = {
+    responsive: true,
+    aspectRatio: 2,
+    cutout: "70%",
+    hover: {
+      mode: "index" as const,
+      intersect: false,
+    },
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setParams({ ...params, [name]: value });
+  };
+
+  const handleSort = (e: any) => {
+    const { name, value } = e.currentTarget;
+
+    setParams({ ...params, sortBy: name, sort: value });
+  };
 
   useEffect(() => {
     const fetchDashboard = async () => {
-      const { data } = await axios.get("/api/dashboard");
+      const { data } = await axios.get("/api/dashboard", { params });
       setDataDatble(data.dataTable);
       setCards(data.cards);
+      setDataRevenue({
+        customerRevenue: data.customerRevenue,
+        directRevenue: data.directRevenue,
+      });
     };
 
     fetchDashboard();
-  }, []);
+  }, [params]);
 
   console.log("line 52 res dashboard: ", dataTable);
   return (
@@ -164,19 +283,27 @@ export default function dashboard() {
         </div>
       </section>
       <section className="flex gap-1 w-full">
-        <div className="shadow-lg h-auto border border-slate-500/25 rounded min-w-8/12">
+        <div className="shadow-lg h-auto border border-slate-500/25 rounded min-w-7/12 bg-white">
           <header className="w-full shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pl-2 py-4 px-4 flex justify-between items-center bg-slate-100">
             <h2 className="text-blue-600 font-bold">Earnings Overview</h2>
             <FontAwesomeIcon icon={faEllipsisVertical} />
           </header>
-          {/* <Chart type="line" data={} options={} /> */}
+          {dataTable ? (
+            <Chart type="line" data={lineData} options={lineOptions} />
+          ) : (
+            ""
+          )}
         </div>
-        <div className="shadow-lg h-auto border border-slate-500/25 rounded min-w-4/12">
+        <div className="shadow-lg h-auto border border-slate-500/25 rounded min-w-5/12 bg-white space-y-10">
           <header className="w-full shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pl-2 py-4 px-4 flex justify-between items-center bg-slate-100">
             <h2 className="text-blue-600 font-bold">Revenue Sources</h2>
             <FontAwesomeIcon icon={faEllipsisVertical} />
           </header>
-          {/* <Chart type="line" data={} options={} /> */}
+          {dataRevenue ? (
+            <Chart type="doughnut" data={doughData} options={doughOptions} />
+          ) : (
+            ""
+          )}
         </div>
       </section>
       <section className="table w-full shadow-lg border border-slate-500/25 rounded bg-white px-4 py-2">
@@ -193,9 +320,9 @@ export default function dashboard() {
               name="limit"
               id=""
               min={1}
-              // max={Number(total)}
-              // value={Number(params.limit)}
-              // onChange={(e) => handleChange(e)}
+              max={Number(cards.totalSales)}
+              value={Number(params.limit)}
+              onChange={(e) => handleChange(e)}
             />
             <p>entries</p>
           </div>
@@ -206,7 +333,7 @@ export default function dashboard() {
               title="search"
               type="text"
               name="keyword"
-              // onChange={(e) => handleChange(e)}
+              onChange={(e) => handleChange(e)}
             />
           </div>
         </div>
@@ -219,29 +346,29 @@ export default function dashboard() {
                   <div className="icon-thead flex">
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "customerid"
+                        params.sortBy !== "month"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
                             ? "text-grayy-700"
                             : "text-gray-700/30"
                       }`}
-                      name="Monthly"
+                      name="month"
                       value="asc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowUp} />
                     </button>
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "customerid"
+                        params.sortBy !== "month"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
                             ? "text-grayy-700"
                             : "text-gray-700/30"
                       }`}
-                      name="customerid"
+                      name="month"
                       value="desc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowDown} />
                     </button>
@@ -254,7 +381,7 @@ export default function dashboard() {
                   <div className="icon-thead flex">
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "name"
+                        params.sortBy !== "expense"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
                             ? "text-grayy-700"
@@ -262,13 +389,13 @@ export default function dashboard() {
                       }`}
                       name="expense"
                       value="asc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowUp} />
                     </button>
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "name"
+                        params.sortBy !== "expense"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
                             ? "text-grayy-700"
@@ -276,7 +403,7 @@ export default function dashboard() {
                       }`}
                       name="expense"
                       value="desc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowDown} />
                     </button>
@@ -289,7 +416,7 @@ export default function dashboard() {
                   <div className="icon-thead flex">
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "address"
+                        params.sortBy !== "revenue"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
                             ? "text-grayy-700"
@@ -297,13 +424,13 @@ export default function dashboard() {
                       }`}
                       name="revenue"
                       value="asc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowUp} />
                     </button>
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "address"
+                        params.sortBy !== "revenue"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
                             ? "text-grayy-700"
@@ -311,7 +438,7 @@ export default function dashboard() {
                       }`}
                       name="revenue"
                       value="desc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowDown} />
                     </button>
@@ -324,29 +451,29 @@ export default function dashboard() {
                   <div className="icon-thead flex">
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "phone"
+                        params.sortBy !== "earning"
                           ? "text-gray-700/50"
                           : params.sort === "asc"
                             ? "text-grayy-700"
                             : "text-gray-700/30"
                       }`}
-                      name="revenue"
+                      name="earning"
                       value="asc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowUp} />
                     </button>
                     <button
                       className={`text-sm cursor-pointer hover:text-gray-700 ${
-                        params.sortBy !== "phone"
+                        params.sortBy !== "earning"
                           ? "text-gray-700/50"
                           : params.sort === "desc"
                             ? "text-grayy-700"
                             : "text-gray-700/30"
                       }`}
-                      name="revenue"
+                      name="earning"
                       value="desc"
-                      // onClick={handleSort}
+                      onClick={handleSort}
                     >
                       <FontAwesomeIcon icon={faArrowDown} />
                     </button>
@@ -356,56 +483,30 @@ export default function dashboard() {
             </tr>
           </thead>
           <tbody>
-            {/* {customers.length > 0 ? (
-              customers.map((customer: Customers, index: any) => (
+            {dataTable.length > 0 ? (
+              dataTable.map((item: any, index: any) => (
                 <tr className="text-slate-500" key={index}>
                   <td className="px-2 py-2 border border-gray-500/25 text-center">
-                    {customer.customerid}
+                    {item.month}
                   </td>
                   <td className="px-2 py-2 border border-gray-500/25 text-center">
-                    {customer.name}
+                    {item.expense}
                   </td>
                   <td className="px-2 py-2 border border-gray-500/25 text-center">
-                    {customer.address}
+                    {item.revenue}
                   </td>
                   <td className="px-2 py-2 border border-gray-500/25 text-center">
-                    {customer.phone}
-                  </td>
-                  <td className="px-2 py-2 border border-gray-500/25 text-center">
-                    <div className="flex gap-4">
-                      <button
-                        className="text-white hover:cursor-pointer bg-green-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-green-800"
-                        onClick={() =>
-                          router.push(`/customers/edit/${customer.customerid}`)
-                        }
-                      >
-                        <FontAwesomeIcon icon={faCircleInfo} />
-                      </button>
-                      <button
-                        className="text-white hover:cursor-pointer bg-red-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-red-800"
-                        onClick={() => {
-                          setSelectedCustomers({
-                            customerid: customer.customerid.toString(),
-                            name: customer.name,
-                            address: customer.address,
-                            phone: customer.phone,
-                          });
-                          setShowModal(true);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </div>
+                    {item.earning}
                   </td>
                 </tr>
-              )) */}
-            {/* ) : ( */}
-            <tr>
-              <td className="text-center py-6 text-gray-500" colSpan={4}>
-                No Customers Found.
-              </td>
-            </tr>
-            {/* ) */}
+              ))
+            ) : (
+              <tr>
+                <td className="text-center py-6 text-gray-500" colSpan={4}>
+                  No data Found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </section>
