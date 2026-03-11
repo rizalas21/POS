@@ -46,6 +46,8 @@ export default function dashboard() {
     page: "1",
     sortBy: "month",
     sort: "asc",
+    startDate: "",
+    endDate: "",
   });
   const [cards, setCards] = useState({
     earnings: 0,
@@ -58,6 +60,15 @@ export default function dashboard() {
     customerRevenue: { label: "", value: 0 },
     directRevenue: { label: "", value: 0 },
   });
+
+  const [meta, setMeta] = useState({
+    pages: 0,
+    total: 0,
+  });
+
+  const overLimit =
+    (Number(params.page) - 1) * Number(params.limit) + Number(params.limit);
+
   const today = new Date();
   const year = today.getFullYear();
   const startDate = String(
@@ -157,9 +168,13 @@ export default function dashboard() {
     },
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setParams({ ...params, [name]: value });
+    setParams((prev) => ({
+      ...prev,
+      [name]: value,
+      page: name === "keyword" ? "1" : prev.page,
+    }));
   };
 
   const handleSort = (e: any) => {
@@ -171,20 +186,24 @@ export default function dashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       const { data } = await axios.get("/api/dashboard", { params });
+      setMeta({ pages: data.pages, total: data.total });
       setDataDatble(data.dataTable);
       setCards(data.cards);
       setDataRevenue({
         customerRevenue: data.customerRevenue,
         directRevenue: data.directRevenue,
       });
+      if (Number(meta.total) === 1 && meta.pages === 1) {
+        setParams({ ...params, page: "1" });
+      }
     };
 
     fetchDashboard();
   }, [params]);
 
-  console.log("line 52 res dashboard: ", dataTable);
+  console.log("line 52 res dashboard: ", params.page);
   return (
-    <main className="space-y-3 mb-[7%] bg-gray-400/25">
+    <main className="space-y-3 mb-[7%]">
       <header className="flex justify-between">
         <h1 className="text-2xl text-gray-700">Dashboard</h1>
         <button className="px-2 py-1 text-white bg-blue-600 rounded">
@@ -200,17 +219,21 @@ export default function dashboard() {
           <fieldset className="space-y-2 flex flex-col w-2/5">
             <label className="text-slate-500">Start Date</label>
             <input
+              name="startDate"
               type="date"
               className="border rounded py-1 px-2 border-slate-500/50"
-              defaultValue={`${year}-${month}-${startDate}`}
+              defaultValue={`1970-01-01`}
+              onClick={handleChange}
             />
           </fieldset>
           <fieldset className="space-y-2 flex flex-col w-2/5">
             <label className="text-slate-500">End Date</label>
             <input
+              name="endDate"
               type="date"
               className="border rounded py-1 px-2 border-slate-500/50"
               defaultValue={`${year}-${month}-${lastDate}`}
+              onClick={handleChange}
             />
           </fieldset>
         </form>
@@ -507,8 +530,86 @@ export default function dashboard() {
                 </td>
               </tr>
             )}
+            <tr className="text-slate-500">
+              <th className="px-2 py-2 border border-gray-500/25 text-center">
+                <div className="w-full flex justify-start">
+                  <h3>Total</h3>
+                </div>
+              </th>
+              <th className="px-2 py-2 border border-gray-500/25 text-center">
+                <div className="w-full flex justify-start">
+                  <h3>Rp {cards.purchases}</h3>
+                </div>
+              </th>
+              <th className="px-2 py-2 border border-gray-500/25 text-center">
+                <div className="w-full flex justify-start">
+                  <h3>Rp {cards.sales}</h3>
+                </div>
+              </th>
+              <th className="px-2 py-2 border border-gray-500/25 text-center">
+                <div className="w-full flex justify-start">
+                  <h3>Rp {cards.earnings}</h3>
+                </div>
+              </th>
+            </tr>
           </tbody>
         </table>
+        <div className="flex p-2 justify-between">
+          <p>
+            showing {(Number(params.page) - 1) * Number(params.limit) + 1} to{" "}
+            {overLimit >= Number(meta.total) || params.limit === "0"
+              ? Number(meta.total)
+              : overLimit}{" "}
+            of {meta.total.toString()} entries
+          </p>
+          <div className="flex border border-gray-500/50 rounded-sm">
+            <button
+              className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
+                Number(params.page) === 1
+                  ? "text-gray-500/50 cursor-default"
+                  : "cursor-pointer hover:bg-blue-500 hover:text-white"
+              }`}
+              disabled={Number(params.page) === 1}
+              onClick={() =>
+                setParams({
+                  ...params,
+                  page: (Number(params.page) - 1).toString(),
+                })
+              }
+            >
+              Previous
+            </button>{" "}
+            {Array.from({ length: meta.pages }).map((_, i) => (
+              <button
+                key={i}
+                className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 cursor-pointer hover:text-white hover:bg-blue-500 ${
+                  i + 1 === Number(params.page) ? "bg-blue-500 text-white" : ""
+                }`}
+                onClick={() =>
+                  setParams({ ...params, page: (i + 1).toString() })
+                }
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
+                Number(params.page) === meta.pages
+                  ? "text-gray-500/50 cursor-default"
+                  : "cursor-pointer hover:bg-blue-500 hover:text-white"
+              }`}
+              disabled={Number(params.page) === meta.pages}
+              onClick={() =>
+                setParams({
+                  ...params,
+                  page: (Number(params.page) + 1).toString(),
+                })
+              }
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </section>
     </main>
   );
