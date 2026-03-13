@@ -1,4 +1,4 @@
-import { SalesState } from "@/app/types/sales";
+import { SalesState } from "@/types/sales";
 import axios from "axios";
 import { create } from "zustand";
 
@@ -55,7 +55,7 @@ export const useSalesStore = create<SalesState>((set) => ({
 
       set((state) => ({
         sales: state.sales.map((item) =>
-          item.invoice === invoice ? res.data : item
+          item.invoice === invoice ? res.data : item,
         ),
       }));
     } catch (error) {

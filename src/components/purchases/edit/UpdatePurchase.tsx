@@ -14,7 +14,7 @@ import PurchaseSummary from "./PurchaseSummary";
 import PurchaseTable from "./PurchaseTable";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import axios from "axios";
-import { Item } from "@/app/types/purchases";
+import { Item } from "@/types/purchases";
 
 export default function EditPurchase() {
   const router = useRouter();

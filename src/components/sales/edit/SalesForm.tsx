@@ -1,5 +1,5 @@
-import { Goods } from "@/app/types/goods";
-import { Item } from "@/app/types/sales";
+import { Goods } from "@/types/goods";
+import { Item } from "@/types/sales";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction } from "react";
@@ -104,7 +104,7 @@ export default function SalesForm({
             onChange={(e) => {
               const selectedBarcode = e.target.value;
               const selectedItem = goods.find(
-                (item) => item.barcode === selectedBarcode
+                (item) => item.barcode === selectedBarcode,
               );
 
               if (selectedItem) {

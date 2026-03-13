@@ -1,4 +1,4 @@
-import { goodsState } from "@/app/types/goods";
+import { goodsState } from "@/types/goods";
 import axios from "axios";
 import { create } from "zustand";
 

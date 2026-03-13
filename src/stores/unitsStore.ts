@@ -1,4 +1,4 @@
-import { unitState } from "@/app/types/units";
+import { unitState } from "@/types/units";
 import axios from "axios";
 import { create } from "zustand";
 
@@ -59,7 +59,7 @@ export const useUnitsStore = create<unitState>((set) => ({
       console.log("response back end bro => ", res);
       set((state) => ({
         units: state.units.map((item) =>
-          item.unit === unit ? res.data : item
+          item.unit === unit ? res.data : item,
         ),
       }));
     } catch (error) {

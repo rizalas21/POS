@@ -1,5 +1,5 @@
-import { Customers } from "@/app/types/customers";
-import { Item } from "@/app/types/sales";
+import { Customers } from "@/types/customers";
+import { Item } from "@/types/sales";
 import { Dispatch, SetStateAction } from "react";
 
 export default function SalesSummary({
@@ -99,7 +99,7 @@ export default function SalesSummary({
           onChange={(e) => {
             const selectedCustomerid = e.target.value;
             const selectedItem = customers.find(
-              (item) => String(item.customerid) === selectedCustomerid
+              (item) => String(item.customerid) === selectedCustomerid,
             );
             if (selectedItem) {
               setCustomer({

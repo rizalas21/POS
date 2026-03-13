@@ -1,4 +1,4 @@
-import { Item, Purchases, PurchasesState } from "@/app/types/purchases";
+import { Item, Purchases, PurchasesState } from "@/types/purchases";
 import axios from "axios";
 import { create } from "zustand";
 
@@ -53,7 +53,7 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
 
       set((state) => ({
         purchases: state.purchases.map((item) =>
-          item.invoice === invoice ? res.data : item
+          item.invoice === invoice ? res.data : item,
         ),
       }));
     } catch (error) {

@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Users } from "../types/users";
+import { Users } from "../../types/users";
 import { useSession } from "next-auth/react";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -129,8 +129,8 @@ export default function users() {
                           params.sortBy !== "userid"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="userid"
                         value="asc"
@@ -143,8 +143,8 @@ export default function users() {
                           params.sortBy !== "userid"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text--700"
-                            : "text-gray-700/30"
+                              ? "text--700"
+                              : "text-gray-700/30"
                         }`}
                         name="userid"
                         value="desc"
@@ -162,8 +162,8 @@ export default function users() {
                           params.sortBy !== "email"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="email"
                         value="asc"
@@ -176,8 +176,8 @@ export default function users() {
                           params.sortBy !== "email"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="email"
                         value="desc"
@@ -195,8 +195,8 @@ export default function users() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="name"
                         value="asc"
@@ -209,8 +209,8 @@ export default function users() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="name"
                         value="desc"
@@ -228,8 +228,8 @@ export default function users() {
                           params.sortBy !== "role"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text--700"
-                            : "text-gray-700/30"
+                              ? "text--700"
+                              : "text-gray-700/30"
                         }`}
                         name="role"
                         value="asc"
@@ -242,8 +242,8 @@ export default function users() {
                           params.sortBy !== "role"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="role"
                         value="desc"

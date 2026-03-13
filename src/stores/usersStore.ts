@@ -1,4 +1,4 @@
-import { usersState } from "@/app/types/users";
+import { usersState } from "@/types/users";
 import axios from "axios";
 import { create } from "zustand";
 
@@ -54,7 +54,7 @@ export const useUsersStore = create<usersState>((set) => ({
       const res = await axios.put(`/api/users/${userid}`, data);
       set((state) => ({
         users: state.users.map((item) =>
-          item.userid === userid ? res.data : item
+          item.userid === userid ? res.data : item,
         ),
       }));
     } catch (error) {

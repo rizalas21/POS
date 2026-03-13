@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Units } from "../types/units";
+import { Units } from "../../types/units";
 
 export default function units() {
   const [params, setParams] = useState({
@@ -125,8 +125,8 @@ export default function units() {
                           params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
+                              ? "text-grayy-700"
+                              : "text-gray-700/30"
                         }`}
                         name="unit"
                         value="asc"
@@ -139,8 +139,8 @@ export default function units() {
                           params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
+                              ? "text-grayy-700"
+                              : "text-gray-700/30"
                         }`}
                         name="unit"
                         value="desc"
@@ -158,8 +158,8 @@ export default function units() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
+                              ? "text-grayy-700"
+                              : "text-gray-700/30"
                         }`}
                         name="name"
                         value="asc"
@@ -172,8 +172,8 @@ export default function units() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
+                              ? "text-grayy-700"
+                              : "text-gray-700/30"
                         }`}
                         name="name"
                         value="desc"
@@ -191,8 +191,8 @@ export default function units() {
                           params.sortBy !== "note"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
+                              ? "text-grayy-700"
+                              : "text-gray-700/30"
                         }`}
                         name="note"
                         value="asc"
@@ -205,8 +205,8 @@ export default function units() {
                           params.sortBy !== "note"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-grayy-700"
-                            : "text-gray-700/30"
+                              ? "text-grayy-700"
+                              : "text-gray-700/30"
                         }`}
                         name="note"
                         value="desc"

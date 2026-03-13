@@ -1,4 +1,4 @@
-import { customersState } from "@/app/types/customers";
+import { customersState } from "@/types/customers";
 import axios from "axios";
 import { create } from "zustand";
 

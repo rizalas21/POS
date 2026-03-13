@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSuppliersStore } from "@/stores/suppliersStore";
-import { Suppliers } from "../types/suppliers";
+import { Suppliers } from "../../types/suppliers";
 import { ModalDeleteSuppliers } from "@/components/suppliers/ModalDelete";
 
 export default function suppliers() {
@@ -127,8 +127,8 @@ export default function suppliers() {
                             params.sortBy !== "supplierid"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="supplierid"
                           value="asc"
@@ -141,8 +141,8 @@ export default function suppliers() {
                             params.sortBy !== "supplierid"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="supplierid"
                           value="desc"
@@ -162,8 +162,8 @@ export default function suppliers() {
                             params.sortBy !== "name"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="name"
                           value="asc"
@@ -176,8 +176,8 @@ export default function suppliers() {
                             params.sortBy !== "name"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="name"
                           value="desc"
@@ -197,8 +197,8 @@ export default function suppliers() {
                             params.sortBy !== "address"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="address"
                           value="asc"
@@ -211,8 +211,8 @@ export default function suppliers() {
                             params.sortBy !== "address"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="address"
                           value="desc"
@@ -232,8 +232,8 @@ export default function suppliers() {
                             params.sortBy !== "phone"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="phone"
                           value="asc"
@@ -246,8 +246,8 @@ export default function suppliers() {
                             params.sortBy !== "phone"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="phone"
                           value="desc"
@@ -285,7 +285,7 @@ export default function suppliers() {
                             className="text-white hover:cursor-pointer bg-green-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-green-800"
                             onClick={() =>
                               router.push(
-                                `/suppliers/edit/${supplier.supplierid}`
+                                `/suppliers/edit/${supplier.supplierid}`,
                               )
                             }
                           >

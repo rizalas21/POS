@@ -40,7 +40,6 @@ export async function GET(req: NextRequest) {
     const end = endDate ? new Date(endDate) : null;
     const handleSort =
       sortBy === "month" ? "COALESCE(s.month_date, e.month_date)" : sortBy;
-    console.log(typeof limit);
 
     const totalResult: any = await prisma.$queryRawUnsafe(
       `
@@ -102,14 +101,12 @@ export async function GET(req: NextRequest) {
     if (Number(totalResult[0].total) === 1 && pages === 1) {
       page = 1;
     }
-    console.log(page);
 
-    console.log("total result nya => ", Number(totalResult[0].total));
     const offset = (Number(page) - 1) * limit;
 
     const dataTable: Array<Object> = await prisma.$queryRawUnsafe(
       `
-WITH sales AS (
+      WITH sales AS (
 SELECT 
 DATE_TRUNC('month', "createdAt") AS month_date,
 TO_CHAR(DATE_TRUNC('month', "createdAt"), 'Mon YY') AS month,
@@ -120,7 +117,7 @@ WHERE
     ($1::timestamp IS NULL OR "createdAt" >= $1)
 AND
     ($2::timestamp IS NULL OR "createdAt" <= $2)
-GROUP BY DATE_TRUNC('month', "createdAt")
+    GROUP BY DATE_TRUNC('month', "createdAt")
 ),
 expense AS (
 SELECT 
@@ -130,10 +127,10 @@ SUM("totalsum")::numeric AS "expense"
 
 FROM "Purchases"
 WHERE
-    ($1::timestamp IS NULL OR "createdAt" >= $1)
-    AND
+($1::timestamp IS NULL OR "createdAt" >= $1)
+AND
     ($2::timestamp IS NULL OR "createdAt" <= $2)
-GROUP BY DATE_TRUNC('month', "createdAt")
+    GROUP BY DATE_TRUNC('month', "createdAt")
 )
 SELECT 
 TO_CHAR(COALESCE(s.month_date, e.month_date), 'Mon YY') AS month,
@@ -156,23 +153,24 @@ WHERE
  ORDER BY ${handleSort} ${sort}
  LIMIT COALESCE($4::int, 12)
  OFFSET COALESCE($5::int, 3)
-  `,
+ `,
       start,
       end,
       keyword,
       limit,
       offset,
     );
+    console.log("total result nya => ", startDate);
 
     const data = {
       cards,
       dataTable,
       customerRevenue: {
-        label: "Customer Revenue",
+        label: "Customer",
         value: Number(customerRevenue._sum.totalsum),
       },
       directRevenue: {
-        label: "Direct Revenue",
+        label: "Direct",
         value: Number(directRevenue._sum.totalsum),
       },
       page,

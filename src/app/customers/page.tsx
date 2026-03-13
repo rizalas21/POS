@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useCustomersStore } from "@/stores/customersStore";
-import { Customers } from "../types/customers";
+import { Customers } from "../../types/customers";
 import { ModalDeleteCustomers } from "@/components/customers/ModalDelete";
 
 export default function customers() {
@@ -127,8 +127,8 @@ export default function customers() {
                             params.sortBy !== "customerid"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="customerid"
                           value="asc"
@@ -141,8 +141,8 @@ export default function customers() {
                             params.sortBy !== "customerid"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="customerid"
                           value="desc"
@@ -162,8 +162,8 @@ export default function customers() {
                             params.sortBy !== "name"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="name"
                           value="asc"
@@ -176,8 +176,8 @@ export default function customers() {
                             params.sortBy !== "name"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="name"
                           value="desc"
@@ -197,8 +197,8 @@ export default function customers() {
                             params.sortBy !== "address"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="address"
                           value="asc"
@@ -211,8 +211,8 @@ export default function customers() {
                             params.sortBy !== "address"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="address"
                           value="desc"
@@ -232,8 +232,8 @@ export default function customers() {
                             params.sortBy !== "phone"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="phone"
                           value="asc"
@@ -246,8 +246,8 @@ export default function customers() {
                             params.sortBy !== "phone"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-grayy-700"
-                              : "text-gray-700/30"
+                                ? "text-grayy-700"
+                                : "text-gray-700/30"
                           }`}
                           name="phone"
                           value="desc"
@@ -285,7 +285,7 @@ export default function customers() {
                             className="text-white hover:cursor-pointer bg-green-600 w-[3vw] rounded-[50%] px-2 py-2 hover:bg-green-800"
                             onClick={() =>
                               router.push(
-                                `/customers/edit/${customer.customerid}`
+                                `/customers/edit/${customer.customerid}`,
                               )
                             }
                           >

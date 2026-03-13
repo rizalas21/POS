@@ -1,5 +1,5 @@
-import { Goods } from "@/app/types/goods";
-import { Item } from "@/app/types/sales";
+import { Goods } from "@/types/goods";
+import { Item } from "@/types/sales";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction } from "react";
@@ -88,7 +88,7 @@ export default function SalesTable({
                       totalsum:
                         Number(input.totalsum) - Number(data.totalprice),
                       saleitems: input.saleitems.filter(
-                        (item) => item.id !== data.id
+                        (item) => item.id !== data.id,
                       ),
                     });
                   }}

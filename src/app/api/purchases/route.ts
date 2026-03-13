@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { Prisma } from "@/generated/prisma";
 import suppliers from "@/app/suppliers/page";
 import { time } from "console";
-import { Item } from "@/app/types/sales";
+import { Item } from "@/types/sales";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)

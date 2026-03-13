@@ -1,5 +1,5 @@
-import { Goods } from "@/app/types/goods";
-import { Item } from "@/app/types/purchases";
+import { Goods } from "@/types/goods";
+import { Item } from "@/types/purchases";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction } from "react";

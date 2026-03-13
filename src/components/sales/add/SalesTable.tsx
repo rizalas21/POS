@@ -1,5 +1,5 @@
-import { Goods } from "@/app/types/goods";
-import { Item } from "@/app/types/sales";
+import { Goods } from "@/types/goods";
+import { Item } from "@/types/sales";
 
 export default function SalesTable({
   input,

@@ -1,5 +1,5 @@
 import { prisma } from "@/app/prisma";
-import { Purchases } from "@/app/types/purchases";
+import { Purchases } from "@/types/purchases";
 import { Purchaseitems } from "@/generated/prisma";
 import { connect } from "http2";
 import { NextRequest, NextResponse } from "next/server";

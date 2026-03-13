@@ -1,7 +1,7 @@
 import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/generated/prisma";
-import { Item } from "@/app/types/sales";
+import { Item } from "@/types/sales";
 
 export async function GET(req: NextRequest) {
   // harus ada (PRAMS)

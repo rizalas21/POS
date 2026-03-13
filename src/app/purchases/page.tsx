@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Purchases } from "../types/purchases";
+import { Purchases } from "../../types/purchases";
 import { ModalDeletePurchases } from "@/components/purchases/ModalDelete";
 import dateToString from "@/lib/dateToString";
 import { useSuppliersStore } from "@/stores/suppliersStore";
@@ -131,8 +131,8 @@ export default function purchases() {
                             params.sortBy !== "invoice"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="invoice"
                           value="asc"
@@ -145,8 +145,8 @@ export default function purchases() {
                             params.sortBy !== "invoice"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="invoice"
                           value="desc"
@@ -166,8 +166,8 @@ export default function purchases() {
                             params.sortBy !== "time"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="time"
                           value="asc"
@@ -180,8 +180,8 @@ export default function purchases() {
                             params.sortBy !== "time"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="time"
                           value="desc"
@@ -201,8 +201,8 @@ export default function purchases() {
                             params.sortBy !== "totalsum"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="totalsum"
                           value="asc"
@@ -215,8 +215,8 @@ export default function purchases() {
                             params.sortBy !== "totalsum"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="totalsum"
                           value="desc"
@@ -236,8 +236,8 @@ export default function purchases() {
                             params.sortBy !== "supplier"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="supplier"
                           value="asc"
@@ -250,8 +250,8 @@ export default function purchases() {
                             params.sortBy !== "supplier"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="supplier"
                           value="desc"

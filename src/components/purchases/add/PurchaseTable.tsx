@@ -1,5 +1,5 @@
-import { Goods } from "@/app/types/goods";
-import { Item } from "@/app/types/purchases";
+import { Goods } from "@/types/goods";
+import { Item } from "@/types/purchases";
 
 export default function PurchaseTable({
   input,

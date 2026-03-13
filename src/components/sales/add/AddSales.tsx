@@ -13,7 +13,7 @@ import SalesSummary from "./SalesSummary";
 import SalesTable from "./SalesTable";
 import axios from "axios";
 import { useSalesStore } from "@/stores/salesStore";
-import { Item } from "@/app/types/sales";
+import { Item } from "@/types/sales";
 import { useCustomersStore } from "@/stores/customersStore";
 
 export default function AddSales() {

@@ -1,5 +1,5 @@
 import { PurchaseItem } from "@/app/types/purchaseItem";
-import { Suppliers } from "@/app/types/suppliers";
+import { Suppliers } from "@/types/suppliers";
 import { Dispatch, SetStateAction } from "react";
 
 export default function PurchaseSummary({
@@ -68,7 +68,7 @@ export default function PurchaseSummary({
           onChange={(e) => {
             const selectedSupplierid = e.target.value;
             const selectedItem = suppliers.find(
-              (item) => String(item.supplierid) === selectedSupplierid
+              (item) => String(item.supplierid) === selectedSupplierid,
             );
             if (selectedItem) {
               setSupplier({

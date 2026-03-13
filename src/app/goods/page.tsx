@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Goods } from "../types/goods";
+import { Goods } from "../../types/goods";
 
 export default function units() {
   const formatterCurrency = new Intl.NumberFormat("id-ID", {
@@ -135,8 +135,8 @@ export default function units() {
                           params.sortBy !== "barcode"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="barcode"
                         value="asc"
@@ -149,8 +149,8 @@ export default function units() {
                           params.sortBy !== "barcode"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="barcode"
                         value="desc"
@@ -169,8 +169,8 @@ export default function units() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="name"
                         value="asc"
@@ -183,8 +183,8 @@ export default function units() {
                           params.sortBy !== "name"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="name"
                         value="desc"
@@ -203,8 +203,8 @@ export default function units() {
                           params.sortBy !== "stock"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="stock"
                         value="asc"
@@ -217,8 +217,8 @@ export default function units() {
                           params.sortBy !== "stock"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="stock"
                         value="desc"
@@ -237,8 +237,8 @@ export default function units() {
                           params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="unit"
                         value="asc"
@@ -251,8 +251,8 @@ export default function units() {
                           params.sortBy !== "unit"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="unit"
                         value="desc"
@@ -271,8 +271,8 @@ export default function units() {
                           params.sortBy !== "purchasePrice"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="purchasePrice"
                         value="asc"
@@ -285,8 +285,8 @@ export default function units() {
                           params.sortBy !== "purchasePrice"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="purchasePrice"
                         value="desc"
@@ -305,8 +305,8 @@ export default function units() {
                           params.sortBy !== "sellingPrice"
                             ? "text-gray-700/50"
                             : params.sort === "asc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="sellingPrice"
                         value="asc"
@@ -319,8 +319,8 @@ export default function units() {
                           params.sortBy !== "sellingPrice"
                             ? "text-gray-700/50"
                             : params.sort === "desc"
-                            ? "text-gray-700"
-                            : "text-gray-700/30"
+                              ? "text-gray-700"
+                              : "text-gray-700/30"
                         }`}
                         name="sellingPrice"
                         value="desc"
