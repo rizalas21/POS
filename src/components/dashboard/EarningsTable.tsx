@@ -13,6 +13,8 @@ export default function EarningsTable() {
   const dataTable = dashboard?.dataTable ?? [];
   const meta = { pages: dashboard?.pages || 0, total: dashboard?.total || 0 };
 
+  console.log("ininininin dashboard: ", dashboard?.dataTable);
+
   return (
     <section className="table w-full shadow-lg border border-slate-500/25 rounded bg-white px-4 py-2">
       <h3 className="px-2 py-2 -mx-4 -mt-2 bg-slate-100 text-blue-600 font-bold text-base">
