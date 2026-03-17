@@ -30,6 +30,7 @@ export type RevenueSource = {
 export type DashboardResponse = {
   cards: Cards;
   dataTable: MonthlyData[];
+  chartData: MonthlyData[];
   customerRevenue: RevenueSource;
   directRevenue: RevenueSource;
   pages: number;

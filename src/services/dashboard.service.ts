@@ -6,5 +6,7 @@ export const getDashboard = async (
 ): Promise<DashboardResponse> => {
   const { data } = await axios.get("/api/dashboard", { params });
 
+  console.log(data);
+
   return data;
 };

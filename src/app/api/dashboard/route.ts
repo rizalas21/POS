@@ -1,33 +1,50 @@
 import { prisma } from "@/app/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { queryChart, queryDataTable, queryTotal } from "./query";
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = await req.nextUrl;
-    const startDate = searchParams.get("startDate");
-    const endDate = searchParams.get("endDate");
+    const startDate = searchParams.get("startDate") ?? "";
+    const endDate = searchParams.get("endDate") ?? "";
     const keyword = searchParams.get("keyword");
     const sort = searchParams.get("sort");
     const sortBy = searchParams.get("sortBy");
     let page = Number(searchParams.get("page"));
     const limit = Number(searchParams.get("limit"));
-    const totalSales = await prisma.sales.count();
+
+    const start = startDate ? new Date(startDate) : undefined;
+    const end = endDate ? new Date(endDate) : undefined;
+    // startDate endDate keyword
+    const totalSales = await prisma.sales.count({
+      where: {
+        createdAt: { gte: start, lte: end },
+      },
+    });
     const purchases = await prisma.purchases.aggregate({
       _sum: { totalsum: true },
+      where: {
+        createdAt: { gte: start, lte: end },
+      },
     });
     const sales = await prisma.sales.aggregate({
       _sum: { totalsum: true },
+      where: {
+        createdAt: { gte: start, lte: end },
+      },
     });
     const directRevenue = await prisma.sales.aggregate({
       _sum: { totalsum: true },
       where: {
         customer: 3,
+        createdAt: { gte: start, lte: end },
       },
     });
     const customerRevenue = await prisma.sales.aggregate({
       _sum: { totalsum: true },
       where: {
         customer: { not: 3 },
+        createdAt: { gte: start, lte: end },
       },
     });
     const cards = {
@@ -36,59 +53,12 @@ export async function GET(req: NextRequest) {
       earnings: Number(sales._sum.totalsum) - Number(purchases._sum.totalsum),
       totalSales,
     };
-    const start = startDate ? new Date(startDate) : null;
-    const end = endDate ? new Date(endDate) : null;
+
     const handleSort =
       sortBy === "month" ? "COALESCE(s.month_date, e.month_date)" : sortBy;
 
     const totalResult: any = await prisma.$queryRawUnsafe(
-      `
-    WITH sales AS(
-    SELECT
-    DATE_TRUNC('month', "createdAt") AS month_date,
-    TO_CHAR(DATE_TRUNC('month', "createdAt"), 'Mon YY') AS month,
-    SUM("totalsum")::numeric AS "totalSales"
-
-    FROM "Sales"
-    WHERE
-    ($1::timestamp IS NULL OR "createdAt" >= $1)
-    AND
-    ($2::timestamp IS NULL OR "createdAt" <= $2)
-    GROUP BY DATE_TRUNC('month', "createdAt")
-    ),
-    expense AS(
-    SELECT
-    DATE_TRUNC('month', "createdAt") AS month_date,
-    TO_CHAR(DATE_TRUNC('month', "createdAt"), 'Mon YY') AS month,
-    SUM("totalsum")::numeric AS "expense"
-
-    FROM "Purchases"
-    WHERE
-    ($1::timestamp IS NULL OR "createdAt" >= $1)
-    AND
-    ($2::timestamp IS NULL OR "createdAt" <= $2)
-    GROUP BY DATE_TRUNC('month', "createdAt")
-    )
-
-    SELECT COUNT(*) AS total
-    FROM(
-    SELECT
-    TO_CHAR(COALESCE(s.month_date, e.month_date), 'Mon YY') AS month
-
-    FROM sales s
-    FULL OUTER JOIN expense e
-    ON s.month_date = e.month_date
-
-    WHERE
-($3::text IS NULL
- OR $3 = ''
- OR TO_CHAR(COALESCE(s.month_date, e.month_date),'Mon YY') ILIKE '%' || $3 || '%'
- OR COALESCE(e."expense", 0)::text ILIKE $3 || '%'
- OR COALESCE(s."totalSales", 0)::text ILIKE $3 || '%'
- OR (COALESCE(s."totalSales", 0) - COALESCE(e."expense", 0))::text ILIKE $3 || '%'
- )
-)
-`,
+      queryTotal,
       start,
       end,
       keyword,
@@ -105,8 +75,7 @@ export async function GET(req: NextRequest) {
     const offset = (Number(page) - 1) * limit;
 
     const dataTable: Array<Object> = await prisma.$queryRawUnsafe(
-      `
-      WITH sales AS (
+      `WITH sales AS (
 SELECT 
 DATE_TRUNC('month', "createdAt") AS month_date,
 TO_CHAR(DATE_TRUNC('month', "createdAt"), 'Mon YY') AS month,
@@ -152,8 +121,16 @@ WHERE
  )
  ORDER BY ${handleSort} ${sort}
  LIMIT COALESCE($4::int, 12)
- OFFSET COALESCE($5::int, 3)
- `,
+ OFFSET COALESCE($5::int, 3)`,
+      start,
+      end,
+      keyword,
+      limit,
+      offset,
+    );
+
+    const chartData = await await prisma.$queryRawUnsafe(
+      queryChart,
       start,
       end,
       keyword,
@@ -162,6 +139,7 @@ WHERE
     );
 
     const data = {
+      chartData,
       cards,
       dataTable,
       customerRevenue: {

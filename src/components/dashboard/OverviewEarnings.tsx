@@ -22,7 +22,7 @@ export default function OverviewEarnings() {
         {dashboard?.dataTable ? (
           <Chart
             type="line"
-            data={createLineData(dashboard.dataTable)}
+            data={createLineData(dashboard.chartData)}
             options={lineOptions}
           />
         ) : (

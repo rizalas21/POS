@@ -47,7 +47,7 @@ export default function FilterDashboard() {
             name="startDate"
             type="date"
             className="border rounded py-1 px-2 border-slate-500/50"
-            defaultValue={date.startDate}
+            value={date.startDate}
             onChange={(e) => setDate({ ...date, startDate: e.target.value })}
           />
         </fieldset>
@@ -57,7 +57,7 @@ export default function FilterDashboard() {
             name="endDate"
             type="date"
             className="border rounded py-1 px-2 border-slate-500/50"
-            defaultValue={`${year}-${month}-${lastDate}`}
+            value={`${year}-${month}-${lastDate}`}
             onChange={(e) => setDate({ ...date, endDate: e.target.value })}
           />
         </fieldset>
