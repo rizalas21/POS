@@ -13,8 +13,6 @@ export default function useDashboard() {
 
   const { dashboard, fetchDashboard, params, setParams } = useDashboardStore();
 
-  console.log(dashboard);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setParams({

@@ -27,22 +27,22 @@ export default function SideBar() {
     <div
       className={`flex bg-blue-600 w-full flex-col items-center h-screen z-10`}
     >
-      <section className="text-white flex justify-around items-center w-4/5 h-[10%] border-b border-slate-100 py-8">
-        <div className="flex justify-between items-center w-2/5 gap-2">
+      <section className="text-white flex justify-center items-center w-4/5 border-b border-slate-100 py-6">
+        <div className="flex items-center gap-3">
           <FontAwesomeIcon
             style={{ fontSize: "33px", transform: "rotate(-25deg)" }}
             icon={faFaceLaughWink}
-          ></FontAwesomeIcon>
-          <h1 className="text-white font-bold text-center text-xl">POS</h1>
+          />
+          <h1 className="font-bold text-xl">POS</h1>
         </div>
       </section>
       <section
-        className={`flex items-center w-4/5 h-[9%] border-b border-white py-2 px-1 hover:text-white ${
+        className={`flex items-center w-4/5 border-b border-white py-3 px-1 hover:text-white ${
           pathname === "/dashboard" ? "text-white" : "text-slate-200/50"
         }`}
       >
         <Link
-          className="flex justify-between items-center w-1/2 no-underline"
+          className="flex items-center w-full no-underline gap-4"
           href="/dashboard"
         >
           <FontAwesomeIcon
