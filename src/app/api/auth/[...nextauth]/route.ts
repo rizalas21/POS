@@ -24,7 +24,6 @@ export const authOptions: AuthOptions = {
         try {
           const user = await Login(credentials.email, credentials.password);
           if (!user?.email) return null;
-          console.log("authorize user: ", user);
           return user;
         } catch (error) {
           console.log("error when author => ", error);

@@ -35,7 +35,6 @@ export async function GET(req: NextRequest) {
       orderBy: { [sortBy]: sort },
       ...(limit > 0 && { take: limit, skip: offset }),
     });
-    console.log("response goods api", limit);
     const pages = Math.ceil(total / limit);
     return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
@@ -47,7 +46,6 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.formData();
-    console.log("ini req back end: ", data);
     const barcode = data.get("barcode") as string;
     const name = data.get("name") as string;
     const stock = Number(data.get("stock"));
@@ -72,7 +70,6 @@ export async function POST(req: NextRequest) {
     const existingunit = await prisma.goods.findUnique({
       where: { barcode },
     });
-    console.log("line 75", existingunit);
     if (existingunit)
       return NextResponse.json("unit is already exist", { status: 402 });
 
@@ -87,7 +84,6 @@ export async function POST(req: NextRequest) {
         picture: imageUrl,
       },
     });
-    console.log("barcode iki bro -> ", res);
     return NextResponse.json(res);
   } catch (error) {
     console.log("Error when trying to POST goods: ", error);

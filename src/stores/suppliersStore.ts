@@ -37,7 +37,6 @@ export const useSuppliersStore = create<SuppliersState>((set) => ({
   deleteSuppliers: async (supplierid) => {
     try {
       const res = await axios.delete(`/api/suppliers/${supplierid}`);
-      console.log("masuk res store -> ", res.data);
       if (res.status >= 400) {
         return { success: false, message: "Unknown Error" };
       }

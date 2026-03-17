@@ -31,8 +31,6 @@ export default function useDashboard() {
     fetchDashboard(params);
   }, [params]);
 
-  console.log("HOOKS RUN");
-
   return {
     dashboard,
     params,

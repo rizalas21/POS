@@ -160,7 +160,6 @@ WHERE
       limit,
       offset,
     );
-    console.log("total result nya => ", startDate);
 
     const data = {
       cards,

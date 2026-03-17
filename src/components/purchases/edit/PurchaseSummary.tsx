@@ -1,4 +1,4 @@
-import { PurchaseItem } from "@/app/types/purchaseItem";
+import { Item } from "@/types/purchases";
 import { Suppliers } from "@/types/suppliers";
 import { Dispatch, SetStateAction } from "react";
 
@@ -15,7 +15,7 @@ export default function PurchaseSummary({
     totalsum: number;
     supplier: number;
     operator: string;
-    purchaseitems: PurchaseItem[];
+    purchaseitems: Item[];
   };
   setInput: Dispatch<
     SetStateAction<{
@@ -24,7 +24,7 @@ export default function PurchaseSummary({
       totalsum: number;
       supplier: number;
       operator: string;
-      purchaseitems: PurchaseItem[];
+      purchaseitems: Item[];
     }>
   >;
   suppliers: Suppliers[];
@@ -43,7 +43,6 @@ export default function PurchaseSummary({
     }>
   >;
 }) {
-  console.log(supplier, suppliers);
   return (
     <section className="px-10 space-y-5">
       <div className="flex justify-between items-center">

@@ -11,8 +11,6 @@ export default function Page() {
   const { status } = useSession();
   const router = useRouter();
 
-  console.log(status);
-
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/signin");

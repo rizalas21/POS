@@ -47,7 +47,6 @@ export default function SalesSummary({
     }>
   >;
 }) {
-  console.log("customers ini bro: ", customers);
   return (
     <section className="px-10 space-y-2">
       <div className="flex justify-between items-center">

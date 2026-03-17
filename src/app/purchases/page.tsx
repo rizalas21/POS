@@ -68,7 +68,6 @@ export default function purchases() {
     };
     fetchUsers();
   }, [params]);
-  console.log(purchases);
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Purchases</h1>

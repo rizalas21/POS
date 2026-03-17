@@ -31,7 +31,6 @@ export async function PUT(
   try {
     const datas = await req.json();
     const { supplier, operator, purchaseitems, ...resData } = datas;
-    console.log("res data nya bro: ", resData);
     const { invoice } = await params;
     const existingPurchases = await prisma.purchases.findFirst({
       where: { invoice },
@@ -57,7 +56,6 @@ export async function PUT(
       // adding data
       for (const data of datas?.purchaseitems || []) {
         if (!data.id) {
-          console.log("Data bro: ", data);
           await tx.purchaseitems.create({
             data: {
               ...data,

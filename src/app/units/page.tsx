@@ -63,7 +63,6 @@ export default function units() {
     };
     fetchUsers();
   }, [params]);
-  console.log("total ini teh bro => ", total);
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Units</h1>

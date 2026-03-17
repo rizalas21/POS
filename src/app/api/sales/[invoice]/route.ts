@@ -29,8 +29,6 @@ export async function PUT(
   try {
     const datas = await req.json();
     const { customer, operator, saleitems, ...resData } = datas;
-    console.log("datas nya bro: ", datas);
-    console.log("res data nya bro: ", resData);
     const { invoice } = await params;
     const existingSales = await prisma.sales.findFirst({
       where: { invoice },

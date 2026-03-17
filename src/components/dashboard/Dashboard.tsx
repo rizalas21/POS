@@ -7,7 +7,7 @@ import OverviewEarnings from "./OverviewEarnings";
 export default function Dashboard() {
   return (
     <>
-      <HeadersDashboard />\
+      <HeadersDashboard />
       <FilterDashboard />
       <Cards />
       <OverviewEarnings />

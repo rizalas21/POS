@@ -41,7 +41,6 @@ export default function AddGoods() {
       if (data.picture) {
         formData.append("picture", data.picture);
       }
-      console.log("line 43 -> ");
       const res = await addGoods(formData);
       // router.push("/goods");
       return res;
@@ -80,8 +79,6 @@ export default function AddGoods() {
     };
     fetchCategories();
   }, [getUnits]);
-
-  console.log(data);
 
   return (
     <main className="space-y-3">

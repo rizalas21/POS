@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { customerid: string } }
+  { params }: { params: { customerid: string } },
 ) {
   try {
     const { customerid } = await params;
@@ -14,7 +14,7 @@ export async function GET(
     });
     if (!res)
       return NextResponse.json(
-        `customerid with customerid ${customerid} not found`
+        `customerid with customerid ${customerid} not found`,
       );
     return NextResponse.json(res);
   } catch (error) {
@@ -25,7 +25,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { customerid: string } }
+  { params }: { params: { customerid: string } },
 ) {
   try {
     const data = await req.json();
@@ -42,7 +42,7 @@ export async function PUT(
       console.error("Error update customers:", err);
       return NextResponse.json(
         { error: "Failed to update customers" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   } catch (error) {
@@ -53,15 +53,14 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { customerid: string } }
+  { params }: { params: { customerid: string } },
 ) {
   const { customerid } = await params;
-  console.log("ini customerid nya => ", customerid);
   try {
     if (!customerid) {
       return NextResponse.json(
         { error: "customerid is required in the URL." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

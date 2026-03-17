@@ -38,15 +38,12 @@ export default function EditGoods() {
   useEffect(() => {
     const fetchGoods = async () => {
       const { data } = await axios.get(`/api/goods/${barcode}`);
-      console.log("line 41 -> ", data);
       setData(data);
     };
     getUnits(params);
 
     fetchGoods();
   }, []);
-
-  console.log("line 48 -> ", data);
 
   const handleSubmit = async () => {
     try {
@@ -83,11 +80,8 @@ export default function EditGoods() {
       setData({ ...data, [name]: Number(value) });
     } else {
       setData({ ...data, [name]: value });
-      console.log("ini data => ", data);
     }
   };
-
-  console.log(data);
 
   return (
     <main className="space-y-1">

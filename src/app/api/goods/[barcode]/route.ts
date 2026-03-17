@@ -29,8 +29,6 @@ export async function PUT(
     const data = await req.formData();
     const { barcode } = await params;
 
-    console.log("line 32 -> ", data);
-
     const name = data.get("name") as string;
     const stock = Number(data.get("stock"));
     const purchaseprice = Number(data.get("purchaseprice"));
@@ -66,7 +64,6 @@ export async function PUT(
           picture: typeof picture === "string" ? picture : imageUrl,
         },
       });
-      console.log("res nya ini bro -> ", res);
 
       return NextResponse.json(res);
     } catch (err) {
@@ -87,7 +84,6 @@ export async function DELETE(
   { params }: { params: { barcode: string } },
 ) {
   const { barcode } = await params;
-  console.log("ini barcode nya => ", barcode);
   try {
     if (!barcode) {
       return NextResponse.json(
@@ -99,7 +95,6 @@ export async function DELETE(
     const res = await prisma.goods.delete({
       where: { barcode },
     });
-    console.log("kehapus ga ini => ", res);
     return NextResponse.json(res);
   } catch (error) {
     console.log("error when delete goods : ", error);

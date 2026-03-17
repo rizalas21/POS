@@ -24,7 +24,6 @@ export const useSalesStore = create<SalesState>((set) => ({
   },
   addSales: async (data) => {
     try {
-      console.log("data nya: ", data);
       const res = await axios.post("/api/sales", data);
       if (!res || res.status >= 400) return null;
       set((state) => ({ sales: [res.data, ...state.sales] }));
@@ -49,7 +48,6 @@ export const useSalesStore = create<SalesState>((set) => ({
   },
   updateSales: async (invoice, data) => {
     try {
-      console.log("data update purchase: ", data);
       const res = await axios.put(`/api/sales/${invoice}`, data);
       if (!res || res.status >= 400) return null;
 

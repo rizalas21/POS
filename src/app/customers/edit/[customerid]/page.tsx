@@ -24,7 +24,6 @@ export default function EditCustomers() {
   useEffect(() => {
     const fetchCustomers = async () => {
       const { data } = await axios.get(`/api/customers/${customerid}`);
-      console.log("data dari back end nya bro => ", data);
       setData(data);
     };
 

@@ -29,7 +29,6 @@ export async function PUT(
 ) {
   try {
     const data = await req.json();
-    console.log("ini datanya => ", data);
     const { supplierid } = await params;
 
     const res = await prisma.suppliers.update({
@@ -74,7 +73,6 @@ export async function DELETE(
     const res = await prisma.suppliers.delete({
       where: { supplierid: Number(supplierid) },
     });
-    console.log("masuk res backend -> ", res);
     return NextResponse.json(res);
   } catch (error) {
     console.log("error when delete user : ", error);

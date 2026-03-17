@@ -64,7 +64,6 @@ export default function customers() {
     };
     fetchUsers();
   }, [params]);
-  console.log("total ini teh bro => ", total);
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Customers</h1>

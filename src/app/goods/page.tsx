@@ -73,8 +73,6 @@ export default function units() {
     setParams({ ...params, sortBy: name, sort: value });
   };
 
-  console.log(total);
-
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Goods</h1>

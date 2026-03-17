@@ -151,7 +151,6 @@ export default function EditPurchase() {
         const { data } = await axios.get(`/api/purchases/${invoice}`, {
           params: { sortBy: "createdAt", sort: "desc", limit: 1 },
         });
-        console.log("data invpoce nih: ", data);
         setInput({
           ...data,
           time: new Date(data.time),
@@ -163,13 +162,11 @@ export default function EditPurchase() {
     };
 
     setInput({ ...input, operator: data?.user.id as string });
-    console.log("masuk tengah => ", input);
 
     fetchInvoice();
   }, [data]);
 
   if (status === "loading") return <LoadingComponent />;
-  console.log(input);
 
   return (
     <>

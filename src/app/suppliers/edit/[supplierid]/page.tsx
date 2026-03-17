@@ -23,7 +23,6 @@ export default function EditSuppliers() {
   useEffect(() => {
     const fetchSuppliers = async () => {
       const { data } = await axios.get(`/api/suppliers/${supplierid}`);
-      console.log("data dari back end nya bro => ", data);
       setData(data);
     };
 

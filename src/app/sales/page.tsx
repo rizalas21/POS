@@ -67,7 +67,6 @@ export default function sales() {
     };
     fetchUsers();
   }, [params]);
-  console.log(sales);
   return (
     <main className="space-y-3">
       <h1 className="text-2xl text-gray-700">Sales</h1>
@@ -130,8 +129,8 @@ export default function sales() {
                             params.sortBy !== "invoice"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="invoice"
                           value="asc"
@@ -144,8 +143,8 @@ export default function sales() {
                             params.sortBy !== "invoice"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="invoice"
                           value="desc"
@@ -165,8 +164,8 @@ export default function sales() {
                             params.sortBy !== "time"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="time"
                           value="asc"
@@ -179,8 +178,8 @@ export default function sales() {
                             params.sortBy !== "time"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="time"
                           value="desc"
@@ -200,8 +199,8 @@ export default function sales() {
                             params.sortBy !== "totalsum"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="totalsum"
                           value="asc"
@@ -214,8 +213,8 @@ export default function sales() {
                             params.sortBy !== "totalsum"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="totalsum"
                           value="desc"
@@ -235,8 +234,8 @@ export default function sales() {
                             params.sortBy !== "pay"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="pay"
                           value="asc"
@@ -249,8 +248,8 @@ export default function sales() {
                             params.sortBy !== "pay"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="pay"
                           value="desc"
@@ -270,8 +269,8 @@ export default function sales() {
                             params.sortBy !== "change"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="change"
                           value="asc"
@@ -284,8 +283,8 @@ export default function sales() {
                             params.sortBy !== "change"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="change"
                           value="desc"
@@ -305,8 +304,8 @@ export default function sales() {
                             params.sortBy !== "customer"
                               ? "text-gray-700/50"
                               : params.sort === "asc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="customer"
                           value="asc"
@@ -319,8 +318,8 @@ export default function sales() {
                             params.sortBy !== "customer"
                               ? "text-gray-700/50"
                               : params.sort === "desc"
-                              ? "text-gray-700"
-                              : "text-gray-700/30"
+                                ? "text-gray-700"
+                                : "text-gray-700/30"
                           }`}
                           name="customer"
                           value="desc"

@@ -24,7 +24,6 @@ export const useGoodsStore = create<goodsState>((set) => ({
   },
   addGoods: async (data) => {
     try {
-      console.log("line 27 -> ", data);
       const res = await axios.post("/api/goods", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });

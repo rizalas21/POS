@@ -47,7 +47,6 @@ export const usePurchasesStore = create<PurchasesState>((set) => ({
   },
   updatePurchases: async (invoice, data) => {
     try {
-      console.log("data update purchase: ", data);
       const res = await axios.put(`/api/purchases/${invoice}`, data);
       if (!res || res.status >= 400) return null;
 

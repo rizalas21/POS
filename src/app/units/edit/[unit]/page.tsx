@@ -57,7 +57,6 @@ export default function EditUnits() {
       };
     });
   };
-  console.log("ini data => ", data);
 
   return (
     <main className="space-y-3">

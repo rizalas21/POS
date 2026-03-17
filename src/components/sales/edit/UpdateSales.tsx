@@ -167,7 +167,6 @@ export default function EditSales() {
         const { data } = await axios.get(`/api/sales/${invoice}`, {
           params: { sortBy: "createdAt", sort: "desc", limit: 1 },
         });
-        console.log("data invpoce nih: ", data);
         setInput({
           ...data,
           time: new Date(data.time),
@@ -179,7 +178,6 @@ export default function EditSales() {
     };
 
     setInput({ ...input, operator: data?.user.id as string });
-    console.log("masuk tengah => ", input);
 
     fetchInvoice();
   }, [data]);

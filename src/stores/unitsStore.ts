@@ -56,7 +56,6 @@ export const useUnitsStore = create<unitState>((set) => ({
       if (res.status >= 400) {
         return null;
       }
-      console.log("response back end bro => ", res);
       set((state) => ({
         units: state.units.map((item) =>
           item.unit === unit ? res.data : item,
