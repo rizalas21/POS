@@ -17,8 +17,10 @@ import { Purchases } from "../../types/purchases";
 import { ModalDeletePurchases } from "@/components/purchases/ModalDelete";
 import dateToString from "@/lib/dateToString";
 import { useSuppliersStore } from "@/stores/suppliersStore";
+import { useSession } from "next-auth/react";
 
 export default function purchases() {
+  const { data } = useSession();
   const [params, setParams] = useState({
     keyword: "",
     limit: "3",
@@ -287,15 +289,16 @@ export default function purchases() {
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
                           <button
-                            className="text-white bg-green-600 rounded-full px-2 py-1 hover:bg-green-800"
+                            className={`text-white bg-green-600 rounded-full px-2 py-1  ${purchase.operator === data?.user.id ? "hover:bg-green-800 opacity-100" : "opacity-50"}`}
                             onClick={() =>
                               router.push(`/purchases/edit/${purchase.invoice}`)
                             }
+                            disabled={purchase.operator !== data?.user.id}
                           >
                             <FontAwesomeIcon icon={faCircleInfo} />
                           </button>
                           <button
-                            className="text-white bg-red-600 rounded-full px-2 py-1 hover:bg-red-800"
+                            className={`text-white bg-red-600 rounded-full px-2 py-1 ${purchase.operator === data?.user.id ? "hover:bg-red-800 opacity-100" : "opacity-50"}`}
                             onClick={() => {
                               setSelectedPurchases({
                                 invoice: purchase.invoice,
@@ -307,6 +310,7 @@ export default function purchases() {
                               });
                               setShowModal(true);
                             }}
+                            disabled={purchase.operator !== data?.user.id}
                           >
                             <FontAwesomeIcon icon={faTrash} />
                           </button>
