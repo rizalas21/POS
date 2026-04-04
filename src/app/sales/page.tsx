@@ -14,8 +14,10 @@ import React, { useEffect, useState } from "react";
 import dateToString from "@/lib/dateToString";
 import { useSalesStore } from "@/stores/salesStore";
 import { ModalDeleteSales } from "@/components/sales/ModalDelete";
+import { useSession } from "next-auth/react";
 
 export default function sales() {
+  const { data } = useSession();
   const [params, setParams] = useState({
     keyword: "",
     limit: "3",
@@ -360,15 +362,16 @@ export default function sales() {
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
                         <div className="flex gap-4">
                           <button
-                            className="text-white bg-green-600 rounded-full px-2 py-1 hover:bg-green-800"
+                            className={`text-white bg-green-600 rounded-full px-2 py-1 ${sale.operator === data?.user.id ? "hover:bg-green-800 opacity-100" : "opacity-50"}`}
                             onClick={() =>
                               router.push(`/sales/edit/${sale.invoice}`)
                             }
+                            disabled={sale.operator !== data?.user.id}
                           >
                             <FontAwesomeIcon icon={faCircleInfo} />
                           </button>
                           <button
-                            className="text-white bg-red-600 rounded-full px-2 py-1 hover:bg-red-800"
+                            className={`text-white bg-red-600 rounded-full px-2 py-1 ${sale.operator === data?.user.id ? "hover:bg-red-800 opacity-100" : "opacity-50"}`}
                             onClick={() => {
                               setSelectedSales({
                                 invoice: sale.invoice,
@@ -381,6 +384,7 @@ export default function sales() {
                               });
                               setShowModal(true);
                             }}
+                            disabled={sale.operator !== data?.user.id}
                           >
                             <FontAwesomeIcon icon={faTrash} />
                           </button>

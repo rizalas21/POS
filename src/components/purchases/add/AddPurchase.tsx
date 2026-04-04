@@ -120,15 +120,8 @@ export default function AddPurchase() {
     let updatedItem = { ...item };
     if (name === "quantity") {
       const qty = Number(value);
-      const stock = Number(goodsItem.stock);
 
-      if (qty > stock) {
-        updatedItem = {
-          ...updatedItem,
-          quantity: stock,
-          totalprice: stock * updatedItem.purchaseprice,
-        };
-      } else {
+      if (name === "quantity") {
         updatedItem = {
           ...updatedItem,
           quantity: qty,

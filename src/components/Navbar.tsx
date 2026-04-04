@@ -7,18 +7,23 @@ import {
   faList,
   faSearch,
   faSignOutAlt,
+  faTriangleExclamation,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import axios from "axios";
+import { useGoodsStore } from "@/stores/goodsStore";
 
 export default function Navbar() {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
   const { data, status } = useSession();
+  const [isShowNotif, setIsShowNotif] = useState(false);
+  const { getGoods, goods } = useGoodsStore();
+  const router = useRouter();
 
   useEffect(() => {
     if (status === "authenticated" && data?.user?.email) {
@@ -33,6 +38,7 @@ export default function Navbar() {
       };
 
       fetchUserData();
+      getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
     }
     const profiles = document.querySelector("#profiles");
     const hideMenu = document.querySelector("#hide-menu");
@@ -68,7 +74,7 @@ export default function Navbar() {
       document.removeEventListener("click", handleClickOutside);
       logout?.removeEventListener("click", handleLogout);
     };
-  }, []);
+  }, [data, status]);
 
   const closeModal = () => {
     setIsShowModal(false);
@@ -78,6 +84,9 @@ export default function Navbar() {
     event.preventDefault();
     signOut({ redirect: true, callbackUrl: "/" });
   };
+
+  console.log(goods.filter((item) => item.stock <= 5));
+  console.log(goods && goods.filter((item) => item.stock));
 
   return (
     <section
@@ -100,14 +109,21 @@ export default function Navbar() {
         </button>
       </section>
       <section className="w-auto h-[130%] flex justify-between items-center">
-        <div className="flex items-start w-[4vw] cursor-pointer">
+        <div
+          className="flex items-start w-[4vw] cursor-pointer relative"
+          onClick={() => setIsShowNotif(!isShowNotif)}
+        >
           <FontAwesomeIcon
             icon={faBell}
-            style={{ fontSize: "150%", color: "#979797", position: "relative" }}
+            style={{ fontSize: "150%", color: "#979797" }}
           />
-          <span className="absolute ml-3 bg-red-500 text-white text-xs py-0.5 px-1 rounded ">
-            3+
-          </span>
+          {goods.filter((item) => item.stock <= 5).length > 0 ? (
+            <span className="absolute ml-3 bg-red-500 text-white text-xs py-0.5 px-1 rounded">
+              {goods.filter((item) => item.stock <= 5).length}+
+            </span>
+          ) : (
+            ""
+          )}
         </div>
         <div className="text-gray-300 h-[130%] my-2.5 text-4xl w-[3vw] text-center">
           <p>|</p>
@@ -215,6 +231,59 @@ export default function Navbar() {
       </div>
 
       {/* MODAL END */}
+
+      {/* NOTIFICATION MODAL START */}
+
+      {isShowNotif && (
+        <div className="absolute right-50 top-15 w-[320px] bg-white shadow-lg rounded overflow-hidden z-50">
+          {/* HEADER */}
+          <div className="bg-blue-600 text-white px-4 py-2 font-semibold">
+            ALERTS CENTER
+          </div>
+
+          {/* LIST ALERT */}
+          <div className="max-h-[300px] overflow-y-auto">
+            {/* ITEM */}
+            {goods
+              .filter((item) => item.stock <= 5)
+              .map((item) => (
+                <div
+                  className="flex items-start gap-3 px-4 py-3 border-b hover:bg-gray-100 cursor-pointer"
+                  key={item.barcode}
+                  onClick={() => {
+                    router.replace("/purchases/add");
+                    setIsShowNotif(false);
+                  }}
+                >
+                  <div className="bg-yellow-400 text-white rounded-full p-3">
+                    <FontAwesomeIcon
+                      icon={faTriangleExclamation}
+                      style={{ fontSize: 18, color: "#ffffff" }}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400">
+                      Barcode: {item.barcode}
+                    </p>
+                    <div className="text-sm">
+                      <p className="">
+                        Stock Alert:{" "}
+                        <span className="font-semibold">{item.name}</span>
+                      </p>
+                      {"  "}
+                      <p>
+                        only have stock{" "}
+                        <span className="font-bold">{item.stock}</span>.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* NOTIFICATION MODAL END */}
     </section>
   );
 }

@@ -37,7 +37,7 @@ export default function AdminSideBar() {
       </section>
       <section
         className={`flex items-center w-4/5 border-b border-white py-3 px-1 hover:text-white ${
-          pathname === "/dashboard" ? "text-white" : "text-slate-200/50"
+          pathname.startsWith("/dashboard") ? "text-white" : "text-slate-200/50"
         }`}
       >
         <Link
@@ -59,7 +59,9 @@ export default function AdminSideBar() {
         <h4 className="mb-2">MASTER</h4>
         <button
           className={`w-auto my-2 no-underline text-inherit cursor-pointer hover:opacity-100 ${
-            pathname === "/units" || pathname === "/goods" || isShowUtilities
+            pathname.startsWith("/units") ||
+            pathname.startsWith("/goods") ||
+            isShowUtilities
               ? "opacity-100"
               : "opacity-50"
           }`}
@@ -89,7 +91,7 @@ export default function AdminSideBar() {
             <Link
               href={"/goods"}
               className={`text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start ${
-                pathname === "/goods" ? "bg-gray-500/25" : ""
+                pathname.startsWith("/goods") ? "bg-gray-500/25" : ""
               }`}
               onClick={(e) => handleClick(e)}
             >
@@ -98,7 +100,7 @@ export default function AdminSideBar() {
             <Link
               href={"/units"}
               className={`text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start ${
-                pathname === "/units" ? "bg-gray-500/25" : ""
+                pathname.startsWith("/units") ? "bg-gray-500/25" : ""
               }`}
               onClick={(e) => handleClick(e)}
             >
@@ -108,7 +110,7 @@ export default function AdminSideBar() {
         </button>
         <Link
           className={`w-1/2 flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/suppliers" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/suppliers") ? "opacity-100" : "opacity-50"
           }`}
           href="/suppliers"
         >
@@ -120,7 +122,7 @@ export default function AdminSideBar() {
         </Link>
         <Link
           className={`customers flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/customers" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/customers") ? "opacity-100" : "opacity-50"
           }`}
           href="/customers"
         >
@@ -132,7 +134,7 @@ export default function AdminSideBar() {
         </Link>
         <Link
           className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/users" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/users") ? "opacity-100" : "opacity-50"
           }`}
           href="/users"
         >
@@ -147,7 +149,7 @@ export default function AdminSideBar() {
         <h4 className="mb-2.5">TRANSACTIONS</h4>
         <Link
           className={`purchases flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/purchases" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/purchases") ? "opacity-100" : "opacity-50"
           }`}
           href="/purchases"
         >
@@ -159,7 +161,7 @@ export default function AdminSideBar() {
         </Link>
         <Link
           className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/sales" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/sales") ? "opacity-100" : "opacity-50"
           }`}
           href="/sales"
         >

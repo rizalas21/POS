@@ -40,7 +40,7 @@ export default function OperatorSideBar() {
         <h4 className="mb-2">MASTER</h4>
         <Link
           className={`w-1/2 flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/suppliers" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/suppliers") ? "opacity-100" : "opacity-50"
           }`}
           href="/suppliers"
         >
@@ -52,7 +52,7 @@ export default function OperatorSideBar() {
         </Link>
         <Link
           className={`customers flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/customers" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/customers") ? "opacity-100" : "opacity-50"
           }`}
           href="/customers"
         >
@@ -67,7 +67,7 @@ export default function OperatorSideBar() {
         <h4 className="mb-2.5">TRANSACTIONS</h4>
         <Link
           className={`purchases flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/purchases" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/purchases") ? "opacity-100" : "opacity-50"
           }`}
           href="/purchases"
         >
@@ -79,7 +79,7 @@ export default function OperatorSideBar() {
         </Link>
         <Link
           className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
-            pathname === "/sales" ? "opacity-100" : "opacity-50"
+            pathname.startsWith("/sales") ? "opacity-100" : "opacity-50"
           }`}
           href="/sales"
         >

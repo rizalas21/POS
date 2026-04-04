@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,6 +7,14 @@ export default async function middleware(req: NextRequest) {
 
   if (url.includes("/api/register") || url.includes("/api/auth"))
     return NextResponse.next();
+
+  if (req.nextUrl.pathname.startsWith("/api")) {
+    if (!token) {
+      return new NextResponse(JSON.stringify({ message: "Unauthorized" }), {
+        status: 401,
+      });
+    }
+  }
 
   if (!token) return NextResponse.redirect(new URL("/signin", req.url));
   const role = token.role as string | undefined;

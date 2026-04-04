@@ -18,6 +18,7 @@ import { ModalDeletePurchases } from "@/components/purchases/ModalDelete";
 import dateToString from "@/lib/dateToString";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import { useSession } from "next-auth/react";
+import { useGoodsStore } from "@/stores/goodsStore";
 
 export default function purchases() {
   const { data } = useSession();
@@ -39,6 +40,7 @@ export default function purchases() {
   const router = useRouter();
   const { purchases, getPurchases, page, pages, total } = usePurchasesStore();
   const [isLoading, setIsloading] = useState(true);
+  const { getGoods } = useGoodsStore();
   const overLimit =
     (Number(page) - 1) * Number(params.limit) + Number(params.limit);
 
@@ -69,6 +71,7 @@ export default function purchases() {
       }
     };
     fetchUsers();
+    getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
   }, [params]);
   return (
     <main className="space-y-3">

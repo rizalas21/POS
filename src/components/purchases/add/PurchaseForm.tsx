@@ -166,7 +166,7 @@ export default function PurchaseForm({
             className="w-11/12 p-1 drop-shadow text-slate-800 rounded border border-slate-400"
             id="quantity"
             onChange={(e) => handleChangeItem(e)}
-            value={item.quantity}
+            defaultValue={1}
             min={1}
             name="quantity"
           />
