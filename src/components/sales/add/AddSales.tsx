@@ -15,6 +15,7 @@ import axios from "axios";
 import { useSalesStore } from "@/stores/salesStore";
 import { Item } from "@/types/sales";
 import { useCustomersStore } from "@/stores/customersStore";
+import Swal from "sweetalert2";
 
 export default function AddSales() {
   const router = useRouter();
@@ -128,7 +129,37 @@ export default function AddSales() {
       const qty = Number(value);
       const stock = Number(goodsItem.stock);
 
+      if (qty === 0) {
+        return Swal.fire({
+          icon: "warning",
+          title: "Quantity cannot be zero",
+          text: "Please enter at least 1 item",
+        });
+      }
+
+      if (qty < 0) {
+        return Swal.fire({
+          icon: "error",
+          title: "Invalid input",
+          text: "Quantity cannot be negative",
+        });
+      }
+
+      if (isNaN(qty)) {
+        return Swal.fire({
+          icon: "error",
+          title: "Invalid input",
+          text: "Please enter a valid number",
+        });
+      }
+
       if (qty > stock) {
+        Swal.fire({
+          icon: "warning",
+          title: "Insufficient stock",
+          text: `Only ${stock} items available`,
+        });
+
         updatedItem = {
           ...updatedItem,
           quantity: stock,
