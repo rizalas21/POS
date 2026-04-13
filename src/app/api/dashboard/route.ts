@@ -133,9 +133,6 @@ WHERE
       queryChart,
       start,
       end,
-      keyword,
-      limit,
-      offset,
     );
 
     const data = {

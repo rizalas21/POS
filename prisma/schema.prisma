@@ -9,97 +9,95 @@ datasource db {
 }
 
 model Users {
-  userid String @id @default(uuid())
-  email String @unique
-  name String
-  password String
-  role String
+  userid    String      @id @default(uuid())
+  email     String      @unique
+  name      String
+  password  String
+  role      String
   purchases Purchases[]
-  sales Sales[]
+  sales     Sales[]
 }
 
 model Units {
-  unit String @id @db.VarChar(10)
-  name String @db.VarChar(100)
-  note String?
+  unit  String  @id @db.VarChar(10)
+  name  String  @db.VarChar(100)
+  note  String?
   goods Goods[]
 }
 
 model Goods {
-  barcode String @id @db.VarChar(20)
-  name String @db.VarChar(150)
-  stock Int
-  purchaseprice Decimal @db.Decimal(19, 2) @default(1000)
-  sellingprice Decimal @db.Decimal(19, 2) @default(1000)
-  unit String @db.VarChar(10)
-  units Units @relation(fields: [unit], references: [unit])
-  picture String?
+  barcode       String          @id @db.VarChar(20)
+  name          String          @db.VarChar(150)
+  stock         Int
+  unit          String          @db.VarChar(10)
+  picture       String?
+  purchaseprice Decimal         @default(1000) @db.Decimal(19, 2)
+  sellingprice  Decimal         @default(1000) @db.Decimal(19, 2)
+  units         Units           @relation(fields: [unit], references: [unit])
   purchaseitems Purchaseitems[]
-  saleitems Saleitems[]
+  saleitems     Saleitems[]
 }
 
 model Suppliers {
-  supplierid Int @id @default(autoincrement())
-  name String @db.VarChar(100)
-  address String
-  phone String @db.VarChar(20)
-  purchases Purchases[] 
+  supplierid Int         @id @default(autoincrement())
+  name       String      @db.VarChar(100)
+  address    String
+  phone      String      @db.VarChar(20)
+  purchases  Purchases[]
 }
 
 model Purchases {
-  invoice String @id @db.VarChar(20)
-  time DateTime @default(now())
-  totalsum Decimal @db.Decimal(19, 2)
-  supplier Int
-  suppliers Suppliers @relation(fields: [supplier], references: [supplierid])
-  operator String
-  users Users @relation(fields: [operator], references: [userid])
+  invoice       String          @id @db.VarChar(20)
+  time          DateTime        @default(now())
+  totalsum      Decimal         @db.Decimal(19, 2)
+  operator      String
+  supplier      Int
+  createdAt     DateTime        @default(now())
   purchaseitems Purchaseitems[]
-  createdAt DateTime @default(now())
+  users         Users           @relation(fields: [operator], references: [userid])
+  suppliers     Suppliers       @relation(fields: [supplier], references: [supplierid])
 }
 
 model Purchaseitems {
-  id Int @id @default(autoincrement())
-  invoice String @db.VarChar(20)
-  purchases Purchases @relation(fields: [invoice], references: [invoice])
-  itemcode String @db.VarChar(20)
-  goods Goods @relation(fields: [itemcode], references: [barcode])
-  quantity Int
-  purchaseprice Decimal @db.Decimal(19, 2)
-  totalprice Decimal @db.Decimal(19,2)
+  id            Int       @id @default(autoincrement())
+  invoice       String    @db.VarChar(20)
+  itemcode      String    @db.VarChar(20)
+  quantity      Int
+  purchaseprice Decimal   @db.Decimal(19, 2)
+  totalprice    Decimal   @db.Decimal(19, 2)
+  purchases     Purchases @relation(fields: [invoice], references: [invoice])
+  goods         Goods     @relation(fields: [itemcode], references: [barcode])
 }
 
 model Customers {
-  customerid Int @id @default(autoincrement())
-  name String @db.VarChar(100)
-  address String
-  phone String @db.VarChar(20)
-  sales Sales[]
+  customerid Int     @id @default(autoincrement())
+  name       String  @db.VarChar(100)
+  address    String
+  phone      String  @db.VarChar(20)
+  sales      Sales[]
 }
 
 model Sales {
-  invoice String @id @db.VarChar(20)
-  time DateTime @default(now())
-  totalsum Decimal @db.Decimal(19,2)
-  pay Decimal @db.Decimal(19, 2)
-  change Decimal @db.Decimal(19,2)
-  customer Int
-  customers Customers @relation(fields: [customer], references: [customerid])
-  operator String
-  users Users @relation(fields:[operator], references: [userid])
+  invoice   String      @id @db.VarChar(20)
+  time      DateTime    @default(now())
+  totalsum  Decimal     @db.Decimal(19, 2)
+  pay       Decimal     @db.Decimal(19, 2)
+  change    Decimal     @db.Decimal(19, 2)
+  customer  Int
+  operator  String
+  createdAt DateTime    @default(now())
   saleitems Saleitems[]
-  createdAt DateTime @default(now())
+  customers Customers   @relation(fields: [customer], references: [customerid])
+  users     Users       @relation(fields: [operator], references: [userid])
 }
 
 model Saleitems {
-  id Int @id @default(autoincrement())
-  invoice String @db.VarChar(20)
-  sales Sales @relation(fields: [invoice], references: [invoice])
-  itemcode String @db.VarChar(20)
-  goods Goods @relation(fields: [itemcode], references: [barcode])
-  quantity Int
+  id           Int     @id @default(autoincrement())
+  invoice      String  @db.VarChar(20)
+  itemcode     String  @db.VarChar(20)
+  quantity     Int
   sellingprice Decimal @db.Decimal(19, 2)
-  totalprice Decimal @db.Decimal(19,2)
+  totalprice   Decimal @db.Decimal(19, 2)
+  sales        Sales   @relation(fields: [invoice], references: [invoice])
+  goods        Goods   @relation(fields: [itemcode], references: [barcode])
 }
-
-//npx prisma migrate dev --name init

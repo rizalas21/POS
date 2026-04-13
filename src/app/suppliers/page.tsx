@@ -65,7 +65,7 @@ export default function suppliers() {
     fetchUsers();
   }, [params]);
   return (
-    <main className="space-y-3">
+    <main className="space-y-3 text-slate-800">
       <h1 className="text-2xl text-gray-700">Suppliers</h1>
       <p>This is data of Suppliers</p>
       <div className="shadow-2xl h-auto bg-white">
@@ -339,7 +339,7 @@ export default function suppliers() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              showing {!total ? 0 : (Number(page) - 1) * Number(params.limit) + 1} to{" "}
               {overLimit >= Number(total) || params.limit === "0"
                 ? Number(total)
                 : overLimit}{" "}

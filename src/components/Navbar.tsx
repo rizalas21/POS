@@ -235,7 +235,7 @@ export default function Navbar() {
       {/* NOTIFICATION MODAL START */}
 
       {isShowNotif && (
-        <div className="absolute right-50 top-15 w-[320px] bg-white shadow-lg rounded overflow-hidden z-50">
+        <div className="absolute right-50 top-15 w-[320px] bg-white shadow-lg rounded overflow-hidden z-50 text-slate-900/50">
           {/* HEADER */}
           <div className="bg-blue-600 text-white px-4 py-2 font-semibold">
             ALERTS CENTER
