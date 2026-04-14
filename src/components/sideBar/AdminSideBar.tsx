@@ -27,13 +27,13 @@ export default function AdminSideBar() {
       className={`flex bg-blue-600 w-full flex-col items-center h-screen z-10`}
     >
       <section className="text-white flex justify-center items-center w-4/5 border-b border-slate-100 py-6">
-        <div className="flex items-center gap-3">
+        <Link href={"/"} className="flex items-center gap-3 w-full self-center">
           <FontAwesomeIcon
             style={{ fontSize: "33px", transform: "rotate(-25deg)" }}
             icon={faFaceLaughWink}
           />
           <h1 className="font-bold text-xl">POS</h1>
-        </div>
+        </Link>
       </section>
       <section
         className={`flex items-center w-4/5 border-b border-white py-3 px-1 hover:text-white ${

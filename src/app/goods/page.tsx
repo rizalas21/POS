@@ -14,12 +14,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Goods } from "../../types/goods";
+import toRupiah from "@/lib/toRupiah";
 
 export default function units() {
-  const formatterCurrency = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  });
 
   const [params, setParams] = useState({
     keyword: "",
@@ -358,10 +355,10 @@ export default function units() {
                         {good.unit}
                       </td>
                       <td className="min-w-[12vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
-                        {formatterCurrency.format(good.purchaseprice)}
+                        {toRupiah(good.purchaseprice)}
                       </td>
                       <td className="min-w-[11vw] min-h-30 px-1 py-2 border border-gray-500/25 text-center">
-                        {formatterCurrency.format(good.sellingprice)}
+                        {toRupiah(good.sellingprice)}
                       </td>
                       <td className="min-w-[11vw] px-1 py-2 border border-gray-500/25 text-center">
                         {good.picture ? (
@@ -447,7 +444,7 @@ export default function units() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              showing { !total ? 0 :(Number(page) - 1) * Number(params.limit) + 1} to{" "}
               {overLimit >= Number(total) || params.limit === "0"
                 ? Number(total)
                 : overLimit}{" "}

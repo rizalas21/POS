@@ -1,3 +1,4 @@
+import toRupiah from "@/lib/toRupiah";
 import { MonthlyData } from "@/types/dashboard";
 import {
   Chart as ChartJS,
@@ -50,7 +51,7 @@ export const lineOptions: ChartOptions<"line"> = {
         label: (context) => {
           const value = context.raw as number;
 
-          return "Earnings: Rp " + value.toLocaleString();
+          return "Earnings: " + toRupiah(value);
         },
       },
     },

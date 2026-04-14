@@ -1,5 +1,6 @@
 "use client";
 import useDashboard from "@/hooks/useDashboard";
+import toRupiah from "@/lib/toRupiah";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -198,13 +199,13 @@ export default function EarningsTable() {
                   {item.month}
                 </td>
                 <td className="px-2 py-2 border border-gray-500/25 text-center">
-                  {item.expense}
+                  {toRupiah(item.expense)}
                 </td>
                 <td className="px-2 py-2 border border-gray-500/25 text-center">
-                  {item.revenue}
+                  {toRupiah(item.revenue)}
                 </td>
                 <td className="px-2 py-2 border border-gray-500/25 text-center">
-                  {item.earning}
+                  {toRupiah(item.earning)}
                 </td>
               </tr>
             ))
@@ -223,17 +224,17 @@ export default function EarningsTable() {
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards?.purchases}</h3>
+                <h3>Rp {cards ? toRupiah(cards?.purchases) : 0}</h3>
               </div>
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards?.sales}</h3>
+                <h3>Rp {cards ? toRupiah(cards?.sales) : 0}</h3>
               </div>
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards?.earnings}</h3>
+                <h3>Rp {cards ? toRupiah(cards?.earnings) : 0}</h3>
               </div>
             </th>
           </tr>

@@ -335,7 +335,7 @@ export default function users() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              showing { !total ? 0 : (Number(page) - 1) * Number(params.limit) + 1} to{" "}
               {overLimit >= Number(total) ? Number(total) : overLimit} of{" "}
               {total.toString()} entries
             </p>

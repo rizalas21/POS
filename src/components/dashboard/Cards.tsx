@@ -1,5 +1,6 @@
 "use client";
 
+import toRupiah from "@/lib/toRupiah";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import {
   faCalendar,
@@ -17,21 +18,21 @@ export default function Cards() {
       <div className="flex justify-between items-center px-4 py-4 border-l-3 border-blue-700 rounded-md bg-white text-slate-900 shadow-lg">
         <div>
           <label className="text-sm text-blue-700 font-bold ">PURCHASES</label>
-          <p className="text-lg font-bold">RP {cards.purchases},00</p>
+          <p className="text-lg font-bold">{toRupiah(cards.purchases)}</p>
         </div>
         <FontAwesomeIcon icon={faCalendar} className="text-4xl opacity-25" />
       </div>
       <div className="flex justify-between items-center px-4 py-4 border-l-3 border-green-600 rounded-md bg-white text-slate-900 shadow-lg">
         <div>
           <label className="text-sm text-green-600 font-bold ">SALES</label>
-          <p className="text-lg font-bold">RP {cards.sales},00</p>
+          <p className="text-lg font-bold">{toRupiah(cards.sales)}</p>
         </div>
         <FontAwesomeIcon icon={faDollarSign} className="text-4xl opacity-25" />
       </div>
       <div className="flex justify-between items-center px-4 py-4 border-l-3 border-cyan-500 rounded-md bg-white text-slate-900 shadow-lg">
         <div>
           <label className="text-sm text-cyan-500 font-bold ">EARNINGS</label>
-          <p className="text-lg font-bold">RP {cards.earnings},00</p>
+          <p className="text-lg font-bold">{toRupiah(cards.earnings)}</p>
         </div>
         <FontAwesomeIcon icon={faDollarSign} className="text-4xl opacity-25" />
       </div>
