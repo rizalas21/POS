@@ -8,8 +8,9 @@ import {
   CategoryScale,
   Title,
   Tooltip,
-  ChartOptions,
   Legend,
+  ChartOptions,
+  DoughnutController
 } from "chart.js";
 
 ChartJS.register(
@@ -21,6 +22,7 @@ ChartJS.register(
   Legend,
   Title,
   Tooltip,
+  DoughnutController
 );
 
 type RevenueData = {

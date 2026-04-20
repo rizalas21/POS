@@ -11,6 +11,7 @@ import {
   Tooltip,
   ChartOptions,
   Legend,
+  LineController
 } from "chart.js";
 
 ChartJS.register(
@@ -22,6 +23,7 @@ ChartJS.register(
   Legend,
   Title,
   Tooltip,
+  LineController
 );
 
 export const createLineData = (data: MonthlyData[]) => ({
