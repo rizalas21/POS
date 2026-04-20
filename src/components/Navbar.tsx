@@ -73,10 +73,12 @@ export default function Navbar() {
     };
 
     document.addEventListener("click", handleClickOutside);
+    document.addEventListener("click", handleProfileClick);
     logout?.addEventListener("click", handleLogout);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", handleProfileClick);
       logout?.removeEventListener("click", handleLogout);
     };
   }, [data, status, isShowMenu, isShowNotif]);
