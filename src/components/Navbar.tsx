@@ -10,7 +10,7 @@ import {
   faTriangleExclamation,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
@@ -25,6 +25,12 @@ export default function Navbar() {
   const { getGoods, goods } = useGoodsStore();
   const router = useRouter();
 
+  const profileRef = useRef<HTMLDivElement | null>(null)
+  const notifRef = useRef<HTMLDivElement | null>(null)
+
+  const [showSearch, setShowSearch] = useState(false)
+  const [keyword, setKeyword] = useState("")
+  
   useEffect(() => {
     if (status === "authenticated" && data?.user?.email) {
       const fetchUserData = async () => {
@@ -40,10 +46,9 @@ export default function Navbar() {
       fetchUserData();
       getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
     }
-    const profiles = document.querySelector("#profiles");
-    const hideMenu = document.querySelector("#hide-menu");
+    // const profiles = document.querySelector("#profiles");
     const logout = document.querySelector("#logout");
-    const modal = document.querySelector("#logoutModal");
+    const notif = document.querySelector("#notif")
 
     const handleProfileClick = (event: Event) => {
       event.stopPropagation();
@@ -53,10 +58,12 @@ export default function Navbar() {
     const handleClickOutside = (event: Event) => {
       if (
         isShowMenu &&
-        !hideMenu?.contains(event.target as Node) &&
-        !profiles?.contains(event.target as Node)
+        !profileRef?.current?.contains(event.target as Node)
       ) {
         setIsShowMenu(false);
+      } 
+       if(isShowNotif && !notif?.contains(event.target as Node)) {
+        setIsShowNotif(false)
       }
     };
 
@@ -65,16 +72,14 @@ export default function Navbar() {
       setIsShowModal(true);
     };
 
-    profiles?.addEventListener("click", handleProfileClick);
     document.addEventListener("click", handleClickOutside);
     logout?.addEventListener("click", handleLogout);
 
     return () => {
-      profiles?.removeEventListener("click", handleProfileClick);
       document.removeEventListener("click", handleClickOutside);
       logout?.removeEventListener("click", handleLogout);
     };
-  }, [data, status]);
+  }, [data, status, isShowMenu, isShowNotif]);
 
   const closeModal = () => {
     setIsShowModal(false);
@@ -96,7 +101,7 @@ export default function Navbar() {
         <input
           placeholder="search for..."
           type="text"
-          className="bg-slate-200 h-full w-[90%] rounded border-none px-2 "
+          className="bg-slate-200 text-slate-900 h-full w-[90%] rounded border-none px-2 "
         />
         <button
           title="search"
@@ -110,7 +115,7 @@ export default function Navbar() {
       </section>
       <section className="w-auto h-[130%] flex justify-between items-center">
         <div
-          className="flex items-start w-[4vw] cursor-pointer relative"
+          className="flex items-start w-[4vw] cursor-pointer relative" id="notif"
           onClick={() => setIsShowNotif(!isShowNotif)}
         >
           <FontAwesomeIcon
@@ -128,7 +133,7 @@ export default function Navbar() {
         <div className="text-gray-300 h-[130%] my-2.5 text-4xl w-[3vw] text-center">
           <p>|</p>
         </div>
-        <div className="items-center cursor-pointer flex" id="profiles">
+        <div ref={profileRef} className="items-center cursor-pointer flex" id="profiles">
           <p className="text-xl font-medium text-gray-500 relative">
             {data?.user ? data.user.name : "User"}
           </p>
