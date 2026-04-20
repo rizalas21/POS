@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { barcode: string } },
+  { params }: { params: Promise<{ barcode: string }> },
 ) {
   try {
     const { barcode } = await params;
@@ -23,7 +23,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { barcode: string } },
+  { params }: { params: Promise<{ barcode: string }> },
 ) {
   try {
     const data = await req.formData();
@@ -81,7 +81,7 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { barcode: string } },
+  { params }: { params: Promise<{ barcode: string }> },
 ) {
   const { barcode } = await params;
   try {

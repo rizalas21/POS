@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
         const customer = await prisma.customers.findMany({where: {OR: [{name: {contains: keyword, mode: "insensitive"}}, {phone: {contains:keyword, mode: "insensitive"}}]}, take: 3})
         const sale = await prisma.sales.findMany({where: {invoice: {contains: keyword, mode: "insensitive"}}, take: 3})
 
-        return {goods: {name: "goods", item: good}, customers: {name: "customers", item: customer}, sale: {name: "sales", item: sale}}
+        return NextResponse.json( {goods: {name: "goods", item: good}, customers: {name: "customers", item: customer}, sale: {name: "sales", item: sale}})
     } catch (error) {
         return NextResponse.json(error)
     }
