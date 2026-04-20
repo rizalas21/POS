@@ -1,30 +1,6 @@
 import toRupiah from "@/lib/toRupiah";
 import { MonthlyData } from "@/types/dashboard";
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  ArcElement,
-  LinearScale,
-  CategoryScale,
-  Title,
-  Tooltip,
-  ChartOptions,
-  Legend,
-  LineController
-} from "chart.js";
-
-ChartJS.register(
-  LineElement,
-  PointElement,
-  ArcElement,
-  LinearScale,
-  CategoryScale,
-  Legend,
-  Title,
-  Tooltip,
-  LineController
-);
+import { ChartOptions } from "chart.js";
 
 export const createLineData = (data: MonthlyData[]) => ({
   labels: data.map((i) => i.month),
