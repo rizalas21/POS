@@ -20,7 +20,7 @@ export default function ClientWrapper({
         <div className="fixed w-1/5">{!hideNavbar && <SideBar />}</div>
         <div className="ml-[20%] w-4/5">
           {!hideNavbar && <Navbar />}
-          <div className="bg-slate-300 pt-[6%] px-[2%] pb-15 min-h-screen h-full text-slate-900">
+          <div className="bg-slate-300 pt-[6%] px-[2%] min-h-screen h-full text-slate-900 pb-[7%]">
             {children}
           </div>
           {!hideNavbar && <Footer />}

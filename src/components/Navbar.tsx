@@ -46,8 +46,11 @@ export default function Navbar() {
       fetchUserData();
       getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
     }
-    // const profiles = document.querySelector("#profiles");
-    const logout = document.querySelector("#logout");
+    
+  }, [data, status]);
+
+  useEffect(() => {
+const logout = document.querySelector("#logout");
     const notif = document.querySelector("#notif")
 
     const handleProfileClick = (event: Event) => {
@@ -73,15 +76,13 @@ export default function Navbar() {
     };
 
     document.addEventListener("click", handleClickOutside);
-    document.addEventListener("click", handleProfileClick);
     logout?.addEventListener("click", handleLogout);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
-      document.removeEventListener("click", handleProfileClick);
       logout?.removeEventListener("click", handleLogout);
     };
-  }, [data, status, isShowMenu, isShowNotif]);
+  }, [isShowMenu, isShowNotif])
 
   const closeModal = () => {
     setIsShowModal(false);
@@ -92,12 +93,11 @@ export default function Navbar() {
     signOut({ redirect: true, callbackUrl: "/" });
   };
 
-  console.log(goods.filter((item) => item.stock <= 5));
-  console.log(goods && goods.filter((item) => item.stock));
+  const goodsFiltered = goods.filter((item) => item.stock <= 5)
 
   return (
     <section
-      className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white mb-1`}
+      className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white`}
     >
       <section className="w-[35%] bg-white flex justify-between items-center h-[110%]">
         <input
@@ -135,7 +135,10 @@ export default function Navbar() {
         <div className="text-gray-300 h-[130%] my-2.5 text-4xl w-[3vw] text-center">
           <p>|</p>
         </div>
-        <div ref={profileRef} className="items-center cursor-pointer flex" id="profiles">
+        <div ref={profileRef} className="items-center cursor-pointer flex" id="profiles" onClick={(e) => {
+          e.stopPropagation()
+          setIsShowMenu((prev) => !prev)
+        }}>
           <p className="text-xl font-medium text-gray-500 relative">
             {data?.user ? data.user.name : "User"}
           </p>
@@ -147,13 +150,13 @@ export default function Navbar() {
 
           {/* HIDE MENU START */}
           <div
-            className={`bg-white absolute mt-[35vh] mr-10 right-0 h-auto w-[13vw] flex-col items-center justify-between rounded cursor-default transition  ${
+            className={`bg-white absolute mt-[33vh] mr-5 right-0 h-auto w-[18vw] flex-col items-center justify-between rounded cursor-default transition  ${
               isShowMenu ? "flex visible" : "hidden invisible"
             }`}
             id="hide-menu"
           >
             <div className="flex flex-col items-center justify-center h-full w-full pb-2 border-b border-slate-100">
-              <div className="flex w-full h-1/2 text-lg items-center cursor-pointer py-1.5 px-5 hover:bg-slate-100 justify-start">
+              <div className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 hover:bg-slate-100 justify-start">
                 <FontAwesomeIcon
                   icon={faUser}
                   style={{ fontSize: 18, color: "#ccc" }}
@@ -162,27 +165,18 @@ export default function Navbar() {
                   Profile
                 </span>
               </div>
-              <div className="flex w-full h-1/2 text-lg items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100">
-                <FontAwesomeIcon
-                  icon={faCogs}
-                  style={{ fontSize: 18, color: "#ccc" }}
-                />
-                <span className="ml-[13%] font-medium text-gray-500">
-                  Settings
-                </span>
-              </div>
-              <div className="flex w-full h-1/2 text-lg items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100">
+              <div className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100">
                 <FontAwesomeIcon
                   icon={faList}
                   style={{ fontSize: 18, color: "#ccc" }}
                 />
                 <span className="ml-[13%] font-medium text-gray-500">
-                  Activity Log
+                  Change Password
                 </span>
               </div>
             </div>
             <div
-              className="cursor-pointer flex w-full h-1/2 text-lg items-center py-1.5 px-5 justify-start hover:bg-slate-100"
+              className="cursor-pointer flex w-full h-1/2 items-center py-1.5 px-5 justify-start hover:bg-slate-100"
               id="logout"
             >
               <FontAwesomeIcon
@@ -249,10 +243,9 @@ export default function Navbar() {
           </div>
 
           {/* LIST ALERT */}
-          <div className="max-h-[300px] overflow-y-auto">
+          {!goodsFiltered.length ? <p className="p-2 text-center text-lg">No Alert</p> : <div className="max-h-[300px] overflow-y-auto">
             {/* ITEM */}
-            {goods
-              .filter((item) => item.stock <= 5)
+            {goodsFiltered
               .map((item) => (
                 <div
                   className="flex items-start gap-3 px-4 py-3 border-b hover:bg-gray-100 cursor-pointer"
@@ -286,7 +279,8 @@ export default function Navbar() {
                   </div>
                 </div>
               ))}
-          </div>
+          </div>}
+          
         </div>
       )}
 

@@ -19,172 +19,164 @@ import { useState } from "react";
 export default function AdminSideBar() {
   const [isShowUtilities, setIsShowUtilities] = useState(false);
   const pathname = usePathname();
+
   const handleClick = (e: any) => {
     e.stopPropagation();
   };
+
   return (
-    <div
-      className={`flex bg-blue-600 w-full flex-col items-center h-screen z-10`}
-    >
-      <section className="text-white flex justify-center items-center w-4/5 border-b border-slate-100 py-6">
-        <Link href={"/"} className="flex items-center gap-3 w-full self-center">
+    <div className="flex flex-col items-center w-full h-screen bg-blue-600 z-10">
+      
+      {/* HEADER */}
+      <section className="w-4/5 py-6 flex items-center justify-center border-b border-slate-100 text-white">
+        <Link href="/" className="flex items-center gap-3 w-full">
           <FontAwesomeIcon
-            style={{ fontSize: "33px", transform: "rotate(-25deg)" }}
             icon={faFaceLaughWink}
+            style={{ fontSize: "33px", transform: "rotate(-25deg)" }}
           />
-          <h1 className="font-bold text-xl">POS</h1>
+          <h1 className="text-xl font-bold">POS</h1>
         </Link>
       </section>
+
+      {/* DASHBOARD */}
       <section
-        className={`flex items-center w-4/5 border-b border-white py-3 px-1 hover:text-white ${
-          pathname.startsWith("/dashboard") ? "text-white" : "text-slate-200/50"
+        className={`w-4/5 py-3 px-1 border-b border-white ${
+          pathname.startsWith("/dashboard")
+            ? "text-white"
+            : "text-slate-200/50"
         }`}
       >
         <Link
-          className="flex items-center w-full no-underline gap-4"
           href="/dashboard"
+          className="flex items-center gap-4 w-full"
         >
           <FontAwesomeIcon
+            icon={faTachometerAlt}
             style={{
               fontSize: "24px",
-              marginRight: "10px",
               clipPath: "inset(2px 0px 3px 0px)",
             }}
-            icon={faTachometerAlt}
-          ></FontAwesomeIcon>
-          <h3 className={``}>Dashboard</h3>
+          />
+          <h3>Dashboard</h3>
         </Link>
       </section>
-      <section className="text-white flex flex-col w-4/5 h-auto border-b border-white mt-5 pb-5">
-        <h4 className="mb-2">MASTER</h4>
+
+      {/* MASTER */}
+      <section className="w-4/5 mt-5 pb-5 border-b border-white text-white flex flex-col">
+        <h4 className="mb-3 text-sm tracking-wide">MASTER</h4>
+
+        {/* UTILITIES */}
         <button
-          className={`w-auto my-2 no-underline text-inherit cursor-pointer hover:opacity-100 ${
+          onClick={() => setIsShowUtilities(!isShowUtilities)}
+          className={`my-2 text-left transition-opacity ${
             pathname.startsWith("/units") ||
             pathname.startsWith("/goods") ||
             isShowUtilities
               ? "opacity-100"
               : "opacity-50"
           }`}
-          onClick={() => setIsShowUtilities(!isShowUtilities)}
         >
           <div className="flex items-center">
-            <FontAwesomeIcon
-              style={{ fontSize: "24px", maxWidth: "20px" }}
-              icon={faWrench}
-            />
-            <h4 className="ml-5 font-extralight w-auto w-auto">
-              Good Utilities
-            </h4>
+            <FontAwesomeIcon icon={faWrench} className="text-xl" />
+            <h4 className="ml-5 font-extralight">Good Utilities</h4>
             <FontAwesomeIcon
               icon={isShowUtilities ? faChevronDown : faChevronRight}
-              className="pl-[25%]"
+              className="ml-auto"
             />
           </div>
+
+          {/* DROPDOWN */}
           <div
-            className={`flex-col bg-white border rounded-sm px-3 py-2 items-start cursor-default transition duration-300 ease-in-out mt-2  ${
-              isShowUtilities ? "flex" : "hidden"
+            className={`mt-2 px-3 py-2 bg-white rounded-sm transition-all duration-200 ${
+              isShowUtilities ? "flex flex-col" : "hidden"
             }`}
           >
-            <p className="text-gray-500/50 font-bold px-1 py-1">
+            <p className="text-xs font-bold text-gray-400 mb-1">
               Good Utilities:
             </p>
+
             <Link
-              href={"/goods"}
-              className={`text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start ${
-                pathname.startsWith("/goods") ? "bg-gray-500/25" : ""
+              href="/goods"
+              onClick={handleClick}
+              className={`px-2 py-1 rounded text-sm text-black hover:bg-gray-200 ${
+                pathname.startsWith("/goods") ? "bg-gray-200" : ""
               }`}
-              onClick={(e) => handleClick(e)}
             >
               Goods
             </Link>
+
             <Link
-              href={"/units"}
-              className={`text-black hover:bg-gray-500/25 px-1 py-1 rounded w-full text-start ${
-                pathname.startsWith("/units") ? "bg-gray-500/25" : ""
+              href="/units"
+              onClick={handleClick}
+              className={`px-2 py-1 rounded text-sm text-black hover:bg-gray-200 ${
+                pathname.startsWith("/units") ? "bg-gray-200" : ""
               }`}
-              onClick={(e) => handleClick(e)}
             >
               Units
             </Link>
           </div>
         </button>
+
         <Link
-          className={`w-1/2 flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
+          href="/suppliers"
+          className={`flex items-center gap-4 my-2.5 transition-opacity hover:opacity-100 ${
             pathname.startsWith("/suppliers") ? "opacity-100" : "opacity-50"
           }`}
-          href="/suppliers"
         >
-          <FontAwesomeIcon
-            style={{ fontSize: "24px", maxWidth: "20px" }}
-            icon={faLink}
-          />
-          <h4 className="ml-5 font-extralight w-auto">Suppliers</h4>
+          <FontAwesomeIcon icon={faLink} className="text-xl" />
+          <h4 className="font-extralight">Suppliers</h4>
         </Link>
+
         <Link
-          className={`customers flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
+          href="/customers"
+          className={`flex items-center gap-4 my-2.5 transition-opacity hover:opacity-100 ${
             pathname.startsWith("/customers") ? "opacity-100" : "opacity-50"
           }`}
-          href="/customers"
         >
-          <FontAwesomeIcon
-            style={{ fontSize: "24px", maxWidth: "20px" }}
-            icon={faUsers}
-          />
-          <h4 className="ml-5 font-extralight w-auto ">Customers</h4>
+          <FontAwesomeIcon icon={faUsers} className="text-xl" />
+          <h4 className="font-extralight">Customers</h4>
         </Link>
+
         <Link
-          className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
+          href="/users"
+          className={`flex items-center gap-4 my-2.5 transition-opacity hover:opacity-100 ${
             pathname.startsWith("/users") ? "opacity-100" : "opacity-50"
           }`}
-          href="/users"
         >
-          <FontAwesomeIcon
-            style={{ fontSize: "22px", maxWidth: "20px" }}
-            icon={faUser}
-          />
-          <h4 className="ml-5 font-extralight w-auto ">Users</h4>
+          <FontAwesomeIcon icon={faUser} className="text-xl" />
+          <h4 className="font-extralight">Users</h4>
         </Link>
       </section>
-      <section className="text-white flex flex-col w-4/5 h-auto mt-5 pb-5 border-b border-slate-500">
-        <h4 className="mb-2.5">TRANSACTIONS</h4>
+
+      {/* TRANSACTIONS */}
+      <section className="w-4/5 mt-5 pb-5 border-b border-slate-500 text-white flex flex-col">
+        <h4 className="mb-3 text-sm tracking-wide">TRANSACTIONS</h4>
+
         <Link
-          className={`purchases flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
+          href="/purchases"
+          className={`flex items-center gap-4 my-2.5 transition-opacity hover:opacity-100 ${
             pathname.startsWith("/purchases") ? "opacity-100" : "opacity-50"
           }`}
-          href="/purchases"
         >
-          <FontAwesomeIcon
-            style={{ fontSize: "24px", maxWidth: "20px" }}
-            icon={faTable}
-          />
-          <h4 className="ml-5 font-extralight w-auto ">Purchases</h4>
+          <FontAwesomeIcon icon={faTable} className="text-xl" />
+          <h4 className="font-extralight">Purchases</h4>
         </Link>
+
         <Link
-          className={`w-[42%] flex items-center my-2.5 no-underline text-inherit w-auto hover:opacity-100 ${
+          href="/sales"
+          className={`flex items-center gap-4 my-2.5 transition-opacity hover:opacity-100 ${
             pathname.startsWith("/sales") ? "opacity-100" : "opacity-50"
           }`}
-          href="/sales"
         >
-          <FontAwesomeIcon
-            style={{ fontSize: "24px", maxWidth: "20px" }}
-            icon={faChartArea}
-          />
-          <h4 className="ml-5 font-extralight w-auto ">Sales</h4>
+          <FontAwesomeIcon icon={faChartArea} className="text-xl" />
+          <h4 className="font-extralight">Sales</h4>
         </Link>
       </section>
-      <section className="border-none mt-5 items-center text-white flex flex-col w-4/5 h-auto border-b  border-slate-500 mt-5 pb-5">
-        <div className="bg-slate-100 w-1/5 rounded-[50%] opacity-50">
-          <FontAwesomeIcon
-            icon={faAngleLeft}
-            style={{
-              fontSize: "15px",
-              width: "100%",
-              background: "#ccc",
-              borderRadius: "50%",
-              padding: "15px 0",
-              fontWeight: "1000",
-            }}
-          />
+
+      {/* FOOTER */}
+      <section className="w-4/5 pb-5 flex justify-center">
+        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 opacity-50 hover:opacity-100 transition">
+          <FontAwesomeIcon icon={faAngleLeft} className="text-gray-600" />
         </div>
       </section>
     </div>
