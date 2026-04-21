@@ -30,6 +30,8 @@ export default function Navbar() {
 
   const [showSearch, setShowSearch] = useState(false)
   const [keyword, setKeyword] = useState("")
+
+  const search = axios.get("/api/search", {params: {keyword}})
   
   useEffect(() => {
     if (status === "authenticated" && data?.user?.email) {
@@ -51,12 +53,7 @@ export default function Navbar() {
 
   useEffect(() => {
 const logout = document.querySelector("#logout");
-    const notif = document.querySelector("#notif")
-
-    const handleProfileClick = (event: Event) => {
-      event.stopPropagation();
-      setIsShowMenu((prev) => !prev);
-    };
+    const notif = document.querySelector("#notif")  
 
     const handleClickOutside = (event: Event) => {
       if (
@@ -104,6 +101,7 @@ const logout = document.querySelector("#logout");
           placeholder="search for..."
           type="text"
           className="bg-slate-200 text-slate-900 h-full w-[90%] rounded border-none px-2 "
+          onChange={(e)=> setKeyword(e.target.value)}
         />
         <button
           title="search"
@@ -243,7 +241,7 @@ const logout = document.querySelector("#logout");
           </div>
 
           {/* LIST ALERT */}
-          {!goodsFiltered.length ? <p className="p-2 text-center text-lg">No Alert</p> : <div className="max-h-[300px] overflow-y-auto">
+          {!goodsFiltered.length ? <p className="p-2 text-center text-lg">No Alerts</p> : <div className="max-h-[300px] overflow-y-auto">
             {/* ITEM */}
             {goodsFiltered
               .map((item) => (
