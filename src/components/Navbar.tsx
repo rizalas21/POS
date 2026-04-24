@@ -16,6 +16,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import axios from "axios";
 import { useGoodsStore } from "@/stores/goodsStore";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -25,14 +26,13 @@ export default function Navbar() {
   const { getGoods, goods } = useGoodsStore();
   const router = useRouter();
 
-  const profileRef = useRef<HTMLDivElement | null>(null)
-  const notifRef = useRef<HTMLDivElement | null>(null)
+  const profileRef = useRef<HTMLDivElement | null>(null);
+  const notifRef = useRef<HTMLDivElement | null>(null);
 
-  const [showSearch, setShowSearch] = useState(false)
-  const [keyword, setKeyword] = useState("")
+  const [isShowSearch, setIsShowSearch] = useState(false);
+  const [keyword, setKeyword] = useState("");
+  const [resultSearch, setResultSearch] = useState({});
 
-  const search = axios.get("/api/search", {params: {keyword}})
-  
   useEffect(() => {
     if (status === "authenticated" && data?.user?.email) {
       const fetchUserData = async () => {
@@ -48,22 +48,18 @@ export default function Navbar() {
       fetchUserData();
       getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
     }
-    
   }, [data, status]);
 
   useEffect(() => {
-const logout = document.querySelector("#logout");
-    const notif = document.querySelector("#notif")  
+    const logout = document.querySelector("#logout");
+    const notif = document.querySelector("#notif");
 
     const handleClickOutside = (event: Event) => {
-      if (
-        isShowMenu &&
-        !profileRef?.current?.contains(event.target as Node)
-      ) {
+      if (isShowMenu && !profileRef?.current?.contains(event.target as Node)) {
         setIsShowMenu(false);
-      } 
-       if(isShowNotif && !notif?.contains(event.target as Node)) {
-        setIsShowNotif(false)
+      }
+      if (isShowNotif && !notif?.contains(event.target as Node)) {
+        setIsShowNotif(false);
       }
     };
 
@@ -79,7 +75,18 @@ const logout = document.querySelector("#logout");
       document.removeEventListener("click", handleClickOutside);
       logout?.removeEventListener("click", handleLogout);
     };
-  }, [isShowMenu, isShowNotif])
+  }, [isShowMenu, isShowNotif]);
+
+  useEffect(() => {
+    if (!keyword) return;
+
+    const fetchSearch = async () => {
+      const { data } = await axios.get("/api/search", { params: { keyword } });
+      setResultSearch(data);
+    };
+
+    fetchSearch();
+  }, [keyword]);
 
   const closeModal = () => {
     setIsShowModal(false);
@@ -90,8 +97,13 @@ const logout = document.querySelector("#logout");
     signOut({ redirect: true, callbackUrl: "/" });
   };
 
-  const goodsFiltered = goods.filter((item) => item.stock <= 5)
-
+  const goodsFiltered = goods.filter((item) => item.stock <= 5);
+  const searchFiltered = Object.fromEntries(
+    Object.entries(resultSearch).filter(
+      ([key, value]) => (value as any)?.item.length > 0,
+    ),
+  );
+  console.log(searchFiltered);
   return (
     <section
       className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white`}
@@ -101,7 +113,10 @@ const logout = document.querySelector("#logout");
           placeholder="search for..."
           type="text"
           className="bg-slate-200 text-slate-900 h-full w-[90%] rounded border-none px-2 "
-          onChange={(e)=> setKeyword(e.target.value)}
+          onChange={(e) => {
+            setKeyword(e.target.value);
+            setIsShowSearch(true);
+          }}
         />
         <button
           title="search"
@@ -112,10 +127,69 @@ const logout = document.querySelector("#logout");
             style={{ fontSize: "15px", color: "white" }}
           />
         </button>
+        {/* dropdown search */}
+
+        {isShowSearch && keyword?.length > 0 && (
+          <div className="p-2 text-slate-900 bg-slate-50 absolute top-full mr-5 left-5 w-[30%]">
+            {Object.values(searchFiltered)
+              .filter((val: any) => val?.item?.length > 0)
+              .map((val: any) => (
+                <div
+                  key={val.name}
+                  className="mb-2 border-b pb-2 last:border-none"
+                >
+                  {/* TITLE */}
+                  <h3 className="text-xs font-bold text-gray-500 uppercase">
+                    {val.name}
+                  </h3>
+
+                  {/* ITEMS */}
+                  {val.item.map((item: any, index: number) => (
+                    <Link
+                      href={`/`}
+                      key={`${val.name}-${index}`}
+                      className="pl-2 text-sm py-1"
+                    >
+                      {/* GOODS */}
+                      {val.name === "goods" && (
+                        <>
+                          <p className="font-medium">{item.name}</p>
+                          <p className="text-xs text-gray-500">
+                            {item.barcode}
+                          </p>
+                        </>
+                      )}
+
+                      {/* CUSTOMERS */}
+                      {val.name === "customers" && (
+                        <>
+                          <p className="font-medium">{item.name}</p>
+                          <p className="text-xs text-gray-500">{item.phone}</p>
+                        </>
+                      )}
+
+                      {/* SALES */}
+                      {val.name === "sales" && (
+                        <p className="font-medium">{item.invoice}</p>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            {!searchFiltered.length && (
+              <p className="text-xs font-bold text-gray-500 uppercase">
+                Nothings Founded
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* dropdown search end */}
       </section>
       <section className="w-auto h-[130%] flex justify-between items-center">
         <div
-          className="flex items-start w-[4vw] cursor-pointer relative" id="notif"
+          className="flex items-start w-[4vw] cursor-pointer relative"
+          id="notif"
           onClick={() => setIsShowNotif(!isShowNotif)}
         >
           <FontAwesomeIcon
@@ -133,10 +207,15 @@ const logout = document.querySelector("#logout");
         <div className="text-gray-300 h-[130%] my-2.5 text-4xl w-[3vw] text-center">
           <p>|</p>
         </div>
-        <div ref={profileRef} className="items-center cursor-pointer flex" id="profiles" onClick={(e) => {
-          e.stopPropagation()
-          setIsShowMenu((prev) => !prev)
-        }}>
+        <div
+          ref={profileRef}
+          className="items-center cursor-pointer flex"
+          id="profiles"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsShowMenu((prev) => !prev);
+          }}
+        >
           <p className="text-xl font-medium text-gray-500 relative">
             {data?.user ? data.user.name : "User"}
           </p>
@@ -241,10 +320,12 @@ const logout = document.querySelector("#logout");
           </div>
 
           {/* LIST ALERT */}
-          {!goodsFiltered.length ? <p className="p-2 text-center text-lg">No Alerts</p> : <div className="max-h-[300px] overflow-y-auto">
-            {/* ITEM */}
-            {goodsFiltered
-              .map((item) => (
+          {!goodsFiltered.length ? (
+            <p className="p-2 text-center text-lg">No Alerts</p>
+          ) : (
+            <div className="max-h-[300px] overflow-y-auto">
+              {/* ITEM */}
+              {goodsFiltered.map((item) => (
                 <div
                   className="flex items-start gap-3 px-4 py-3 border-b hover:bg-gray-100 cursor-pointer"
                   key={item.barcode}
@@ -277,8 +358,8 @@ const logout = document.querySelector("#logout");
                   </div>
                 </div>
               ))}
-          </div>}
-          
+            </div>
+          )}
         </div>
       )}
 
