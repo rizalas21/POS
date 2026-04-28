@@ -53,6 +53,7 @@ export default function Navbar() {
   useEffect(() => {
     const logout = document.querySelector("#logout");
     const notif = document.querySelector("#notif");
+    const search = document.querySelector("#search");
 
     const handleClickOutside = (event: Event) => {
       if (isShowMenu && !profileRef?.current?.contains(event.target as Node)) {
@@ -60,6 +61,9 @@ export default function Navbar() {
       }
       if (isShowNotif && !notif?.contains(event.target as Node)) {
         setIsShowNotif(false);
+      }
+      if (isShowSearch && !search?.contains(event.target as Node)) {
+        setIsShowSearch(false);
       }
     };
 
@@ -75,7 +79,7 @@ export default function Navbar() {
       document.removeEventListener("click", handleClickOutside);
       logout?.removeEventListener("click", handleLogout);
     };
-  }, [isShowMenu, isShowNotif]);
+  }, [isShowMenu, isShowNotif, isShowSearch]);
 
   useEffect(() => {
     if (!keyword) return;
@@ -103,12 +107,15 @@ export default function Navbar() {
       ([key, value]) => (value as any)?.item.length > 0,
     ),
   );
-  console.log(searchFiltered);
+  console.log(Object.values(searchFiltered)?.length);
   return (
     <section
       className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white`}
     >
-      <section className="w-[35%] bg-white flex justify-between items-center h-[110%]">
+      <section
+        className="w-[35%] bg-white flex justify-between items-center h-[110%]"
+        id="search"
+      >
         <input
           placeholder="search for..."
           type="text"
@@ -146,9 +153,9 @@ export default function Navbar() {
                   {/* ITEMS */}
                   {val.item.map((item: any, index: number) => (
                     <Link
-                      href={`/`}
+                      href={`/${val.name}/${val.name === "goods" ? item.barcode : val.name === "customers" ? item.customerid : item.invoice}`}
                       key={`${val.name}-${index}`}
-                      className="pl-2 text-sm py-1"
+                      className="flex flex-col px-3 py-2 text-sm hover:bg-slate-200 rounded"
                     >
                       {/* GOODS */}
                       {val.name === "goods" && (
@@ -176,7 +183,7 @@ export default function Navbar() {
                   ))}
                 </div>
               ))}
-            {!searchFiltered.length && (
+            {!Object.values(searchFiltered)?.length && (
               <p className="text-xs font-bold text-gray-500 uppercase">
                 Nothings Founded
               </p>
@@ -233,7 +240,10 @@ export default function Navbar() {
             id="hide-menu"
           >
             <div className="flex flex-col items-center justify-center h-full w-full pb-2 border-b border-slate-100">
-              <div className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 hover:bg-slate-100 justify-start">
+              <Link
+                href={`/profile`}
+                className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 hover:bg-slate-100 justify-start"
+              >
                 <FontAwesomeIcon
                   icon={faUser}
                   style={{ fontSize: 18, color: "#ccc" }}
@@ -241,8 +251,11 @@ export default function Navbar() {
                 <span className="ml-[13%] font-medium text-gray-500">
                   Profile
                 </span>
-              </div>
-              <div className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100">
+              </Link>
+              <Link
+                href={`/change-password`}
+                className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100"
+              >
                 <FontAwesomeIcon
                   icon={faList}
                   style={{ fontSize: 18, color: "#ccc" }}
@@ -250,7 +263,7 @@ export default function Navbar() {
                 <span className="ml-[13%] font-medium text-gray-500">
                   Change Password
                 </span>
-              </div>
+              </Link>
             </div>
             <div
               className="cursor-pointer flex w-full h-1/2 items-center py-1.5 px-5 justify-start hover:bg-slate-100"
