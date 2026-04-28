@@ -41,9 +41,8 @@ export async function GET(req: NextRequest) {
       skip: offset,
     });
     const pages = Math.ceil(total / limit);
-    const data = res.filter((item) => item.userid !== userid);
 
-    return NextResponse.json({ data, total, pages, page });
+    return NextResponse.json({ data: res, total, pages, page });
   } catch (error) {
     console.log("Error when trying to get users: ", error);
     return NextResponse.json("failed to get users");
