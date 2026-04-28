@@ -1,3 +1,4 @@
+import toRupiah from "@/lib/toRupiah";
 import { Customers } from "@/types/customers";
 import { Item } from "@/types/sales";
 import { Dispatch, SetStateAction } from "react";
@@ -56,7 +57,7 @@ export default function SalesSummary({
           type="text"
           name=""
           id=""
-          value={"Rp " + input.totalsum + ".00"}
+          value={toRupiah(input.totalsum)}
           disabled
         />
       </div>
@@ -82,7 +83,7 @@ export default function SalesSummary({
           type="text"
           name=""
           id=""
-          value={"Rp " + input.change + ".00"}
+          value={toRupiah(input.change)}
           disabled
         />
       </div>

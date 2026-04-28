@@ -224,17 +224,17 @@ export default function EarningsTable() {
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards ? toRupiah(cards?.purchases) : 0}</h3>
+                <h3>{cards ? toRupiah(cards?.purchases) : 0}</h3>
               </div>
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards ? toRupiah(cards?.sales) : 0}</h3>
+                <h3>{cards ? toRupiah(cards?.sales) : 0}</h3>
               </div>
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards ? toRupiah(cards?.earnings) : 0}</h3>
+                <h3>{cards ? toRupiah(cards?.earnings) : 0}</h3>
               </div>
             </th>
           </tr>
@@ -242,7 +242,11 @@ export default function EarningsTable() {
       </table>
       <div className="flex p-2 justify-between">
         <p>
-          showing {meta.total ? (Number(params.page) - 1) * Number(params.limit) + 1 : 0} to{" "}
+          showing{" "}
+          {meta.total
+            ? (Number(params.page) - 1) * Number(params.limit) + 1
+            : 0}{" "}
+          to{" "}
           {overLimit >= Number(meta.total) || params.limit === 0
             ? Number(meta.total)
             : overLimit}{" "}
