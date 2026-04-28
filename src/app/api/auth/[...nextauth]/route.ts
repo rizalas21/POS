@@ -39,11 +39,14 @@ export const authOptions: AuthOptions = {
   },
   pages: { signIn: "/signin" },
   callbacks: {
-    async jwt({ token, user }: { token: any; user: any }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.role = user.role;
+      }
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
       }
       return token;
     },
@@ -53,6 +56,7 @@ export const authOptions: AuthOptions = {
         id: token.id,
         email: token.email,
         role: token.role,
+        name: token.name,
       };
       return session;
     },
