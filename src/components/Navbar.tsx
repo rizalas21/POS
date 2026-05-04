@@ -46,7 +46,7 @@ export default function Navbar() {
       };
 
       fetchUserData();
-      getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
+      getGoods({ keyword: "", sortBy: "", sort: "asc", page: 1, limit: 3 });
     }
   }, [data, status]);
 

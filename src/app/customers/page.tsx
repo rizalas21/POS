@@ -14,12 +14,13 @@ import React, { useEffect, useState } from "react";
 import { useCustomersStore } from "@/stores/customersStore";
 import { Customers } from "../../types/customers";
 import { ModalDeleteCustomers } from "@/components/customers/ModalDelete";
+import { SearchParams } from "@/types/suppliers";
 
 export default function customers() {
-  const [params, setParams] = useState({
+  const [params, setParams] = useState<SearchParams>({
     keyword: "",
-    limit: "3",
-    page: "1",
+    limit: 3,
+    page: 1,
     sortBy: "customerid",
     sort: "asc",
   });
@@ -40,7 +41,7 @@ export default function customers() {
     const { name, value } = e.target;
 
     if (name === "limit" || (name === "keyword" && page === pages)) {
-      setParams({ ...params, [name]: value, page: "1" });
+      setParams({ ...params, [name]: value, page: 1 });
     } else {
       setParams({ ...params, [name]: value });
     }
@@ -340,11 +341,13 @@ export default function customers() {
           <div className="flex p-2 justify-between">
             <p>
               showing{" "}
-              { !total ? 0 : Number(total) < 1
+              {!total
                 ? 0
-                : (Number(page) - 1) * Number(params.limit) + 1}{" "}
+                : Number(total) < 1
+                  ? 0
+                  : (Number(page) - 1) * Number(params.limit) + 1}{" "}
               to{" "}
-              {overLimit >= Number(total) || params.limit === "0"
+              {overLimit >= Number(total) || params.limit === 0
                 ? Number(total)
                 : overLimit}{" "}
               of {total.toString()} entries
@@ -357,9 +360,7 @@ export default function customers() {
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={page === 1}
-                onClick={() =>
-                  setParams({ ...params, page: (Number(page) - 1).toString() })
-                }
+                onClick={() => setParams({ ...params, page: Number(page) - 1 })}
               >
                 Previous
               </button>
@@ -369,9 +370,7 @@ export default function customers() {
                   className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 cursor-pointer hover:text-white hover:bg-blue-500 ${
                     i + 1 === page ? "bg-blue-500 text-white" : ""
                   }`}
-                  onClick={() =>
-                    setParams({ ...params, page: (i + 1).toString() })
-                  }
+                  onClick={() => setParams({ ...params, page: i + 1 })}
                 >
                   {i + 1}
                 </button>
@@ -383,9 +382,7 @@ export default function customers() {
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={page === pages}
-                onClick={() =>
-                  setParams({ ...params, page: (Number(page) + 1).toString() })
-                }
+                onClick={() => setParams({ ...params, page: Number(page) + 1 })}
               >
                 Next
               </button>

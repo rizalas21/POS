@@ -21,7 +21,6 @@ export default async function Goods({ searchParams }: any) {
     sortBy: sp.sortBy || "barcode",
     sort: sp.sort || "asc",
   };
-  console.log(sp);
   const { data, total, page, pages } = await getGoods(params);
   return (
     <main className="space-y-3">

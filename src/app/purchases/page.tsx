@@ -28,7 +28,7 @@ export default function purchases() {
     limit: "3",
     page: "1",
     sortBy: "invoice",
-    sort: "desc",
+    sort: "asc",
   });
   const [selectedPurchases, setSelectedPurchases] = useState({
     invoice: "",
@@ -72,7 +72,7 @@ export default function purchases() {
       }
     };
     fetchUsers();
-    getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
+    getGoods({ keyword: "", sortBy: "", sort: "asc", page: 1, limit: 0 });
   }, [params]);
   return (
     <main className="space-y-3">
@@ -353,7 +353,8 @@ export default function purchases() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {!total ? 0 :(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              showing{" "}
+              {!total ? 0 : (Number(page) - 1) * Number(params.limit) + 1} to{" "}
               {overLimit >= Number(total) || params.limit === "0"
                 ? Number(total)
                 : overLimit}{" "}
