@@ -129,11 +129,7 @@ WHERE
       offset,
     );
 
-    const chartData = await await prisma.$queryRawUnsafe(
-      queryChart,
-      start,
-      end,
-    );
+    const chartData = await prisma.$queryRawUnsafe(queryChart, start, end);
 
     const data = {
       chartData,

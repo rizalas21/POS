@@ -1,10 +1,10 @@
 "use client";
+
 import {
   createDoughnutData,
   doughnutOptions,
 } from "@/chartjs/doughChart.config";
 import { createLineData, lineOptions } from "@/chartjs/lineChart.config";
-import useDashboard from "@/hooks/useDashboard";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chart } from "react-chartjs-2";
@@ -19,7 +19,7 @@ import {
   Tooltip,
   Legend,
   LineController,
-  DoughnutController
+  DoughnutController,
 } from "chart.js";
 
 ChartJS.register(
@@ -32,13 +32,20 @@ ChartJS.register(
   Title,
   Tooltip,
   DoughnutController,
-  LineController
+  LineController,
 );
 
-
-export default function OverviewEarnings() {
-  const { dashboard } = useDashboard();
-
+export default function OverviewEarnings({
+  customerRevenue,
+  directRevenue,
+  dataTable,
+  chartData,
+}: {
+  customerRevenue: { label: string; value: number };
+  directRevenue: { label: string; value: number };
+  dataTable: any;
+  chartData: any;
+}) {
   return (
     <section className="flex gap-1 w-full">
       <div className="shadow-lg h-auto border border-slate-500/25 rounded min-w-7/12 bg-white">
@@ -46,10 +53,10 @@ export default function OverviewEarnings() {
           <h2 className="text-blue-600 font-bold">Earnings Overview</h2>
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </header>
-        {dashboard?.dataTable ? (
+        {dataTable ? (
           <Chart
             type="line"
-            data={createLineData(dashboard.chartData)}
+            data={createLineData(chartData)}
             options={lineOptions}
           />
         ) : (
@@ -61,12 +68,12 @@ export default function OverviewEarnings() {
           <h2 className="text-blue-600 font-bold">Revenue Sources</h2>
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </header>
-        {dashboard?.customerRevenue && dashboard?.directRevenue ? (
+        {customerRevenue && directRevenue ? (
           <Chart
             type="doughnut"
             data={createDoughnutData({
-              customerRevenue: dashboard.customerRevenue,
-              directRevenue: dashboard.directRevenue,
+              customerRevenue: customerRevenue,
+              directRevenue: directRevenue,
             })}
             options={doughnutOptions}
           />

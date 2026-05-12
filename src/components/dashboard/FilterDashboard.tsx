@@ -1,34 +1,50 @@
 "use client";
 
-import useDashboard from "@/hooks/useDashboard";
 import { faArrowLeft, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export default function FilterDashboard() {
-  const { year, month, lastDate, params, setParams } = useDashboard();
+export default function FilterDashboard({
+  sp,
+}: {
+  sp: { startDate?: string; endDate?: string };
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+
+  const lastDate = new Date(year, now.getMonth() + 1, 0)
+    .getDate()
+    .toString()
+    .padStart(2, "0");
+
+  const startDate = sp.startDate || "2026-01-01";
+  const endDate = sp.endDate || `${year}-${month}-${lastDate}`;
 
   const [date, setDate] = useState({
     startDate: "2020-01-01",
     endDate: `${year}-${month}-${lastDate}`,
   });
 
-  const handleQuery = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleQuery = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setParams({ ...params, ...date });
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("startDate", date.startDate);
+    params.set("endDate", date.endDate);
+
+    router.push(`?${params.toString()}`);
   };
 
   const handleReset = () => {
     setDate({
       startDate: "2020-01-01",
       endDate: `${year}-${month}-${lastDate}`,
-    });
-
-    setParams({
-      ...params,
-      startDate: "2020-01-01",
-      endDate: `${year}-${month}-${lastDate}`,
-      page: 1,
     });
   };
 
@@ -47,17 +63,17 @@ export default function FilterDashboard() {
             name="startDate"
             type="date"
             className="border rounded py-1 px-2 border-slate-500/50"
-            value={date.startDate}
+            value={startDate}
             onChange={(e) => setDate({ ...date, startDate: e.target.value })}
           />
         </fieldset>
         <fieldset className="space-y-2 flex flex-col w-2/5">
           <label className="text-slate-500">End Date</label>
           <input
+            className="border rounded py-1 px-2 border-slate-500/50"
             name="endDate"
             type="date"
-            className="border rounded py-1 px-2 border-slate-500/50"
-            value={`${year}-${month}-${lastDate}`}
+            value={`${endDate}`}
             onChange={(e) => setDate({ ...date, endDate: e.target.value })}
           />
         </fieldset>
@@ -75,7 +91,10 @@ export default function FilterDashboard() {
             Query
           </p>
         </button>
-        <button className="flex w-[8vw] h-auto justify-between items-center bg-yellow-600 cursor-pointer rounded">
+        <Link
+          href={`/dashboard?startDate=2020-01-01&endDate=${year}-${month}-${lastDate}`}
+          className="flex w-[8vw] h-auto justify-between items-center bg-yellow-600 cursor-pointer rounded"
+        >
           <FontAwesomeIcon
             className="rounded-l text-center bg-yellow-700 px-2 py-1 text-slate-300 w-1/5 text-white"
             icon={faArrowLeft}
@@ -86,7 +105,7 @@ export default function FilterDashboard() {
           >
             Reset
           </p>
-        </button>
+        </Link>
       </div>
     </form>
   );
