@@ -1,5 +1,6 @@
 "use client";
 import useDashboard from "@/hooks/useDashboard";
+import toRupiah from "@/lib/toRupiah";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -14,7 +15,7 @@ export default function EarningsTable() {
   const meta = { pages: dashboard?.pages || 0, total: dashboard?.total || 0 };
 
   return (
-    <section className="table w-full shadow-lg border border-slate-500/25 rounded bg-white px-4 py-2">
+    <section className="table w-full shadow-lg border border-slate-500/25 rounded bg-white px-4 py-2 text-slate-900">
       <h3 className="px-2 py-2 -mx-4 -mt-2 bg-slate-100 text-blue-600 font-bold text-base">
         Earnings Monthly Report
       </h3>
@@ -198,13 +199,13 @@ export default function EarningsTable() {
                   {item.month}
                 </td>
                 <td className="px-2 py-2 border border-gray-500/25 text-center">
-                  {item.expense}
+                  {toRupiah(item.expense)}
                 </td>
                 <td className="px-2 py-2 border border-gray-500/25 text-center">
-                  {item.revenue}
+                  {toRupiah(item.revenue)}
                 </td>
                 <td className="px-2 py-2 border border-gray-500/25 text-center">
-                  {item.earning}
+                  {toRupiah(item.earning)}
                 </td>
               </tr>
             ))
@@ -223,17 +224,17 @@ export default function EarningsTable() {
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards?.purchases}</h3>
+                <h3>{cards ? toRupiah(cards?.purchases) : 0}</h3>
               </div>
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards?.sales}</h3>
+                <h3>{cards ? toRupiah(cards?.sales) : 0}</h3>
               </div>
             </th>
             <th className="px-2 py-2 border border-gray-500/25 text-center">
               <div className="w-full flex justify-start">
-                <h3>Rp {cards?.earnings}</h3>
+                <h3>{cards ? toRupiah(cards?.earnings) : 0}</h3>
               </div>
             </th>
           </tr>
@@ -241,7 +242,11 @@ export default function EarningsTable() {
       </table>
       <div className="flex p-2 justify-between">
         <p>
-          showing {(Number(params.page) - 1) * Number(params.limit) + 1} to{" "}
+          showing{" "}
+          {meta.total
+            ? (Number(params.page) - 1) * Number(params.limit) + 1
+            : 0}{" "}
+          to{" "}
           {overLimit >= Number(meta.total) || params.limit === 0
             ? Number(meta.total)
             : overLimit}{" "}

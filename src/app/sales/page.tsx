@@ -15,6 +15,7 @@ import dateToString from "@/lib/dateToString";
 import { useSalesStore } from "@/stores/salesStore";
 import { ModalDeleteSales } from "@/components/sales/ModalDelete";
 import { useSession } from "next-auth/react";
+import toRupiah from "@/lib/toRupiah";
 
 export default function sales() {
   const { data } = useSession();
@@ -348,13 +349,13 @@ export default function sales() {
                         {dateToString(sale.time.toString())}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {sale.totalsum}
+                        {toRupiah(sale.totalsum)}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {sale.pay}
+                        {toRupiah(sale.pay)}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
-                        {sale.change}
+                        {toRupiah(sale.change)}
                       </td>
                       <td className="px-2 py-2 border border-gray-500/25 text-center">
                         {sale.customers?.name ? sale.customers.name : ""}
@@ -429,7 +430,7 @@ export default function sales() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              showing { !total ? 0 : (Number(page) - 1) * Number(params.limit) + 1} to{" "}
               {overLimit >= Number(total) || params.limit === "0"
                 ? Number(total)
                 : overLimit}{" "}

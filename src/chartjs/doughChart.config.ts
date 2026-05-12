@@ -1,27 +1,5 @@
 import { RevenueSource } from "@/types/dashboard";
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  ArcElement,
-  LinearScale,
-  CategoryScale,
-  Title,
-  Tooltip,
-  ChartOptions,
-  Legend,
-} from "chart.js";
-
-ChartJS.register(
-  LineElement,
-  PointElement,
-  ArcElement,
-  LinearScale,
-  CategoryScale,
-  Legend,
-  Title,
-  Tooltip,
-);
+import { ChartOptions } from "chart.js";
 
 type RevenueData = {
   customerRevenue: RevenueSource;

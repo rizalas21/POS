@@ -15,6 +15,7 @@ import PurchaseTable from "./PurchaseTable";
 import { useSuppliersStore } from "@/stores/suppliersStore";
 import axios from "axios";
 import { Item } from "@/types/purchases";
+import { SearchParams } from "@/types/suppliers";
 
 export default function AddPurchase() {
   const router = useRouter();
@@ -74,12 +75,12 @@ export default function AddPurchase() {
     totalprice: 0,
   });
 
-  const [params] = useState({
+  const [params] = useState<SearchParams>({
     keyword: "",
-    limit: "0",
-    page: "",
+    limit: 3,
+    page: 1,
     sortBy: "",
-    sort: "",
+    sort: "asc",
   });
 
   const handleAdd = async (e: React.FormEvent): Promise<void> => {

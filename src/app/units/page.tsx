@@ -291,7 +291,7 @@ export default function units() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              showing { !total ? 0 : (Number(page) - 1) * Number(params.limit) + 1} to{" "}
               {overLimit >= Number(total) || params.limit === "0"
                 ? Number(total)
                 : overLimit}{" "}

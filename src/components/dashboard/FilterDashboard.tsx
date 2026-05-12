@@ -34,7 +34,7 @@ export default function FilterDashboard() {
 
   return (
     <form
-      className="shadow-lg h-auto border border-slate-500/25 rounded"
+      className="shadow-lg h-auto border border-slate-500/25 rounded text-slate-900"
       onSubmit={handleQuery}
     >
       <header className="w-full shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pl-2 py-2 flex justify-start items-center bg-slate-100">

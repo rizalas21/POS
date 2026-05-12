@@ -1,8 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
-import "./globals.css";
+import { useEffect, useState } from "react"; 
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import LoadingComponent from "@/components/Loading";

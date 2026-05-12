@@ -14,12 +14,13 @@ import React, { useEffect, useState } from "react";
 import { useCustomersStore } from "@/stores/customersStore";
 import { Customers } from "../../types/customers";
 import { ModalDeleteCustomers } from "@/components/customers/ModalDelete";
+import { SearchParams } from "@/types/suppliers";
 
 export default function customers() {
-  const [params, setParams] = useState({
+  const [params, setParams] = useState<SearchParams>({
     keyword: "",
-    limit: "3",
-    page: "1",
+    limit: 3,
+    page: 1,
     sortBy: "customerid",
     sort: "asc",
   });
@@ -40,7 +41,7 @@ export default function customers() {
     const { name, value } = e.target;
 
     if (name === "limit" || (name === "keyword" && page === pages)) {
-      setParams({ ...params, [name]: value, page: "1" });
+      setParams({ ...params, [name]: value, page: 1 });
     } else {
       setParams({ ...params, [name]: value });
     }
@@ -65,9 +66,9 @@ export default function customers() {
     fetchUsers();
   }, [params]);
   return (
-    <main className="space-y-3">
+    <main className="space-y-1 text-slate-800">
       <h1 className="text-2xl text-gray-700">Customers</h1>
-      <p>This is data of Customers</p>
+      <p className="text-slate-500">This is data of Customers</p>
       <div className="shadow-2xl h-auto bg-white">
         <div className="w-full h-[8vh] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] mb-2 pl-2 flex justify-start items-center bg-slate-100">
           <Link
@@ -85,7 +86,7 @@ export default function customers() {
         </div>
         <section className="table w-full px-4">
           <div className="flex justify-between items-center mb-5 px-2">
-            <div className="w-[17%] flex justify-between items-center">
+            <div className="w-[17%] flex justify-between items-center text-slate-500">
               <p>Show</p>
               <input
                 className="border border-slate-300 w-2/6 px-1.5"
@@ -340,11 +341,13 @@ export default function customers() {
           <div className="flex p-2 justify-between">
             <p>
               showing{" "}
-              {Number(total) < 1
+              {!total
                 ? 0
-                : (Number(page) - 1) * Number(params.limit) + 1}{" "}
+                : Number(total) < 1
+                  ? 0
+                  : (Number(page) - 1) * Number(params.limit) + 1}{" "}
               to{" "}
-              {overLimit >= Number(total) || params.limit === "0"
+              {overLimit >= Number(total) || params.limit === 0
                 ? Number(total)
                 : overLimit}{" "}
               of {total.toString()} entries
@@ -357,9 +360,7 @@ export default function customers() {
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={page === 1}
-                onClick={() =>
-                  setParams({ ...params, page: (Number(page) - 1).toString() })
-                }
+                onClick={() => setParams({ ...params, page: Number(page) - 1 })}
               >
                 Previous
               </button>
@@ -369,9 +370,7 @@ export default function customers() {
                   className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 cursor-pointer hover:text-white hover:bg-blue-500 ${
                     i + 1 === page ? "bg-blue-500 text-white" : ""
                   }`}
-                  onClick={() =>
-                    setParams({ ...params, page: (i + 1).toString() })
-                  }
+                  onClick={() => setParams({ ...params, page: i + 1 })}
                 >
                   {i + 1}
                 </button>
@@ -383,9 +382,7 @@ export default function customers() {
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={page === pages}
-                onClick={() =>
-                  setParams({ ...params, page: (Number(page) + 1).toString() })
-                }
+                onClick={() => setParams({ ...params, page: Number(page) + 1 })}
               >
                 Next
               </button>

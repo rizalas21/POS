@@ -8,7 +8,6 @@ export async function GET(req: NextRequest) {
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
   const keyword = searchParams.get("keyword");
-  const limit = Number(searchParams.get("limit"));
   const sort = searchParams.get("sort");
   const sortBy = searchParams.get("sortBy");
   let page = Number(searchParams.get("page"));
@@ -18,7 +17,6 @@ export async function GET(req: NextRequest) {
 
   const start = startDate ? new Date(startDate) : null;
   const end = endDate ? new Date(endDate) : null;
-  const offset = (Number(page) - 1) * limit;
   const data: Array<Object> = await prisma.$queryRawUnsafe(
     `
         WITH sales AS (
@@ -66,14 +64,10 @@ export async function GET(req: NextRequest) {
    OR (COALESCE(s."totalSales", 0) - COALESCE(e."expense", 0))::text ILIKE $3 || '%'
    )
    ORDER BY ${handleSort} ${sort}
-   LIMIT COALESCE($4::int, 12)
-   OFFSET COALESCE($5::int, 3)
    `,
     start,
     end,
     keyword,
-    limit,
-    offset,
   );
 
   try {

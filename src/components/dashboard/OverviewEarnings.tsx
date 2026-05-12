@@ -8,6 +8,33 @@ import useDashboard from "@/hooks/useDashboard";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chart } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  ArcElement,
+  LinearScale,
+  CategoryScale,
+  Title,
+  Tooltip,
+  Legend,
+  LineController,
+  DoughnutController
+} from "chart.js";
+
+ChartJS.register(
+  LineElement,
+  PointElement,
+  ArcElement,
+  LinearScale,
+  CategoryScale,
+  Legend,
+  Title,
+  Tooltip,
+  DoughnutController,
+  LineController
+);
+
 
 export default function OverviewEarnings() {
   const { dashboard } = useDashboard();

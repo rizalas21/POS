@@ -82,14 +82,7 @@ FROM sales s
 FULL OUTER JOIN expense e
 ON s.month_date = e.month_date
 
-WHERE
-($3::text IS NULL
- OR $3 = ''
- OR TO_CHAR(COALESCE(s.month_date, e.month_date),'Mon YY') ILIKE '%' || $3 || '%'
- OR COALESCE(e."expense", 0)::text ILIKE $3 || '%'
- OR COALESCE(s."totalSales", 0)::text ILIKE $3 || '%'
- OR (COALESCE(s."totalSales", 0) - COALESCE(e."expense", 0))::text ILIKE $3 || '%'
- )
+ORDER BY COALESCE(s.month_date, e.month_date) ASC
  `;
 
 export const queryTotal = `

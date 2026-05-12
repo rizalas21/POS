@@ -12,14 +12,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSuppliersStore } from "@/stores/suppliersStore";
-import { Suppliers } from "../../types/suppliers";
+import { SearchParams, Suppliers } from "../../types/suppliers";
 import { ModalDeleteSuppliers } from "@/components/suppliers/ModalDelete";
 
 export default function suppliers() {
-  const [params, setParams] = useState({
+  const [params, setParams] = useState<SearchParams>({
     keyword: "",
-    limit: "3",
-    page: "1",
+    limit: 3,
+    page: 1,
     sortBy: "supplierid",
     sort: "asc",
   });
@@ -40,7 +40,7 @@ export default function suppliers() {
     const { name, value } = e.target;
 
     if (name === "limit" || (name === "keyword" && page === pages)) {
-      setParams({ ...params, [name]: value, page: "1" });
+      setParams({ ...params, [name]: value, page: 1 });
     } else {
       setParams({ ...params, [name]: value });
     }
@@ -65,7 +65,7 @@ export default function suppliers() {
     fetchUsers();
   }, [params]);
   return (
-    <main className="space-y-3">
+    <main className="space-y-3 text-slate-800">
       <h1 className="text-2xl text-gray-700">Suppliers</h1>
       <p>This is data of Suppliers</p>
       <div className="shadow-2xl h-auto bg-white">
@@ -339,8 +339,9 @@ export default function suppliers() {
           )}
           <div className="flex p-2 justify-between">
             <p>
-              showing {(Number(page) - 1) * Number(params.limit) + 1} to{" "}
-              {overLimit >= Number(total) || params.limit === "0"
+              showing{" "}
+              {!total ? 0 : (Number(page) - 1) * Number(params.limit) + 1} to{" "}
+              {overLimit >= Number(total) || params.limit === 0
                 ? Number(total)
                 : overLimit}{" "}
               of {total.toString()} entries
@@ -353,9 +354,7 @@ export default function suppliers() {
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={page === 1}
-                onClick={() =>
-                  setParams({ ...params, page: (Number(page) - 1).toString() })
-                }
+                onClick={() => setParams({ ...params, page: Number(page) - 1 })}
               >
                 Previous
               </button>
@@ -365,9 +364,7 @@ export default function suppliers() {
                   className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 cursor-pointer hover:text-white hover:bg-blue-500 ${
                     i + 1 === page ? "bg-blue-500 text-white" : ""
                   }`}
-                  onClick={() =>
-                    setParams({ ...params, page: (i + 1).toString() })
-                  }
+                  onClick={() => setParams({ ...params, page: i + 1 })}
                 >
                   {i + 1}
                 </button>
@@ -379,9 +376,7 @@ export default function suppliers() {
                     : "cursor-pointer hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={page === pages}
-                onClick={() =>
-                  setParams({ ...params, page: (Number(page) + 1).toString() })
-                }
+                onClick={() => setParams({ ...params, page: Number(page) + 1 })}
               >
                 Next
               </button>

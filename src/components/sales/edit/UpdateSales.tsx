@@ -15,6 +15,7 @@ import axios from "axios";
 import { useSalesStore } from "@/stores/salesStore";
 import { Item } from "@/types/sales";
 import { useCustomersStore } from "@/stores/customersStore";
+import { SearchParams } from "@/types/suppliers";
 
 export default function EditSales() {
   const router = useRouter();
@@ -80,12 +81,12 @@ export default function EditSales() {
     totalprice: 0,
   });
 
-  const [params] = useState({
+  const [params] = useState<SearchParams>({
     keyword: "",
-    limit: "0",
-    page: "",
+    limit: 3,
+    page: 1,
     sortBy: "",
-    sort: "",
+    sort: "asc",
   });
 
   const handleAdd = async (e: React.FormEvent): Promise<void> => {

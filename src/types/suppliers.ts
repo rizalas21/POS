@@ -8,9 +8,9 @@ export interface Suppliers {
 export interface SearchParams {
   keyword: string;
   sortBy: string;
-  sort: string;
-  page: string;
-  limit: string;
+  sort: "asc" | "desc";
+  page: number;
+  limit: number;
 }
 
 export interface SuppliersState {

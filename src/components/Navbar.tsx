@@ -10,12 +10,13 @@ import {
   faTriangleExclamation,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import axios from "axios";
 import { useGoodsStore } from "@/stores/goodsStore";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -24,6 +25,13 @@ export default function Navbar() {
   const [isShowNotif, setIsShowNotif] = useState(false);
   const { getGoods, goods } = useGoodsStore();
   const router = useRouter();
+
+  const profileRef = useRef<HTMLDivElement | null>(null);
+  const notifRef = useRef<HTMLDivElement | null>(null);
+
+  const [isShowSearch, setIsShowSearch] = useState(false);
+  const [keyword, setKeyword] = useState("");
+  const [resultSearch, setResultSearch] = useState({});
 
   useEffect(() => {
     if (status === "authenticated" && data?.user?.email) {
@@ -38,25 +46,24 @@ export default function Navbar() {
       };
 
       fetchUserData();
-      getGoods({ keyword: "", sortBy: "", sort: "", page: "", limit: "0" });
+      getGoods({ keyword: "", sortBy: "", sort: "asc", page: 1, limit: 3 });
     }
-    const profiles = document.querySelector("#profiles");
-    const hideMenu = document.querySelector("#hide-menu");
-    const logout = document.querySelector("#logout");
-    const modal = document.querySelector("#logoutModal");
+  }, [data, status]);
 
-    const handleProfileClick = (event: Event) => {
-      event.stopPropagation();
-      setIsShowMenu((prev) => !prev);
-    };
+  useEffect(() => {
+    const logout = document.querySelector("#logout");
+    const notif = document.querySelector("#notif");
+    const search = document.querySelector("#search");
 
     const handleClickOutside = (event: Event) => {
-      if (
-        isShowMenu &&
-        !hideMenu?.contains(event.target as Node) &&
-        !profiles?.contains(event.target as Node)
-      ) {
+      if (isShowMenu && !profileRef?.current?.contains(event.target as Node)) {
         setIsShowMenu(false);
+      }
+      if (isShowNotif && !notif?.contains(event.target as Node)) {
+        setIsShowNotif(false);
+      }
+      if (isShowSearch && !search?.contains(event.target as Node)) {
+        setIsShowSearch(false);
       }
     };
 
@@ -65,16 +72,25 @@ export default function Navbar() {
       setIsShowModal(true);
     };
 
-    profiles?.addEventListener("click", handleProfileClick);
     document.addEventListener("click", handleClickOutside);
     logout?.addEventListener("click", handleLogout);
 
     return () => {
-      profiles?.removeEventListener("click", handleProfileClick);
       document.removeEventListener("click", handleClickOutside);
       logout?.removeEventListener("click", handleLogout);
     };
-  }, [data, status]);
+  }, [isShowMenu, isShowNotif, isShowSearch]);
+
+  useEffect(() => {
+    if (!keyword) return;
+
+    const fetchSearch = async () => {
+      const { data } = await axios.get("/api/search", { params: { keyword } });
+      setResultSearch(data);
+    };
+
+    fetchSearch();
+  }, [keyword]);
 
   const closeModal = () => {
     setIsShowModal(false);
@@ -85,18 +101,29 @@ export default function Navbar() {
     signOut({ redirect: true, callbackUrl: "/" });
   };
 
-  console.log(goods.filter((item) => item.stock <= 5));
-  console.log(goods && goods.filter((item) => item.stock));
-
+  const goodsFiltered = goods.filter((item) => item.stock <= 5);
+  const searchFiltered = Object.fromEntries(
+    Object.entries(resultSearch).filter(
+      ([key, value]) => (value as any)?.item.length > 0,
+    ),
+  );
+  console.log(Object.values(searchFiltered)?.length);
   return (
     <section
-      className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white mb-1`}
+      className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white`}
     >
-      <section className="w-[35%] bg-white flex justify-between items-center h-[110%]">
+      <section
+        className="w-[35%] bg-white flex justify-between items-center h-[110%]"
+        id="search"
+      >
         <input
           placeholder="search for..."
           type="text"
-          className="bg-slate-200 h-full w-[90%] rounded border-none px-2 "
+          className="bg-slate-200 text-slate-900 h-full w-[90%] rounded border-none px-2 "
+          onChange={(e) => {
+            setKeyword(e.target.value);
+            setIsShowSearch(true);
+          }}
         />
         <button
           title="search"
@@ -107,10 +134,69 @@ export default function Navbar() {
             style={{ fontSize: "15px", color: "white" }}
           />
         </button>
+        {/* dropdown search */}
+
+        {isShowSearch && keyword?.length > 0 && (
+          <div className="p-2 text-slate-900 bg-slate-50 absolute top-full mr-5 left-5 w-[30%]">
+            {Object.values(searchFiltered)
+              .filter((val: any) => val?.item?.length > 0)
+              .map((val: any) => (
+                <div
+                  key={val.name}
+                  className="mb-2 border-b pb-2 last:border-none"
+                >
+                  {/* TITLE */}
+                  <h3 className="text-xs font-bold text-gray-500 uppercase">
+                    {val.name}
+                  </h3>
+
+                  {/* ITEMS */}
+                  {val.item.map((item: any, index: number) => (
+                    <Link
+                      href={`/${val.name}/${val.name === "goods" ? item.barcode : val.name === "customers" ? item.customerid : item.invoice}`}
+                      key={`${val.name}-${index}`}
+                      className="flex flex-col px-3 py-2 text-sm hover:bg-slate-200 rounded"
+                    >
+                      {/* GOODS */}
+                      {val.name === "goods" && (
+                        <>
+                          <p className="font-medium">{item.name}</p>
+                          <p className="text-xs text-gray-500">
+                            {item.barcode}
+                          </p>
+                        </>
+                      )}
+
+                      {/* CUSTOMERS */}
+                      {val.name === "customers" && (
+                        <>
+                          <p className="font-medium">{item.name}</p>
+                          <p className="text-xs text-gray-500">{item.phone}</p>
+                        </>
+                      )}
+
+                      {/* SALES */}
+                      {val.name === "sales" && (
+                        <p className="font-medium">{item.invoice}</p>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            {!Object.values(searchFiltered)?.length && (
+              <p className="text-xs font-bold text-gray-500 uppercase">
+                Nothings Founded
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* dropdown search end */}
       </section>
       <section className="w-auto h-[130%] flex justify-between items-center">
         <div
           className="flex items-start w-[4vw] cursor-pointer relative"
+          id="notif"
           onClick={() => setIsShowNotif(!isShowNotif)}
         >
           <FontAwesomeIcon
@@ -128,7 +214,15 @@ export default function Navbar() {
         <div className="text-gray-300 h-[130%] my-2.5 text-4xl w-[3vw] text-center">
           <p>|</p>
         </div>
-        <div className="items-center cursor-pointer flex" id="profiles">
+        <div
+          ref={profileRef}
+          className="items-center cursor-pointer flex"
+          id="profiles"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsShowMenu((prev) => !prev);
+          }}
+        >
           <p className="text-xl font-medium text-gray-500 relative">
             {data?.user ? data.user.name : "User"}
           </p>
@@ -140,13 +234,16 @@ export default function Navbar() {
 
           {/* HIDE MENU START */}
           <div
-            className={`bg-white absolute mt-[35vh] mr-10 right-0 h-auto w-[13vw] flex-col items-center justify-between rounded cursor-default transition  ${
+            className={`bg-white absolute mt-[33vh] mr-5 right-0 h-auto w-[18vw] flex-col items-center justify-between rounded cursor-default transition  ${
               isShowMenu ? "flex visible" : "hidden invisible"
             }`}
             id="hide-menu"
           >
             <div className="flex flex-col items-center justify-center h-full w-full pb-2 border-b border-slate-100">
-              <div className="flex w-full h-1/2 text-lg items-center cursor-pointer py-1.5 px-5 hover:bg-slate-100 justify-start">
+              <Link
+                href={`/profile`}
+                className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 hover:bg-slate-100 justify-start"
+              >
                 <FontAwesomeIcon
                   icon={faUser}
                   style={{ fontSize: 18, color: "#ccc" }}
@@ -154,28 +251,22 @@ export default function Navbar() {
                 <span className="ml-[13%] font-medium text-gray-500">
                   Profile
                 </span>
-              </div>
-              <div className="flex w-full h-1/2 text-lg items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100">
-                <FontAwesomeIcon
-                  icon={faCogs}
-                  style={{ fontSize: 18, color: "#ccc" }}
-                />
-                <span className="ml-[13%] font-medium text-gray-500">
-                  Settings
-                </span>
-              </div>
-              <div className="flex w-full h-1/2 text-lg items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100">
+              </Link>
+              <Link
+                href={`/change-password`}
+                className="flex w-full h-1/2 items-center cursor-pointer py-1.5 px-5 justify-start hover:bg-slate-100"
+              >
                 <FontAwesomeIcon
                   icon={faList}
                   style={{ fontSize: 18, color: "#ccc" }}
                 />
                 <span className="ml-[13%] font-medium text-gray-500">
-                  Activity Log
+                  Change Password
                 </span>
-              </div>
+              </Link>
             </div>
             <div
-              className="cursor-pointer flex w-full h-1/2 text-lg items-center py-1.5 px-5 justify-start hover:bg-slate-100"
+              className="cursor-pointer flex w-full h-1/2 items-center py-1.5 px-5 justify-start hover:bg-slate-100"
               id="logout"
             >
               <FontAwesomeIcon
@@ -235,18 +326,19 @@ export default function Navbar() {
       {/* NOTIFICATION MODAL START */}
 
       {isShowNotif && (
-        <div className="absolute right-50 top-15 w-[320px] bg-white shadow-lg rounded overflow-hidden z-50">
+        <div className="absolute right-50 top-15 w-[320px] bg-white shadow-lg rounded overflow-hidden z-50 text-slate-900/50">
           {/* HEADER */}
           <div className="bg-blue-600 text-white px-4 py-2 font-semibold">
             ALERTS CENTER
           </div>
 
           {/* LIST ALERT */}
-          <div className="max-h-[300px] overflow-y-auto">
-            {/* ITEM */}
-            {goods
-              .filter((item) => item.stock <= 5)
-              .map((item) => (
+          {!goodsFiltered.length ? (
+            <p className="p-2 text-center text-lg">No Alerts</p>
+          ) : (
+            <div className="max-h-[300px] overflow-y-auto">
+              {/* ITEM */}
+              {goodsFiltered.map((item) => (
                 <div
                   className="flex items-start gap-3 px-4 py-3 border-b hover:bg-gray-100 cursor-pointer"
                   key={item.barcode}
@@ -279,7 +371,8 @@ export default function Navbar() {
                   </div>
                 </div>
               ))}
-          </div>
+            </div>
+          )}
         </div>
       )}
 
