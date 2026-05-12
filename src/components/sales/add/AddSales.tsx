@@ -92,6 +92,15 @@ export default function AddSales() {
   const handleAdd = async (e: React.FormEvent): Promise<void> => {
     try {
       e.preventDefault();
+
+      if (item.quantity < 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid input",
+          text: "Quantity cannot be negative",
+        });
+        return;
+      }
       setInput({
         ...input,
         saleitems: [...input.saleitems, item],
@@ -134,14 +143,6 @@ export default function AddSales() {
           icon: "warning",
           title: "Quantity cannot be zero",
           text: "Please enter at least 1 item",
-        });
-      }
-
-      if (qty < 0) {
-        return Swal.fire({
-          icon: "error",
-          title: "Invalid input",
-          text: "Quantity cannot be negative",
         });
       }
 

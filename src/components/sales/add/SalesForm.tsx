@@ -56,10 +56,21 @@ export default function SalesForm({
   >;
   handleChangeItem: (e: React.FormEvent<HTMLInputElement>) => void;
 }) {
+  const qtyItem = (val: any) => {
+    if (input.saleitems.length > 0) {
+      const usedQuantity = input.saleitems.reduce(
+        (total, item) => total + item.quantity,
+        0,
+      );
+
+      const remainingStock = val - usedQuantity;
+
+      setGoodsItem({ ...goodsItem, stock: String(remainingStock) });
+    }
+  };
   return (
     <form
       className="flex flex-col border-y border-slate-200"
-      // onSubmit={handleSubmit}
       onSubmit={handleAdd}
     >
       <section className="flex justify-between py-3 border-y border-slate-200">
