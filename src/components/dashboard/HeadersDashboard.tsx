@@ -12,7 +12,7 @@ export default function HeadersDashboard() {
       <button
         onClick={() => {
           const query = new URLSearchParams(
-            `keyword=${params.keyword}&page=${params.page}&limit=${params.limit}&sortBy=${params.sortBy}&sort=${params.sort}&startDate=${params.startDate}&endDate=${params.endDate}`,
+            `keyword=${params.keyword}&page=${params.page}&sortBy=${params.sortBy}&sort=${params.sort}&startDate=${params.startDate}&endDate=${params.endDate}`,
           );
           window.location.href = `/api/csv?${query}`;
         }}

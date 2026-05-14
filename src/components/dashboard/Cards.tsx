@@ -1,7 +1,4 @@
-"use client";
-
 import toRupiah from "@/lib/toRupiah";
-import { useDashboardStore } from "@/stores/dashboard.store";
 import {
   faCalendar,
   faComments,
@@ -9,9 +6,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function Cards() {
-  const cards = useDashboardStore((s) => s.dashboard?.cards);
-
+export default function Cards({
+  cards,
+}: {
+  cards: {
+    purchases: number;
+    sales: number;
+    earnings: number;
+    totalSales: number;
+  };
+}) {
   if (!cards) return null;
   return (
     <section className="grid grid-cols-4 gap-4 w-full bg-slate-100">
