@@ -107,7 +107,6 @@ export default function Navbar() {
       ([key, value]) => (value as any)?.item.length > 0,
     ),
   );
-  console.log(Object.values(searchFiltered)?.length);
   return (
     <section
       className={`flex py-3 px-5 justify-between h-[9%] fixed w-4/5 bg-white`}
@@ -134,7 +133,6 @@ export default function Navbar() {
             style={{ fontSize: "15px", color: "white" }}
           />
         </button>
-        {/* dropdown search */}
 
         {isShowSearch && keyword?.length > 0 && (
           <div className="p-2 text-slate-900 bg-slate-50 absolute top-full mr-5 left-5 w-[30%]">
@@ -145,19 +143,16 @@ export default function Navbar() {
                   key={val.name}
                   className="mb-2 border-b pb-2 last:border-none"
                 >
-                  {/* TITLE */}
                   <h3 className="text-xs font-bold text-gray-500 uppercase">
                     {val.name}
                   </h3>
 
-                  {/* ITEMS */}
                   {val.item.map((item: any, index: number) => (
                     <Link
                       href={`/${val.name}/${val.name === "goods" ? item.barcode : val.name === "customers" ? item.customerid : item.invoice}`}
                       key={`${val.name}-${index}`}
                       className="flex flex-col px-3 py-2 text-sm hover:bg-slate-200 rounded"
                     >
-                      {/* GOODS */}
                       {val.name === "goods" && (
                         <>
                           <p className="font-medium">{item.name}</p>
@@ -167,7 +162,6 @@ export default function Navbar() {
                         </>
                       )}
 
-                      {/* CUSTOMERS */}
                       {val.name === "customers" && (
                         <>
                           <p className="font-medium">{item.name}</p>
@@ -175,7 +169,6 @@ export default function Navbar() {
                         </>
                       )}
 
-                      {/* SALES */}
                       {val.name === "sales" && (
                         <p className="font-medium">{item.invoice}</p>
                       )}
@@ -190,8 +183,6 @@ export default function Navbar() {
             )}
           </div>
         )}
-
-        {/* dropdown search end */}
       </section>
       <section className="w-auto h-[130%] flex justify-between items-center">
         <div
@@ -232,9 +223,8 @@ export default function Navbar() {
             alt="not source"
           />
 
-          {/* HIDE MENU START */}
           <div
-            className={`bg-white absolute mt-[33vh] mr-5 right-0 h-auto w-[18vw] flex-col items-center justify-between rounded cursor-default transition  ${
+            className={`bg-white absolute mt-[30vh] mr-5 right-0 h-auto w-[18vw] flex-col items-center justify-between rounded cursor-default transition  ${
               isShowMenu ? "flex visible" : "hidden invisible"
             }`}
             id="hide-menu"
@@ -276,8 +266,6 @@ export default function Navbar() {
               <span className="ml-[13%] font-medium text-gray-500">Logout</span>
             </div>
           </div>
-
-          {/* HIDE MENU END */}
         </div>
       </section>
 
@@ -327,17 +315,14 @@ export default function Navbar() {
 
       {isShowNotif && (
         <div className="absolute right-50 top-15 w-[320px] bg-white shadow-lg rounded overflow-hidden z-50 text-slate-900/50">
-          {/* HEADER */}
           <div className="bg-blue-600 text-white px-4 py-2 font-semibold">
             ALERTS CENTER
           </div>
 
-          {/* LIST ALERT */}
           {!goodsFiltered.length ? (
             <p className="p-2 text-center text-lg">No Alerts</p>
           ) : (
             <div className="max-h-[300px] overflow-y-auto">
-              {/* ITEM */}
               {goodsFiltered.map((item) => (
                 <div
                   className="flex items-start gap-3 px-4 py-3 border-b hover:bg-gray-100 cursor-pointer"

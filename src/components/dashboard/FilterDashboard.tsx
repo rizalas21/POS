@@ -22,11 +22,8 @@ export default function FilterDashboard({
     .toString()
     .padStart(2, "0");
 
-  const startDate = sp.startDate || "2026-01-01";
-  const endDate = sp.endDate || `${year}-${month}-${lastDate}`;
-
   const [date, setDate] = useState({
-    startDate: "2020-01-01",
+    startDate: "2026-01-01",
     endDate: `${year}-${month}-${lastDate}`,
   });
 
@@ -63,7 +60,7 @@ export default function FilterDashboard({
             name="startDate"
             type="date"
             className="border rounded py-1 px-2 border-slate-500/50"
-            value={startDate}
+            value={date.startDate}
             onChange={(e) => setDate({ ...date, startDate: e.target.value })}
           />
         </fieldset>
@@ -73,7 +70,7 @@ export default function FilterDashboard({
             className="border rounded py-1 px-2 border-slate-500/50"
             name="endDate"
             type="date"
-            value={`${endDate}`}
+            value={`${date.endDate}`}
             onChange={(e) => setDate({ ...date, endDate: e.target.value })}
           />
         </fieldset>

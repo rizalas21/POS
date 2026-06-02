@@ -3,16 +3,50 @@ import useDashboard from "@/hooks/useDashboard";
 import toRupiah from "@/lib/toRupiah";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function EarningsTable() {
-  const { dashboard, params, setParams, handleChange, handleSort } =
-    useDashboard();
-  const overLimit =
-    (Number(params.page) - 1) * Number(params.limit) + Number(params.limit);
+export default function EarningsTable({
+  dataTable,
+  cards,
+  sp,
+  page,
+  pages,
+  total,
+}: any) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const meta = { pages: pages || 0, total: total || 0 };
+  const params = new URLSearchParams(searchParams);
 
-  const cards = dashboard?.cards;
-  const dataTable = dashboard?.dataTable ?? [];
-  const meta = { pages: dashboard?.pages || 0, total: dashboard?.total || 0 };
+  const overLimit = (Number(page) - 1) * Number(sp.limit) + Number(sp.limit);
+
+  const handleSort = (e: any) => {
+    const { name, value } = e.currentTarget;
+
+    params.set("sortBy", name);
+    params.set("sort", value);
+
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "limit" || (name === "keyword" && page === pages)) {
+      params.set(name, value);
+      params.set("page", "1");
+    } else {
+      params.set(name, value);
+    }
+
+    router.push(`?${params}`);
+  };
+
+  const handlePagination = (value: string) => {
+    params.set("page", value);
+
+    router.push(`?${params}`);
+  };
 
   return (
     <section className="table w-full shadow-lg border border-slate-500/25 rounded bg-white px-4 py-2 text-slate-900">
@@ -30,7 +64,7 @@ export default function EarningsTable() {
             id=""
             min={1}
             max={cards?.totalSales}
-            defaultValue={Number(params.limit)}
+            defaultValue={"3"}
             onChange={(e) => handleChange(e)}
           />
           <p>entries</p>
@@ -55,9 +89,9 @@ export default function EarningsTable() {
                 <div className="icon-thead flex">
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "month"
+                      sp.sortBy !== "month"
                         ? "text-gray-700/50"
-                        : params.sort === "asc"
+                        : sp.sort === "asc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -69,9 +103,9 @@ export default function EarningsTable() {
                   </button>
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "month"
+                      sp.sortBy !== "month"
                         ? "text-gray-700/50"
-                        : params.sort === "desc"
+                        : sp.sort === "desc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -90,9 +124,9 @@ export default function EarningsTable() {
                 <div className="icon-thead flex">
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "expense"
+                      sp.sortBy !== "expense"
                         ? "text-gray-700/50"
-                        : params.sort === "asc"
+                        : sp.sort === "asc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -104,9 +138,9 @@ export default function EarningsTable() {
                   </button>
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "expense"
+                      sp.sortBy !== "expense"
                         ? "text-gray-700/50"
-                        : params.sort === "desc"
+                        : sp.sort === "desc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -125,9 +159,9 @@ export default function EarningsTable() {
                 <div className="icon-thead flex">
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "revenue"
+                      sp.sortBy !== "revenue"
                         ? "text-gray-700/50"
-                        : params.sort === "asc"
+                        : sp.sort === "asc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -139,9 +173,9 @@ export default function EarningsTable() {
                   </button>
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "revenue"
+                      sp.sortBy !== "revenue"
                         ? "text-gray-700/50"
-                        : params.sort === "desc"
+                        : sp.sort === "desc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -160,9 +194,9 @@ export default function EarningsTable() {
                 <div className="icon-thead flex">
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "earning"
+                      sp.sortBy !== "earning"
                         ? "text-gray-700/50"
-                        : params.sort === "asc"
+                        : sp.sort === "asc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -174,9 +208,9 @@ export default function EarningsTable() {
                   </button>
                   <button
                     className={`text-sm cursor-pointer hover:text-gray-700 ${
-                      params.sortBy !== "earning"
+                      sp.sortBy !== "earning"
                         ? "text-gray-700/50"
-                        : params.sort === "desc"
+                        : sp.sort === "desc"
                           ? "text-grayy-700"
                           : "text-gray-700/30"
                     }`}
@@ -243,11 +277,8 @@ export default function EarningsTable() {
       <div className="flex p-2 justify-between">
         <p>
           showing{" "}
-          {meta.total
-            ? (Number(params.page) - 1) * Number(params.limit) + 1
-            : 0}{" "}
-          to{" "}
-          {overLimit >= Number(meta.total) || params.limit === 0
+          {meta.total ? (Number(sp.page) - 1) * Number(sp.limit) + 1 : 0} to{" "}
+          {overLimit >= Number(meta.total) || sp.limit === 0
             ? Number(meta.total)
             : overLimit}{" "}
           of {meta?.total.toString()} entries
@@ -255,17 +286,12 @@ export default function EarningsTable() {
         <div className="flex border border-gray-500/50 rounded-sm">
           <button
             className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
-              Number(params.page) === 1
+              Number(sp.page) === 1
                 ? "text-gray-500/50 cursor-default"
                 : "cursor-pointer hover:bg-blue-500 hover:text-white"
             }`}
-            disabled={Number(params.page) <= 1}
-            onClick={() =>
-              setParams({
-                ...params,
-                page: params.page - 1,
-              })
-            }
+            disabled={Number(sp.page) <= 1}
+            onClick={() => handlePagination(String(page - 1))}
           >
             Previous
           </button>{" "}
@@ -273,26 +299,21 @@ export default function EarningsTable() {
             <button
               key={i}
               className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 cursor-pointer hover:text-white hover:bg-blue-500 ${
-                i + 1 === Number(params.page) ? "bg-blue-500 text-white" : ""
+                i + 1 === Number(sp.page) ? "bg-blue-500 text-white" : ""
               }`}
-              onClick={() => setParams({ ...params, page: i + 1 })}
+              onClick={() => handlePagination(String(i + 1))}
             >
               {i + 1}
             </button>
           ))}
           <button
             className={`bg-white-500 border-x border-gray-500/50 px-3 py-1 text-blue-500 ${
-              Number(params.page) >= meta.pages
+              Number(sp.page) >= meta.pages
                 ? "text-gray-500/50 cursor-default"
                 : "cursor-pointer hover:bg-blue-500 hover:text-white"
             }`}
-            disabled={Number(params.page) === meta.pages}
-            onClick={() =>
-              setParams({
-                ...params,
-                page: Number(params.page) + 1,
-              })
-            }
+            disabled={Number(sp.page) === meta.pages}
+            onClick={() => handlePagination(String(page + 1))}
           >
             Next
           </button>

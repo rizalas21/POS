@@ -16,8 +16,16 @@ export default async function dashboard({ searchParams }: any) {
     page: sp.page || 1,
     limit: sp.limit || 3,
   } as const;
-  const { cards, customerRevenue, directRevenue, dataTable, chartData } =
-    await getDashboard(params);
+  const {
+    cards,
+    customerRevenue,
+    directRevenue,
+    dataTable,
+    chartData,
+    page,
+    pages,
+    total,
+  } = await getDashboard(params);
   return (
     <main className="space-y-3">
       <HeadersDashboard />
@@ -29,7 +37,14 @@ export default async function dashboard({ searchParams }: any) {
         dataTable={dataTable}
         chartData={chartData}
       />
-      <EarningsTable />
+      <EarningsTable
+        dataTable={dataTable}
+        cards={cards}
+        sp={sp}
+        page={page}
+        pages={pages}
+        total={total}
+      />
     </main>
   );
 }

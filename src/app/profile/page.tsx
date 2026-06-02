@@ -36,7 +36,7 @@ export default function Profile() {
       title: "Updated!",
       text: "Your changes have been saved successfully.",
     });
-    router.back();
+    router.push("/");
   };
 
   useEffect(() => {
