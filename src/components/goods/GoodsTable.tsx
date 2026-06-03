@@ -289,13 +289,13 @@ export default function GoodsTable({
               <td className="min-w-[10vw] px-1 py-2 border border-gray-500/25">
                 <div className="flex gap-4">
                   <button
-                    className="text-white hover:cursor-pointer bg-green-600 rounded-full min-w-10 px-1 py-2 hover:bg-green-800"
+                    className="text-white hover:cursor-pointer bg-green-600 rounded-full lg:w-10 px-1 py-2 hover:bg-green-800"
                     onClick={() => router.push(`/goods/edit/${g.barcode}`)}
                   >
                     <FontAwesomeIcon icon={faCircleInfo} />
                   </button>
                   <button
-                    className="text-white hover:cursor-pointer bg-red-600 rounded-full min-w-10 px-1 py-2 hover:bg-red-800"
+                    className="text-white hover:cursor-pointer bg-red-600 rounded-full lg:w-10 px-1 py-2 hover:bg-red-800"
                     onClick={() => {
                       setSelectedGoods(g);
                       setShowModal(true);

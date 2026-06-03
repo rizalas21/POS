@@ -48,7 +48,6 @@ export default function GoodsClient({
 
   return (
     <section className="table w-full px-4">
-      {/* dari search sampe pagination disini */}
       <GoodsSearch page={page} pages={pages} total={total} />
       <GoodsTable
         goods={goods}
