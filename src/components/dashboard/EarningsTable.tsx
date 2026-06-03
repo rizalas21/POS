@@ -17,6 +17,7 @@ export default function EarningsTable({
   const searchParams = useSearchParams();
   const meta = { pages: pages || 0, total: total || 0 };
   const params = new URLSearchParams(searchParams);
+  console.log(sp);
 
   const overLimit = (Number(page) - 1) * Number(sp.limit) + Number(sp.limit);
 

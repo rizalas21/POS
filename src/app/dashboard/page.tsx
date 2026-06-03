@@ -40,7 +40,7 @@ export default async function dashboard({ searchParams }: any) {
       <EarningsTable
         dataTable={dataTable}
         cards={cards}
-        sp={sp}
+        sp={params}
         page={page}
         pages={pages}
         total={total}
