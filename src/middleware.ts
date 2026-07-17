@@ -32,7 +32,7 @@ export default async function middleware(req: NextRequest) {
     reqPath.startsWith("/users")
   ) {
     if (role?.toLocaleLowerCase() !== "admin") {
-      return NextResponse.redirect(new URL("/403", req.url));
+      return NextResponse.redirect(new URL("/signin", req.url));
     }
   }
 

@@ -6,6 +6,7 @@ import GoodsTable from "./GoodsTable";
 import GoodsPagination from "./GoodsPagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Goods, GoodsParams } from "@/types/goods";
+import { ModalDeleteGoods } from "./ModalDelete";
 
 export default function GoodsClient({
   goods,
@@ -30,13 +31,13 @@ export default function GoodsClient({
     barcode: "",
     name: "",
     stock: 1,
-    purchasePrice: 1,
-    sellingPrice: 1,
+    purchaseprice: 1,
+    sellingprice: 1,
     unit: "",
-    picture: "",
+    picture: null as string | null,
   });
 
-  const handleSort = (e: any) => {
+  const handleSort = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = e.currentTarget;
     const params = new URLSearchParams(searchParams.toString());
 
@@ -58,6 +59,12 @@ export default function GoodsClient({
         isLoading={isLoading}
       />
       <GoodsPagination page={page} pages={pages} total={total} limit={limit} />
+      {showModal && (
+        <ModalDeleteGoods
+          selectedGoods={selectedGoods}
+          setShowModal={setShowModal}
+        />
+      )}
     </section>
   );
 }

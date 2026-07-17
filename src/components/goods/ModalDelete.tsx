@@ -12,9 +12,9 @@ export const ModalDeleteGoods = ({
     name: string;
     stock: number;
     unit: string;
-    purchasePrice: number;
-    sellingPrice: number;
-    picture: string;
+    purchaseprice: number;
+    sellingprice: number;
+    picture: string | null;
   };
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) => {
